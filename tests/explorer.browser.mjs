@@ -59,7 +59,7 @@ try {
   const catalog = await page.locator('.fab-icon-grid article').evaluateAll(cards =>
     cards.map(card => ({ key: card.querySelector('code').textContent, icon: card.querySelector('svg')?.dataset.backendIcon,
       described: !!card.querySelector('p').textContent.trim() })))
-  assert.equal(catalog.length, 132)
+  assert.equal(catalog.length, 144)
   assert.equal(new Set(catalog.map(item => item.key)).size, catalog.length)
   assert.ok(catalog.every(item => item.key === item.icon && item.described))
   assert.equal(catalog.filter(item => ['org-unit', 'team', 'project', 'support', 'coordination', 'workcell'].includes(item.key)).length, 6)
@@ -86,7 +86,7 @@ try {
     await iconSearch.fill(query)
     await page.locator('.fab-icon-grid article').filter({ has: page.getByText(key, { exact: true }) }).waitFor()
   }
-  for (const [name, query] of [[/三星 TSP/, 'CoA'], [/SK 海力士/, 'TAT'], [/长鑫存储 CXMT/, '晶圆级老化'], [/美光总部/, 'DOE']]) {
+  for (const [name, query] of [[/三星 TSP/, 'CoA'], [/SK 海力士/, 'TAT'], [/长鑫存储 CXMT/, '晶圆级老化'], [/美光总部/, 'DOE'], [/京元电子/, 'CIS']]) {
     await page.getByRole('button', { name }).click()
     await iconSearch.fill(query)
     assert.equal(await page.locator('.fab-icon-grid article').count(), 1)
@@ -99,7 +99,7 @@ try {
   assert.equal(await page.locator('.fab-icon-grid article').count(), catalog.length)
   await page.getByRole('link', { name: '返回组织目录' }).click()
   await assertSelected(portalBranch[1])
-  console.log('PASS · 132 枚图标、职能搜索与说明、部门映射、图鉴返回当前部门')
+  console.log('PASS · 144 枚图标、职能搜索与说明、部门映射、图鉴返回当前部门')
   await page.goto(demoUrl)
   await assertSelected(portalBranch[0])
   await page.getByText('二级部门', { exact: true }).waitFor()

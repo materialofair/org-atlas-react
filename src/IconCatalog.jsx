@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { ArrowLeft } from 'lucide-react'
 import { BackendIcon, backendIcons, productionCollections } from 'org-atlas-react'
+import { IconExportDialog } from './IconExportDialog'
 import { demoDepartments } from './departments'
 
 const entries = Object.entries(backendIcons)
@@ -8,10 +9,11 @@ const xianIcons = new Set(Array.from(demoDepartments(undefined, 'xian').byId.val
 const groups = [...new Set(entries.map(([, icon]) => icon.group))]
 const allSections = groups.map(name => ({ name, icons: entries.filter(([, icon]) => icon.group === name).map(([id]) => id) }))
 
-export function IconCatalog({ returnUrl, theme, themeControl, defaultScope, paletteStyle }) {
+export function IconCatalog({ returnUrl, theme, themeControl, defaultScope, paletteStyle, palette }) {
   const urlScope = new URL(window.location.href).searchParams.get('collection')
   const [scope, setScope] = useState(['all', 'xian'].includes(urlScope) || Object.hasOwn(productionCollections, urlScope) ? urlScope : defaultScope)
   const [query, setQuery] = useState('')
+  const [selected, setSelected] = useState(null)
   const term = query.trim().toLowerCase()
   const collection = productionCollections[scope]
   const sections = (collection?.sections ?? allSections).map(section => ({
@@ -31,7 +33,7 @@ export function IconCatalog({ returnUrl, theme, themeControl, defaultScope, pale
     </div></header>
     <div className="oe-wrap fab-library">
       <h1>后道团队图标库</h1>
-      <p>可按公开职能选图。不确定时可省略 <code>icon</code>，目录会根据是否有下级自动选择部门或团队图标。</p>
+      <p>按职能查找图标，点击卡片可调色、下载图片或复制代码。不确定时可省略 <code>icon</code>，目录会根据是否有下级自动选择部门或团队图标。</p>
       <div className="fab-catalog-filter" role="group" aria-label="图标范围">
         {filters.map(([id, label, count]) => <button key={id} type="button" className="oe-button"
           aria-pressed={scope === id} onClick={() => {
@@ -50,10 +52,12 @@ export function IconCatalog({ returnUrl, theme, themeControl, defaultScope, pale
           const icon = backendIcons[id]
           return <article key={id}>
             <span className="fab-sample"><BackendIcon name={id} size={36} /></span>
-            <h3>{icon.name}</h3><code>{id}</code><p>{icon.description}</p>
+            <h3><button className="fab-open-icon" type="button" aria-haspopup="dialog"
+              onClick={() => setSelected(id)}>{icon.name}</button></h3><code>{id}</code><p>{icon.description}</p>
           </article>
         })}</div>
       </section>)}
     </div>
+    {selected && <IconExportDialog name={selected} palette={palette} theme={theme} onDismiss={() => setSelected(null)} />}
   </main>
 }

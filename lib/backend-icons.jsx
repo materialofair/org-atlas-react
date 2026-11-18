@@ -136,6 +136,18 @@ export const backendIcons = {
   'site-loading': symbol('厂区负载评估', '生产运营', '两座工厂各带独立负载条，适合对照厂区产能边界。', 'M2 20V8l4-3v4l4-3v14z M14 20V8l4-3v4l4-3v14z M5 16h2m-2-3h2m10 3h2'),
   'build-signal': symbol('投产指令', '生产运营', '确认标记与指向生产线的箭头表示已校验的投产需求。', 'M3 3h12v7 M3 3v17h8 M6 8l2 2 4-5 M7 15h14m-4-4 4 4-4 4'),
   'global-at-network': symbol('全球封测协同', '生产运营', '互联线路连接两个厂区和中央封装单元，用于全球后道运营。', 'M2 3h5v5H2z M17 3h5v5h-5z M4.5 8v4H10m9.5-4v4H14 M7 16l5-3 5 3-5 3z M7 19l5 3 5-3'),
+  'cis-test': symbol('影像传感器测试', '专业测试服务', '光线落在像素阵列上，适合 CMOS 影像传感器（CIS）与 CCD 测试。', 'M4 3l4 4m-4 0h4V3 M12 2v4m8-3-4 4 M4 11h16v10H4z M9 11v10m6-10v10M4 16h16'),
+  'rf-test': symbol('射频与无线测试', '专业测试服务', '天线接收弧线与端口表示 RF 收发测量。', 'M9 20h6m-3 0v-8 M10 10a2 2 0 1 0 4 0 2 2 0 1 0-4 0 M7 6a6 6 0 0 0 0 8m10-8a6 6 0 0 1 0 8 M4 3a10 10 0 0 0 0 14m16-14a10 10 0 0 1 0 14'),
+  'mixed-signal-test': symbol('混合信号测试', '专业测试服务', '连续波与方波分列上下，对应模拟和数字信号的联合测试。', 'M2 8q3-8 6 0t6 0 6 0 M2 18h4v-5h6v5h5v-5h5'),
+  'display-driver': symbol('显示驱动测试', '专业测试服务', '屏幕的列电极连接底部驱动芯片，适合 LCD 驱动器测试。', 'M2 3h20v11H2z M6 6v5m4-5v5m4-5v5m4-5v5 M8 18h8v3H8z M6 14v2l2 2m10-4v2l-2 2m-4-4v4'),
+  'mems-test': symbol('微机电传感器测试', '专业测试服务', '弹性悬臂支撑中央质量块，用于 MEMS 器件测试。', 'M2 7v10m20-10v10 M2 12h2l1-3 2 6 1-3h1m6 0h1l1-3 2 6 1-3h2 M9 8h6v8H9z'),
+  'test-correlation': symbol('测试相关性验证', '专业测试服务', '散点与对角参考线用于核对不同测试平台的结果。', 'M3 3v18h18 M7 17 20 4 M7 12h1m2 3h1m1-7h1m3 3h1m2-5h1'),
+  'platform-conversion': symbol('测试平台转换', '专业测试服务', '不同形状的平台端口和双向箭头表示测试模式移植。', 'M2 4h6v7H2z M16 14h6v7h-6z M11 6h9v5m-3-3 3 3 3-3 M13 18H4v-5m-3 3 3-3 3 3'),
+  'load-board': symbol('测试载板设计', '专业测试服务', '带边缘触点的电路板将中央器件连接到测试机。', 'M2 4h20v14H2z M9 8h6v6H9z M5 8h2m8 3h4 M5 18v3m4-3v3m6-3v3m4-3v3'),
+  'test-socket': symbol('测试插座', '专业测试服务', '掀开的压盖与接触座表示成品芯片的可更换测试插座。', 'M4 10l3-7h12l-3 7z M4 13h16v7H4z M8 16.5h1m2 0h1m2 0h1 M7 10v3m10-3v3'),
+  'strip-handler': symbol('条带分选设备', '专业测试服务', '夹爪逐格搬运条带上的器件，适合 Strip Handler 研发。', 'M2 15h20v6H2z M7 15v6m5-6v6m5-6v6 M12 2v3 M8 9V5h8v4l-2 2m-6-2 2 2'),
+  'parameter-compensation': symbol('动态参数补偿', '专业测试服务', '偏移的测量曲线与校正箭头表示动态测试参数补偿。', 'M3 3v17h18 M6 16l4-5 4 2 6-8 M7 4v5m-2-2 2 2 2-2 M16 17h4'),
+  'efab-data': symbol('虚拟工厂数据服务', '专业测试服务', '工厂轮廓与向外传输的箭头表示 e-Fab 测试数据交付。', 'M2 20V9l5-3v4l5-3v4 M13 7V3h4l1 6 M2 20h9 M5 15h2 M12 14h10m-3-3 3 3-3 3 M21 20H12m3-3-3 3 3 3'),
 }
 
 export function getDepartmentIcon(node) {
@@ -143,10 +155,10 @@ export function getDepartmentIcon(node) {
   return node.children?.length ? 'org-unit' : 'team'
 }
 
-export function BackendIcon({ name, size = 24, label, className, color }) {
+export function BackendIcon({ name, size = 24, label, className, color, strokeWidth = 1.55 }) {
   if (!Object.hasOwn(backendIcons, name)) return null
   return <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color ?? "currentColor"}
-    strokeWidth="1.55" strokeLinecap="round" strokeLinejoin="round" className={className}
+    strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}
     data-backend-icon={name} aria-hidden={label ? undefined : true} role={label ? 'img' : undefined} aria-label={label}>
     <path d={backendIcons[name].path} />
   </svg>

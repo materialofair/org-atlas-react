@@ -20,7 +20,7 @@ npm pack
 将生成的压缩包复制到宿主项目，在宿主项目目录执行：
 
 ```sh
-npm install ./org-atlas-react-1.10.0.tgz
+npm install ./org-atlas-react-1.11.0.tgz
 ```
 
 ```tsx
@@ -61,7 +61,7 @@ export function AssemblyPortal({ department }: { department: Department }) {
 
 默认首页为二级「美光后道封装测试」。九张职能卡片可直接进入对应团队；页尾可打开上级目录。示例七级路径为美光台湾 → 后道封装测试 → 封装 → 引线键合 → 键合生产组 → 键合轮班组 → 键合作业单元。
 
-图标库（`?view=icons`）收录 132 枚图标。拿不准专业图标时，可以选择通用部门 `org-unit`、团队 `team`、项目 `project`、支持 `support`、协作 `coordination` 或作业单元 `workcell`。也可以直接省略 `Department.icon`，有下级会显示部门图标，末级会显示团队图标。未知键同样适用此规则。自定义详情插图时可用 `getDepartmentIcon(node)` 获取与卡片一致的图标。也可在组件外使用：
+图标库（`?view=icons`）收录 144 枚图标。拿不准专业图标时，可以选择通用部门 `org-unit`、团队 `team`、项目 `project`、支持 `support`、协作 `coordination` 或作业单元 `workcell`。也可以直接省略 `Department.icon`，有下级会显示部门图标，末级会显示团队图标。未知键同样适用此规则。自定义详情插图时可用 `getDepartmentIcon(node)` 获取与卡片一致的图标。也可在组件外使用：
 
 ```tsx
 import { BackendIcon, backendIcons } from 'org-atlas-react'
@@ -73,15 +73,33 @@ import { BackendIcon, backendIcons } from 'org-atlas-react'
 
 宽幅图需要随宿主换色时，使用 `<BackendOverview color="var(--primary)" />`。省略 `color` 时依次读取 `--org-art-accent`、`--org-primary` 和 `--primary`。图形从同一个颜色派生亮面、侧壁、触点和连线。组件可从 `org-atlas-react` 导入。在 Demo 右上角色点选择松绿、靛蓝、梅紫、赤铜或石墨，旁边的选择器控制明暗模式。直接使用 `<img>` 的网站可从独立图标包的 `artwork/` 目录选择五种颜色各自的浅色与深色 SVG。
 
-图鉴中「三星 TSP」和「SK 海力士 P&T」按公开职能分组，每组链接到原始资料。深链分别为 `?view=icons&collection=samsung` 和 `?view=icons&collection=hynix`。Release 的 `production-icons.zip` 专题包按公司分目录保存 SVG、中文说明及职能出处，本地执行 `npm run export:icons` 会生成 `dist/production-icons/`。宿主可以导入 `productionCollections`，读取每家公司的 `sections`、`source` 和图标键名数组 `icons`。[调研与选图说明](https://github.com/materialofair/org-atlas-react/blob/v1.10.0/docs/samsung-hynix.md)
+图鉴中「三星 TSP」和「SK 海力士 P&T」按公开职能分组，每组链接到原始资料。深链分别为 `?view=icons&collection=samsung` 和 `?view=icons&collection=hynix`。Release 的 `production-icons.zip` 专题包按公司分目录保存 SVG、中文说明及职能出处，本地执行 `npm run export:icons` 会生成 `dist/production-icons/`。宿主可以导入 `productionCollections`，读取每家公司的 `sections`、`source` 和图标键名数组 `icons`。[调研与选图说明](https://github.com/materialofair/org-atlas-react/blob/v1.11.0/docs/samsung-hynix.md)
 
-「长鑫存储 CXMT」集合可通过 `?view=icons&collection=cxmt` 打开，或在宿主读取 `productionCollections.cxmt`。[下载长鑫独立 SVG 包](https://github.com/materialofair/org-atlas-react/releases/download/v1.10.0/org-atlas-react-1.10.0-cxmt-icons.zip)。28 枚图标按职责分为计划与调度、外包管理、后道采购、晶圆测试、委外封装、成品测试、模组加工测试及研发。[长鑫职能与选图依据](https://github.com/materialofair/org-atlas-react/blob/v1.10.0/docs/cxmt-backend.md)
+「长鑫存储 CXMT」集合可通过 `?view=icons&collection=cxmt` 打开，或在宿主读取 `productionCollections.cxmt`。[下载长鑫独立 SVG 包](https://github.com/materialofair/org-atlas-react/releases/download/v1.11.0/org-atlas-react-1.11.0-cxmt-icons.zip)。28 枚图标按职责分为计划与调度、外包管理、后道采购、晶圆测试、委外封装、成品测试、模组加工测试及研发。[长鑫职能与选图依据](https://github.com/materialofair/org-atlas-react/blob/v1.11.0/docs/cxmt-backend.md)
 
 React 组件使用 `currentColor` 跟随主题；相邻已有文字时可省略 `label`。独立 SVG 图标包随 Release 提供，内含中文说明和 MIT 许可证。本地执行 `npm run export:icons` 可在 `dist/backend-icons/` 生成相同内容。
 
+### 京元电子与单图导出
+
+打开 `?view=icons&collection=kyec`，可按五类公开服务浏览 21 枚图标，例如影像传感器测试、测试相关性验证、载板设计与虚拟工厂数据服务。[职能来源与选图说明](https://github.com/materialofair/org-atlas-react/blob/v1.11.0/docs/kyec-testing.md) · [下载京元独立 SVG 包](https://github.com/materialofair/org-atlas-react/releases/download/v1.11.0/org-atlas-react-1.11.0-kyec-icons.zip)
+
+点击任意图标，可预览、调整尺寸、线宽与颜色，再下载 SVG、PNG、JPG 或 JSX。SVG 与 JSX 可直接复制，默认以 `currentColor` 跟随宿主文字颜色。需要在幻灯片、邮件或普通图片标签中固定品牌色时，点颜色方块选择具体颜色。PNG 保留透明背景，JPG 将图形绘制在所选底色上。JSX 是可独立使用的 React 组件，支持 `size`、`strokeWidth`、`color`、`label` 和原生 SVG 属性。
+
+宿主门户也可以直接调用导出 API。返回的 Blob 可用于下载、预览或上传。生成 SVG 和 JSX 源码无需浏览器，位图导出在浏览器中调用 Canvas。API 默认尺寸为 24 px，支持 1–2048 的整数；颜色接受六位十六进制，矢量前景色还接受 `currentColor`。
+
+```js
+import { exportIcon, getIconSource } from 'org-atlas-react'
+
+const jsx = getIconSource('test-socket', 'jsx', { size: 32 })
+const png = await exportIcon('cis-test', 'png', { size: 256, themeColor: '#306b54' })
+const jpg = await exportIcon('load-board', 'jpg', {
+  size: 512, strokeWidth: 2, color: '#dbeafe', background: '#172033',
+})
+```
+
 ### 美光总部与图标主题
 
-打开 `?site=micron-hq` 查阅 Boise 职能和全球运营背景，`?view=icons&collection=micron-hq` 直达 25 枚图标。[下载总部独立 SVG 包](https://github.com/materialofair/org-atlas-react/releases/download/v1.10.0/org-atlas-react-1.10.0-micron-hq-icons.zip)。完整来源和岗位范围见[总部调研](https://github.com/materialofair/org-atlas-react/blob/v1.10.0/docs/micron-hq.md)。
+打开 `?site=micron-hq` 查阅 Boise 职能和全球运营背景，`?view=icons&collection=micron-hq` 直达 25 枚图标。[下载总部独立 SVG 包](https://github.com/materialofair/org-atlas-react/releases/download/v1.11.0/org-atlas-react-1.11.0-micron-hq-icons.zip)。完整来源和岗位范围见[总部调研](https://github.com/materialofair/org-atlas-react/blob/v1.11.0/docs/micron-hq.md)。
 
 全部团队图标支持以下三种接入方式：
 
@@ -91,11 +109,11 @@ React 组件使用 `currentColor` 跟随主题；相邻已有文字时可省略 
 
 ### 西安厂区
 
-页尾选择「进入西安厂区」，或打开 `?site=xian`。八个分组覆盖器件封装、测试、模组制造与测试、仓储物流与供应计划、工程设备岗位、生产管理、扩建产品规划与可持续发展中心公告。点击任一条目可查看西安本地来源。图标库中可切换「西安示例」与「全部图标」。查询某个图标时可输入「裸片回收」「模组测试」或「PSRG」。[查阅西安研究与选图说明](https://github.com/materialofair/org-atlas-react/blob/v1.10.0/docs/xian-backend.md)。
+页尾选择「进入西安厂区」，或打开 `?site=xian`。八个分组覆盖器件封装、测试、模组制造与测试、仓储物流与供应计划、工程设备岗位、生产管理、扩建产品规划与可持续发展中心公告。点击任一条目可查看西安本地来源。图标库中可切换「西安示例」与「全部图标」。查询某个图标时可输入「裸片回收」「模组测试」或「PSRG」。[查阅西安研究与选图说明](https://github.com/materialofair/org-atlas-react/blob/v1.11.0/docs/xian-backend.md)。
 
 ### 行业依据
 
-职能名称和职责来自美光台湾中英文职类地图；先进封装示例另参照美光台中厂区资料。下级编组和层级用于演示。后道门户采用总览标识，封装部门详情展示引线键合 BGA 分解图。查看[职能与选图说明](https://github.com/materialofair/org-atlas-react/blob/v1.10.0/docs/memory-backend.md)、[美光中文职类地图](https://tw.micron.com/about/careers/job-map-tch)和[台中先进封测厂资料](https://tw.micron.com/about/blog/company/events/taiwan-new-facility-supports-hbm3e-ramp-dram-tech-deployment)。
+职能名称和职责来自美光台湾中英文职类地图；先进封装示例另参照美光台中厂区资料。下级编组和层级用于演示。后道门户采用总览标识，封装部门详情展示引线键合 BGA 分解图。查看[职能与选图说明](https://github.com/materialofair/org-atlas-react/blob/v1.11.0/docs/memory-backend.md)、[美光中文职类地图](https://tw.micron.com/about/careers/job-map-tch)和[台中先进封测厂资料](https://tw.micron.com/about/blog/company/events/taiwan-new-facility-supports-hbm3e-ramp-dram-tech-deployment)。
 
 ## 组件接口
 
@@ -144,7 +162,7 @@ npm run dev -- --port 5188
 - `npm run build` 生成组件库和生产版 Demo，分别位于 `dist/lib` 与 `dist/demo`。
 - `npm pack` 重新构建库并在当前目录生成可分发的 tgz。
 - `npm run test:browser` 验证七级下穿、返回、主题和移动布局。先启动 Demo，本机需要 Chrome 或通过 `npx playwright install chromium` 安装 Chromium。可用 `ORG_DEMO_URL` 指定测试地址。
-- `node tests/react-compat.mjs 18.0.0 ./org-atlas-react-1.10.0.tgz` 在临时宿主中安装指定 React 版本和组件包，完成生产构建并在浏览器中验证七级往返。已验证 18.0.0、18.2.0、18.3.1 和 19.3.1。
+- `node tests/react-compat.mjs 18.0.0 ./org-atlas-react-1.11.0.tgz` 在临时宿主中安装指定 React 版本和组件包，完成生产构建并在浏览器中验证七级往返。已验证 18.0.0、18.2.0、18.3.1 和 19.3.1。
 - `src/departments.js` 存放可替换的示例组织数据。
 
 ## 许可证

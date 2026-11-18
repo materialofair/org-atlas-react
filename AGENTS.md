@@ -17,7 +17,7 @@ npm run dev -- --port 5188
 
 ## 在其他项目里使用
 
-从 GitHub Release 下载名为 `org-atlas-react-<版本>.tgz` 的组件包，例如将 v1.10.0 的包放在宿主项目根目录后执行 `npm install ./org-atlas-react-1.10.0.tgz`。Web 宿主使用版本匹配的 React 18+ 和 React DOM。CSS 已随包编译，导入一次即可。
+从 GitHub Release 下载名为 `org-atlas-react-<版本>.tgz` 的组件包，例如将 v1.11.0 的包放在宿主项目根目录后执行 `npm install ./org-atlas-react-1.11.0.tgz`。Web 宿主使用版本匹配的 React 18+ 和 React DOM。CSS 已随包编译，导入一次即可。
 
 ```tsx
 import { OrgExplorer, type Department } from 'org-atlas-react'
@@ -41,6 +41,8 @@ export function DepartmentPortal({ department }: { department: Department }) {
 | 卡片尺寸、窄屏控件、明暗主题、宿主嵌入 | `lib/style.css`。断点跟随组件容器宽度 |
 | 新增公开属性或导出 | 同步 `lib/index.js`、`lib/index.d.ts`、README 和调用示例 |
 | 后道图标形状、说明和展示页 | `lib/backend-icons.jsx`、`lib/index.d.ts`、`src/IconCatalog.jsx`。行业依据见 `docs/memory-backend.md`。新增图标时同步键名类型和示例数据，执行 `npm run export:icons` 检查独立 SVG。 |
+| 单图导出与下载 | `lib/icon-export.js` 读取注册表的相同 path，提供源码与 Blob API。`src/IconExportDialog.jsx` 管理预览与下载，`tests/icon-export.browser.mjs` 解码检查四种格式。 |
+| 京元专业测试专题 | `lib/production-collections.js`、`docs/kyec-testing.md`。集合 ID 为 `kyec`，保留专业测试厂的排名口径。 |
 | 演示组织及门户根节点 | `src/departments.js` |
 | 演示路由、主题持久化与门户工具栏 | `src/main.jsx`、`src/style.css` |
 | 发包内容、外置 React、声明和图标许可 | `package.json`、`vite.lib.config.js` |

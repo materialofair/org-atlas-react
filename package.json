@@ -1,6 +1,6 @@
 {
   "name": "org-atlas-react",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "description": "A themeable React department directory with drill-down navigation.",
   "type": "module",
   "main": "./dist/lib/index.js",
@@ -33,7 +33,7 @@
     "build": "npm run build:lib && vite build",
     "preview": "vite preview --host 127.0.0.1",
     "prepack": "npm run build:lib",
-    "test:browser": "node tests/explorer.browser.mjs",
+    "test:browser": "node tests/explorer.browser.mjs && node tests/icon-export.browser.mjs",
     "export:icons": "npm run build:lib && node scripts/export-icons.mjs"
   },
   "peerDependencies": {

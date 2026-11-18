@@ -18,7 +18,7 @@ try {
   writeFileSync(join(root, 'main.jsx'), `
     import React from 'react'
     import { createRoot } from 'react-dom/client'
-    import { BackendOverview, OrgExplorer } from 'org-atlas-react'
+    import { BackendIcon, BackendOverview, OrgExplorer, exportIcon, getIconSource } from 'org-atlas-react'
     import staticArt from 'org-atlas-react/backend-overview.svg'
     import 'org-atlas-react/style.css'
 
@@ -29,6 +29,10 @@ try {
         children: node ? [node] : [] }
     }
     document.title = React.version
+    window.exportSocket = async () => ({
+      jsx: getIconSource('test-socket', 'jsx'),
+      type: (await exportIcon('test-socket', 'jpg')).type,
+    })
     const second = { id: 'portal', name: '第二个门户', children: [
       { id: 'group', name: '设计系统部', leader: 'Maximilian Alexander von Hohenzollern-Schwarzenberg' }
     ] }
@@ -38,6 +42,7 @@ try {
         <BackendOverview label="独立配色" color="#aa4477" />
         <img src={staticArt} width="80" alt="静态总图" />
       </div>
+      <BackendIcon name="test-socket" label="测试插座" strokeWidth={2} />
       <input aria-label="宿主搜索" />
       <OrgExplorer root={node} />
       <OrgExplorer root={second} title="全球产品平台与技术创新事业部组织门户" toolbar={<button>主题</button>} />
@@ -59,6 +64,10 @@ try {
   }
   // React 18.0.0 includes the release commit in its runtime version string.
   assert.equal((await page.title()).split('-')[0], version)
+  assert.equal(await page.getByRole('img', { name: '测试插座' }).getAttribute('stroke-width'), '2')
+  const download = await page.evaluate(() => window.exportSocket())
+  assert.match(download.jsx, /function TestSocketIcon/)
+  assert.equal(download.type, 'image/jpeg')
   const firstArt = page.getByRole('img', { name: '宿主主色' })
   const secondArt = page.getByRole('img', { name: '独立配色' })
   assert.equal(await firstArt.evaluate(el => getComputedStyle(el).color), 'rgb(22, 78, 192)')

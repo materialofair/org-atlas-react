@@ -126,7 +126,7 @@ function App() {
     </label>
     <ThemeSelect value={theme} onChange={selectTheme} />
   </div>
-  if (catalogOpen) return <IconCatalog paletteStyle={paletteStyle} defaultScope={root.evidence ? root.id : 'all'} returnUrl={catalogLink(false)} theme={theme} themeControl={themeControl} />
+  if (catalogOpen) return <IconCatalog palette={palette} paletteStyle={paletteStyle} defaultScope={root.evidence ? root.id : 'all'} returnUrl={catalogLink(false)} theme={theme} themeControl={themeControl} />
   const sourceInfo = evidence
     ? <>{root.id === 'micron-hq' ? '美光总部资料' : '西安公开资料'} · <a href={evidence.url}>{evidence.label}</a></>
     : <>{publicScope ? '美光公开职能 · 门户示例' : '模拟团队 · 用于展示职能下钻'} · <a href={jobMap}>美光职类地图</a>

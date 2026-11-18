@@ -32,9 +32,12 @@ export type BackendIconName =
   | 'die-shift' | 'wafer-warpage' | 'experiment-matrix' | 'test-architecture'
   | 'pattern-debug' | 'probe-card' | 'equipment-standard' | 'site-loading'
   | 'build-signal' | 'global-at-network'
+  | 'cis-test' | 'rf-test' | 'mixed-signal-test' | 'display-driver'
+  | 'mems-test' | 'test-correlation' | 'platform-conversion' | 'load-board'
+  | 'test-socket' | 'strip-handler' | 'parameter-compensation' | 'efab-data'
 export declare function getDepartmentIcon(node: Department): BackendIconName
 export declare const backendIcons: Readonly<Record<BackendIconName, { readonly name: string; readonly group: string; readonly description: string; readonly path: string }>>
-export declare function BackendIcon(props: { name: BackendIconName; color?: string; size?: number; label?: string; className?: string }): ReactElement | null
+export declare function BackendIcon(props: { name: BackendIconName; color?: string; size?: number; strokeWidth?: number; label?: string; className?: string }): ReactElement | null
 
 export interface Department {
   /** Stable identifier, unique within one organization tree. */
@@ -67,8 +70,24 @@ export interface OrgExplorerProps {
 export declare function OrgExplorer(props: OrgExplorerProps): ReactElement
 
 export declare function BackendOverview(props: { color?: string; className?: string; label?: string }): ReactElement
-export type ProductionCollection = 'samsung' | 'hynix' | 'cxmt' | 'micron-hq'
+export type ProductionCollection = 'samsung' | 'hynix' | 'cxmt' | 'micron-hq' | 'kyec'
 export declare const productionCollections: Readonly<Record<ProductionCollection, {
   readonly name: string
   readonly sections: readonly { readonly name: string; readonly source: string; readonly icons: readonly BackendIconName[] }[]
 }>>
+
+export type IconExportFormat = 'png' | 'jpg' | 'svg' | 'jsx'
+export interface IconExportOptions {
+  /** Integer output width and height, 1–2048 px. Default 24. */
+  size?: number
+  /** Stroke in viewBox units, above 0 and at most 6. Default 1.55. */
+  strokeWidth?: number
+  /** Six-digit hex color or currentColor (default). */
+  color?: string
+  /** Six-digit hex to resolve currentColor for raster output. Default black. */
+  themeColor?: string
+  /** Raster background in six-digit hex. Defaults to transparent PNG or white JPG. */
+  background?: string
+}
+export declare function getIconSource(name: BackendIconName, format: 'svg' | 'jsx', options?: IconExportOptions): string
+export declare function exportIcon(name: BackendIconName, format: IconExportFormat, options?: IconExportOptions): Promise<Blob>
