@@ -56,10 +56,19 @@ try {
   await assertSelected(portalBranch[1])
   await page.getByRole('link', { name: '后道团队图标库' }).click()
   await page.getByRole('heading', { name: '后道团队图标库' }).waitFor()
+  await page.getByRole('button', { name: /美光 Micron/, pressed: true }).waitFor()
+  await page.getByRole('searchbox').fill('台湾')
+  const taiwanKeys = await page.locator('.fab-icon-grid code').allTextContents()
+  for (const id of ['risk-fmea', 'smart-factory-ai', 'hbm', 'probe', 'it-team', 'test-solutions']) {
+    assert.ok(taiwanKeys.includes(id), id)
+  }
+  assert.equal(new Set(taiwanKeys).size, taiwanKeys.length)
+  await page.getByRole('searchbox').fill('')
+  await page.getByRole('button', { name: /全部图标/ }).click()
   const catalog = await page.locator('.fab-icon-grid article').evaluateAll(cards =>
     cards.map(card => ({ key: card.querySelector('code').textContent, icon: card.querySelector('svg')?.dataset.backendIcon,
       described: !!card.querySelector('p').textContent.trim() })))
-  assert.equal(catalog.length, 152)
+  assert.equal(catalog.length, 158)
   assert.equal(new Set(catalog.map(item => item.key)).size, catalog.length)
   assert.ok(catalog.every(item => item.key === item.icon && item.described))
   assert.equal(catalog.filter(item => ['org-unit', 'team', 'project', 'support', 'coordination', 'workcell'].includes(item.key)).length, 6)
@@ -99,7 +108,7 @@ try {
   assert.equal(await page.locator('.fab-icon-grid article').count(), catalog.length)
   await page.getByRole('link', { name: '返回组织目录' }).click()
   await assertSelected(portalBranch[1])
-  console.log('PASS · 152 枚图标、职能搜索与说明、部门映射、图鉴返回当前部门')
+  console.log('PASS · 158 枚图标、职能搜索与说明、部门映射、图鉴返回当前部门')
   await page.goto(demoUrl)
   await assertSelected(portalBranch[0])
   await page.getByText('二级部门', { exact: true }).waitFor()
@@ -347,6 +356,9 @@ try {
   await page.getByRole('button', { name: /美光 Micron/, pressed: true }).waitFor()
   const micronKeys = await page.locator('.fab-icon-grid code').allTextContents()
   assert.equal(new Set(micronKeys).size, micronKeys.length)
+  for (const node of demoDepartments('7').byId.values()) {
+    assert.ok(micronKeys.includes(node.icon ?? (node.children?.length ? 'org-unit' : 'team')), node.name)
+  }
   for (const site of ['xian', 'micron-hq']) {
     for (const node of demoDepartments(undefined, site).byId.values()) {
       if (node.icon) assert.ok(micronKeys.includes(node.icon), site + ': ' + node.icon)

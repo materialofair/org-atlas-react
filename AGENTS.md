@@ -13,11 +13,11 @@ npm run dev -- --port 5188
 
 打开 `http://127.0.0.1:5188/`。默认首页是美光后道封测门户，应显示“二级部门”和九张职能卡。美光公开职能来自台湾职类地图，下级为演示编组，负责人留空。`/?levels=2`、`/?levels=3` 和 `/?levels=7` 分别演示两级、混合深度和完整组织数据。`/?site=xian` 打开独立西安资料目录，按 `lib/micron-xian.js` 的条目来源更新，范围见 `docs/xian-backend.md`。
 
-`/?view=icons` 展示图标及其使用说明。三星、SK 海力士与长鑫集合由 `lib/production-collections.js` 维护，更新职能时同步核对 `docs/samsung-hynix.md` 或 `docs/cxmt-backend.md`。`?site=micron-hq` 打开总部职能页；`lib/micron-hq.js` 同时驱动职能树与图标集合。`productionCollections.micron` 汇总 IT、运营、总部与西安；保留原总部子集供宿主兼容。图鉴将 `collection=xian` 和 `collection=micron-hq` 归一为 `collection=micron`，保留部门哈希。新增图标需验证所有预设的浅深模式、外部 SVG 遮罩和配色导出。宽幅总图的单一图形源是 `lib/BackendOverview.jsx`，从这里修改后重新构建组件和独立 SVG。部署构建后的 Demo 时，通过 HTTP 静态服务打开解压目录的 `index.html`。
+`/?view=icons` 展示图标及其使用说明。三星、SK 海力士与长鑫集合由 `lib/production-collections.js` 维护，更新职能时同步核对 `docs/samsung-hynix.md` 或 `docs/cxmt-backend.md`。`?site=micron-hq` 打开总部职能页；`lib/micron-hq.js` 同时驱动职能树与图标集合。`productionCollections.micron` 汇总台湾（`lib/micron-taiwan.js`）、IT、运营、总部与西安；保留原总部子集供宿主兼容。图鉴将 `collection=xian` 和 `collection=micron-hq` 归一为 `collection=micron`，保留部门哈希。新增图标需验证所有预设的浅深模式、外部 SVG 遮罩和配色导出。宽幅总图的单一图形源是 `lib/BackendOverview.jsx`，从这里修改后重新构建组件和独立 SVG。部署构建后的 Demo 时，通过 HTTP 静态服务打开解压目录的 `index.html`。
 
 ## 在其他项目里使用
 
-从 GitHub Release 下载名为 `org-atlas-react-<版本>.tgz` 的组件包，例如将 v1.12.0 的包放在宿主项目根目录后执行 `npm install ./org-atlas-react-1.12.0.tgz`。Web 宿主使用版本匹配的 React 18+ 和 React DOM。CSS 已随包编译，导入一次即可。
+从 GitHub Release 下载名为 `org-atlas-react-<版本>.tgz` 的组件包，例如将 v1.13.0 的包放在宿主项目根目录后执行 `npm install ./org-atlas-react-1.13.0.tgz`。Web 宿主使用版本匹配的 React 18+ 和 React DOM。CSS 已随包编译，导入一次即可。
 
 ```tsx
 import { OrgExplorer, type Department } from 'org-atlas-react'
@@ -40,7 +40,7 @@ export function DepartmentPortal({ department }: { department: Department }) {
 | 下穿、返回焦点、面包屑、搜索、同级切换 | `lib/OrgExplorer.jsx` |
 | 卡片尺寸、窄屏控件、明暗主题、宿主嵌入 | `lib/style.css`。断点跟随组件容器宽度 |
 | 新增公开属性或导出 | 同步 `lib/index.js`、`lib/index.d.ts`、README 和调用示例 |
-| 后道图标形状、说明和展示页 | `lib/backend-icons.jsx`、`lib/index.d.ts`、`src/IconCatalog.jsx`。行业依据见 `docs/memory-backend.md`。新增图标时同步键名类型和示例数据，执行 `npm run export:icons` 检查独立 SVG。 |
+| 后道图标形状、说明和展示页 | `lib/backend-icons.jsx`、`lib/index.d.ts`、`src/IconCatalog.jsx`。行业依据见 `docs/memory-backend.md`。新增图标时同步键名类型和示例数据，执行 `npm run export:icons` 检查独立 SVG，并用 `npm run test:icons` 检查全库边界和导出轮廓。 |
 | 单图导出与下载 | `lib/icon-export.js` 读取注册表的相同 path，提供源码与 Blob API。`src/IconExportDialog.jsx` 管理预览与下载，`tests/icon-export.browser.mjs` 解码检查四种格式。 |
 | 京元专业测试专题 | `lib/production-collections.js`、`docs/kyec-testing.md`。集合 ID 为 `kyec`，保留专业测试厂的排名口径。 |
 | 演示组织及门户根节点 | `src/departments.js` |

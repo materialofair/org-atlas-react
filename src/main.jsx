@@ -15,7 +15,7 @@ function catalogLink(open) {
   const url = new URL(window.location.href)
   if (open) {
     url.searchParams.set('view', 'icons')
-    if (root.evidence) url.searchParams.set('collection', 'micron')
+    if (root.evidence || root === backend || root.id === 'micron-tw') url.searchParams.set('collection', 'micron')
   }
   else { url.searchParams.delete('view'); url.searchParams.delete('collection') }
   return url.href

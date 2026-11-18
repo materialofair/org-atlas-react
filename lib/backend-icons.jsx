@@ -1,4 +1,5 @@
 import React from 'react'
+import { iconViewBox } from './icon-frame.js'
 
 // All glyphs share a 24-unit grid. Separate strokes represent the tool and its workpiece.
 const symbol = (name, group, description, path) => ({ name, group, description, path })
@@ -14,10 +15,16 @@ export const backendIcons = {
   'factory-software': symbol('工厂应用开发', '信息技术 IT', '应用窗口中的代码括号表示智能工厂软件与制造系统开发。', 'M3 4h18v16H3z M3 8h18 M9 11l-3 3 3 3m6-6 3 3-3 3'),
   'data-pipeline': symbol('数据工程', '信息技术 IT', '数据库连接分流节点，适合产线数据采集、处理与数据平台团队。', 'M2 6c0-3.5 10-3.5 10 0s-10 3.5-10 0z M2 6v9c0 3.5 10 3.5 10 0V6 M2 10.5c0 3.5 10 3.5 10 0 M12 12h4m0-6v12m0-12h3m-3 12h3 M19 4h3v4h-3z M19 16h3v4h-3z'),
   'industrial-iot': symbol('工业物联网', '信息技术 IT', '无线信号连接现场传感器，适合工业物联网（IIoT）与设备数据接入团队。', 'M3 7q9-9 18 0 M6 10q6-6 12 0 M9 13q3-3 6 0 M8 16h8v5H8z M11 18.5h2'),
-  'operations-team': symbol('运营团队', '运营管理', '三个联动工位与中央协调节点，适合跨团队运营和资源统筹。', 'M9 2h6v5H9z M2 16h6v5H2z M16 16h6v5h-6z M12 7v3m-2 3-4 3m8-3 4 3 M14 12a2 2 0 1 1-4 0 2 2 0 1 1 4 0z'),
-  'ops-dispatch': symbol('生产派工', '运营管理', '工单分流到两个作业点，适合投产派工、现场调度与任务分配。', 'M2 4h8v13H2z M4.5 8h3m-3 3h2 M10 11h4V6h7m-3-3 3 3-3 3 M14 11v7h7m-3-3 3 3-3 3'),
+  'operations-team': symbol('运营团队', '运营管理', '两道循环箭头围绕中央工位，适合跨团队运营和资源统筹。', 'M12 3a9 9 0 0 1 8.5 6m-3-1 3.4 1.2.8-3.5 M12 21a9 9 0 0 1-8.5-6m3 1-3.4-1.2-.8 3.5 M9 9h6v6H9z'),
+  'ops-dispatch': symbol('生产派工', '运营管理', '工单与签派勾表示任务下达，适合生产派工、现场调度与任务分配。', 'M2 4h12v16H2z M5 8h6m-6 4h4 M12 16l3 3 7-8'),
   'shift-roster': symbol('班次排程', '运营管理', '日历中错开的班次条表示轮班安排、人员排班和产线值守。', 'M3 5h18v16H3z M3 9h18 M7 2v5m10-5v5 M6 12h5m-2 3h6m-2 3h5'),
   'ops-kpi': symbol('运营绩效', '运营管理', '仪表指针与基准刻度用于追踪产出、交付等运营 KPI。', 'M3 16a9 9 0 0 1 18 0 M5 13l2 1m0-6 1.5 1.5M12 6v2m6 0-4.5 5.5 M14 15a2 2 0 1 1-4 0 2 2 0 1 1 4 0z M5 20h14'),
+  'equipment-capex': symbol('设备投资评估', '生产运营', '机台旁的投入刻度用于比较产能需求和设备资本支出（CapEx）。', 'M2 5h11v11H2z M5 9h5m-6 7v3m7-3v3 M16 19v-5m3 5V9m3 10V4'),
+  'risk-fmea': symbol('失效模式与影响分析', '测试与质量', '故障从左侧沿分支传递至警示点，表示 FMEA 的原因、失效与影响。', 'M2 5h5v5H2z M4.5 10v7H9m-2-2 2 2-2 2 M7 7.5h5l3 3 M16.5 9l5.5 11H11z M16.5 13v2.5m0 2v.2'),
+  'quality-return': symbol('客户退货处置', '测试与质量', '折返箭头把出货包装引回检验流程，适合客户退回品调查。', 'M3 10l6-3 6 3-6 3z M3 10v7l6 3 6-3v-7 M9 13v7 M21 5v4q0 3-4 3 M21 5h-7m3-3-3 3 3 3'),
+  'change-review': symbol('质量变更评审', '测试与质量', '新旧两份记录由核准标记连接，适合制程变更或规格变更评审。', 'M3 14V3h10v3 M7 7h10v8 M7 7v14h6 M10 11h4m-4 4h2 M15 18l2.5 2.5 4.5-6'),
+  'safety-drill': symbol('安全训练与演练', '生产支持', '门框与疏散方向箭头表示现场演练，适合 EHS 应急训练及疏散演习。', 'M3 21V3h11v5 M6 20V7l5-1v12l-5 2 M12 14h10m-4-4 4 4-4 4'),
+  'smart-factory-ai': symbol('智能制造与 AI', '信息技术 IT', '厂房与带信号曲线的芯片代表制造数据建模，适合 SMAI 智能制造与分析团队。', 'M2 20V9l5-4v5l5-4v5 M2 20h7 M11 13h9v7h-9z M14 10v3m3-3v3m-3 7v2m3-2v2 M9 15h2m9 2h2 M14 17l2-2 2 2'),
   'backend-overview': symbol('后道封测总览', '封装与互连', '叠层表示封装制造，波形表示测试验证，两侧端点表示工程、质量与运营支持的协作。用于后道事业群或封测厂区门户。', 'M3 9.5 12 4l9 5.5-9 5.5z M8 9.7l2.1 1.2 1.5-3 1.5 4 2.7-2 M4.5 14l7.5 4.5 7.5-4.5 M4.5 14H1.7m17.8 0h2.8 M7 18l5 3 5-3'),
   package: symbol('封装总成', '封装与互连', '芯体与外部引脚，适合封装装联（Assembly）及器件封装团队。', 'M6 6h12v12H6z M9 9h6v6H9z M9 3v3m6-3v3M9 18v3m6-3v3M3 9h3m-3 6h3m12-6h3m-3 6h3'),
   wafer: symbol('晶圆', '晶圆加工', '圆片上的管芯阵列，适合晶圆服务、薄化与来料管理团队。', 'M8 21a9.4 9.4 0 1 1 8 0z M7 5v12m5-14v16m5-14v12M4 8h16M3 13h18M6 17h12'),
@@ -45,7 +52,7 @@ export const backendIcons = {
   nand: symbol('NAND 闪存', '存储产品与先进封装', '串联单元与公共通道，适合闪存产品工程与测试团队。', 'M7 2v3m0 4v2m0 4v2m0 4v1 M4 5h6v4H4z M4 11h6v4H4z M4 17h6v4H4z M10 7h9m-9 6h9m-9 6h9'),
   dimm: symbol('内存模组', '存储产品与先进封装', '带金手指的内存条上排列多颗器件，适合 DIMM 装联与模组验证。', 'M2 6h20v11H2z M5 9h3v4H5z M10 9h3v4h-3z M15 9h3v4h-3z M4 17v2m3-2v2m3-2v2m5-2v2m3-2v2'),
   ssd: symbol('固态硬盘', '存储产品与先进封装', '板卡轮廓内区分主控、存储区和边缘接口，适合 SSD 装联与产品测试。', 'M3 4h16l2 2v14H3z M6 7h5v5H6z M14 8h4m-4 3h4M6 15h10m-9 5v-2m3 2v-2m3 2v-2'),
-  'burn-in': symbol('通电老化', '测试与质量', '机架上的样品托盘配以电流符号，适合 Burn-in 老化筛选团队。', 'M3 3h11v18H3z M5 7h7m-7 5h7m-7 5h5 M20 5l-4 8h4l-2 6 5-9h-4z'),
+  'burn-in': symbol('通电老化', '测试与质量', '机架上的样品托盘配以电流符号，适合 Burn-in 老化筛选团队。', 'M3 3h10v18H3z M6 7h4m-4 5h4m-4 5h4 M20 4l-5 9h4l-2 7 5-11h-4z'),
   slt: symbol('系统级测试', '测试与质量', '处理器连接系统主板接口，适合 SLT 与整机使用场景验证。', 'M2 4h20v16H2z M5 8h6v6H5z M11 10h3l2-3h3 M11 12h3l2 4h3 M5 17h3'),
   binning: symbol('测试分档', '测试与质量', '一个输入分向三个分档箱，适合性能分档、分选及测试数据团队。', 'M10 2h4v4h-4z M12 6v7m-8 1v-4h16v4 M2 15h4v6H2z M10 15h4v6h-4z M18 15h4v6h-4z'),
   'test-solutions': symbol('测试解决方案', '工程与产品导入', '程序括号围住测试脉冲，适合 TSE、测试程序与平台开发团队。', 'M6 4H3v16h3m12-16h3v16h-3 M5 13h4l2-6 3 10 2-5h3'),
@@ -92,8 +99,8 @@ export const backendIcons = {
   'sustainability-coe': symbol('制造可持续发展', '生产支持', '厂房与叶片结合，用于制造可持续发展卓越中心及协作项目。', 'M2 21V10l5-3v4l5-3v5 M2 21h19 M5 16h2m2 0h2 M14 16c-3-5 1-10 8-11 0 7-2 11-8 11zm-1 4 6-11'),
   'mobile-dram': symbol('移动内存', '存储产品与先进封装', '手机轮廓内的存储芯片表示移动 DRAM 产品和导入项目。', 'M6 2h12v20H6z M9 8h6v6H9z M10 6v2m3-2v2m-3 6v2m3-2v2 M11 19h2'),
   'line-expansion': symbol('产线扩建', '生产支持', '已有工位旁的新增工位和加号，表示扩建规划与新线导入。', 'M2 10h8v8H2z M14 10h8v8h-8z M4 21h16 M18 2v6m-3-3h6 M4 13h4m9 1h2'),
-  'production-supervision': symbol('生产现场管理', '生产支持', '人员轮廓配合产线看板，用于生产主管与现场管理岗位。', 'M9 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0z M1 20v-3a5 5 0 0 1 10 0v3 M13 3h9v12h-9z M15 7h5m-5 4h3'),
-  'external-assembly': symbol('外部封装工程', '封装与互连', '封装框中的裸片与外侧接口相连，适合外部封装工程协作。', 'M3 5h13v14H3z M6 9h7v6H6z M16 9h5V5m-2 2 2-2 2 2 M16 15h5v4'),
+  'production-supervision': symbol('生产现场管理', '生产支持', '人员轮廓配合产线看板，用于生产主管与现场管理岗位。', 'M10 7a3 3 0 1 1-6 0 3 3 0 1 1 6 0z M2 20v-3a5 5 0 0 1 10 0v3 M14 3h8v12h-8z M16 7h4m-4 4h3'),
+  'external-assembly': symbol('外部封装工程', '封装与互连', '封装框中的裸片与外侧接口相连，适合外部封装工程协作。', 'M3 5h12v14H3z M6 9h6v6H6z M15 9h5V4m-2 2 2-2 2 2 M15 15h5v4'),
   'module-fa': symbol('模组失效分析', '测试与质量', '模组板上的器件与放大镜表示定位失效位置，适合 Module FA。', 'M2 5h19v5 M10 15H2V5 M5 8h3v3H5z M11 8h3 M5 15v3m3-3v3 M19 14a4 4 0 1 1-8 0 4 4 0 0 1 8 0z M18 17l4 4'),
   'qms': symbol('质量管理体系', '测试与质量', '带勾选标记的受控文件叠页，适合 QMS 及体系审核团队。', 'M2 6v15h13 M6 2h12l3 3v13H6z M17 2v4h4 M9 9l1 1 2-3m2 2h3 M9 14l1 1 2-3m2 2h3'),
   'supply-planning': symbol('供应计划', '生产支持', '日程表与待交付箱件相叠，表示按时间协调供料与发运。', 'M9 17H3V4h16v4 M3 8h13 M7 2v4m7-4v4 M6 11h3m-3 3h2 M12 13l5-3 5 3v6l-5 3-5-3z M12 13l5 3 5-3m-5 3v6'),
@@ -101,11 +108,11 @@ export const backendIcons = {
   'unit-cost': symbol('制造成本分析', '生产运营', '叠放的成本筹码配合分项柱，表示设备、材料及制造成本核算。', 'M12 6c0 4-10 4-10 0s10-4 10 0z M2 6v5c0 4 10 4 10 0V6 M2 12v4c0 2 4 3 7 2 M13 20v-4m4 4v-8m4 8V9'),
   'sample-delivery': symbol('工程样品交付', '生产运营', '样品盒上的单颗器件和向外箭头，适合开发样品交付协调。', 'M2 8l8-4 8 4-8 4z M2 8v8l8 4v-8m0 8 4-2 M15 14h7m-3-3 3 3-3 3'),
   'osat-sourcing': symbol('外协封测采购', '生产运营', '两座工厂之间的双向交付线，表示选择和管理 OSAT 伙伴。', 'M2 17v-7l4-2v3l3-2v8z M15 17v-7l4-2v3l3-2v8z M5 5h13l-2-2 M19 20H6l2 2'),
-  'safety-stock': symbol('安全库存', '生产运营', '料位柱与最低存量刻度，适合管理关键物料安全库存。', 'M4 3v17h16V3 M7 16h10v-3H7z M7 10h10V7H7z M1 12h5m13 0h4'),
+  'safety-stock': symbol('安全库存', '生产运营', '料位柱与最低存量刻度，适合管理关键物料安全库存。', 'M5 3v17h14V3 M8 16h8v-3H8z M8 10h8V7H8z M2 12h3m14 0h3'),
   'fifo-lanes': symbol('先进先出物料', '生产运营', '连续料箱沿同一方向出库，适合 FIFO 批次管理。', 'M2 8h5v7H2z M9 8h5v7H9z M16 8h5v7h-5z M3 19h17m-3-3 3 3-3 3 M4 5h1'),
   'incoming-coa': symbol('来料证书核验', '测试与质量', '检验报告与核验勾表示按供应商 CoA 核对材料数据。', 'M4 2h11l4 4v4 M4 2v19h8 M14 2v5h5 M7 10h6m-6 4h4 M13 15l3 3 6-7'),
   'anomaly-monitor': symbol('制程异常监测', '测试与质量', '趋势线越过监测界限，用于测试过程实时异常检测。', 'M2 4v16h20 M5 8h3m3 0h3m3 0h4 M5 15h4l3-4 3 2 3-9 3 7'),
-  'tester-control': symbol('测试设备控制软件', '测试与质量', '控制屏内的指令括号连接机台端口，用于测试设备软件。', 'M2 3h20v13H2z M9 7 6 10l3 3m6-6 3 3-3 3 M8 20h8m-4-4v4'),
+  'tester-control': symbol('测试设备控制软件', '测试与质量', '控制面板上的调节滑块与机台端口，表示软件对测试设备的控制。', 'M3 3h18v14H3z M6 8h12m-8-2v4 M6 13h12m-4-2v4 M7 17v4m5-4v4m5-4v4'),
   'defect-classifier': symbol('缺陷自动分类', '测试与质量', '同一观测结果分流到不同形状，适合自动缺陷分类 ADC。', 'M2 10h5v5H2z M7 12h5V6h4m-4 6v6h4 M17 4h5v5h-5z M19.5 15l3 5h-6z'),
   'hbm-schedule': symbol('HBM 生产计划', '生产运营', '日期格内的堆叠层代表按周期排定 HBM 生产。', 'M3 5h18v16H3z M3 9h18M7 2v5m10-5v5 M7 14l5-2 5 2-5 2z M7 17l5 2 5-2'),
   'production-progress': symbol('生产进度跟踪', '生产运营', '交期线与错开的三道工序条，用于比较计划与实际进度。', 'M3 3v18h18 M6 6h7v3H6z M9 12h7v3H9z M19 3v3m0 3v3m0 3v3'),
@@ -116,15 +123,15 @@ export const backendIcons = {
   'package-section': symbol('封装截面分析', '测试与质量', '斜切面穿过材料叠层，用于观察 HBM 封装内部结构。', 'M3 6h18v12H3z M3 10h15m-15 4h11 M17 3 7 21m12-15 2-3'),
   'package-design': symbol('封装结构设计', '封装与互连', '尺寸基准和分层剖面，表示设计、验证新的封装结构。', 'M3 5h18m-18-2v4m18-4v4 M4 12l8-4 8 4-8 4z M4 15l8 4 8-4 M4 18l8 4 8-4'),
   'material-qualification': symbol('封装材料验证', '封装与互连', '分层试片和勾选标记，适合材料替代验证与量产品质改善。', 'M2 8l7-4 7 4-7 4z M2 12l7 4 4-2 M2 16l7 4 2-1 M14 16l3 3 5-7'),
-  'equipment-throughput': symbol('设备产出改善', '生产运营', '工件穿过设备出口，仪表指针表示量产效率和设备性能改善。', 'M2 18V8a7 7 0 0 1 14 0v3 M6 10a3 3 0 0 1 6 0m-3 0 3-4 M2 19h19 M6 14h5v3H6z M15 14h7m-3-3 3 3-3 3'),
+  'equipment-throughput': symbol('设备产出改善', '生产运营', '工件穿过设备出口，仪表指针表示量产效率和设备性能改善。', 'M2 18V9a7 7 0 0 1 14 0v2 M6 11a3 3 0 0 1 6 0m-3 0 3-4 M2 20h19 M6 15h5v3H6z M15 15h7m-3-3 3 3-3 3'),
   'test-load-split': symbol('自测与委外分配', '生产运营', '一张计划单分出两条路径，适合在自有测试厂和外协厂之间分配任务。', 'M2 8h6v8H2z M4 11h2 M8 12h4V6h8m-3-3 3 3-3 3 M12 12v6h8m-3-3 3 3-3 3'),
   'order-due-date': symbol('订单交期跟踪', '生产运营', '日期格和交付箭头表示跟进外协订单交期。', 'M3 5h16v6 M3 5v15h8 M3 9h16 M7 2v5m8-5v5 M6 13h4m-4 3h2 M13 16h9m-4-4 4 4-4 4'),
   'vendor-onboarding': symbol('外包商与项目导入', '生产运营', '厂房旁的准入勾表示对新外包商或新项目的评估与导入。', 'M2 20V9l5-3v5l5-3v5h3V4h3v6 M2 20h9 M5 15h2m2 0h2 M14 16l3 3 5-7'),
-  'vendor-scorecard': symbol('外协质量与交付考核', '生产运营', '带评分刻度的记录板用于外协质量、交付和改善跟踪。', 'M7 4H3v17h17V4h-5 M7 3h8v4H7z M6 11h4m-4 5h4 M13 12l2 2 3-4m-5 7h4'),
+  'vendor-scorecard': symbol('外协质量与交付考核', '生产运营', '评价表内的分项评分柱用于外协质量、交付和改善跟踪。', 'M3 3h18v18H3z M6 8h4m-4 5h3 M13 17v-4m3 4V9m3 8v-6'),
   'contract-review': symbol('后道采购合同', '生产运营', '笔尖落在合同签署线，适合后道商务谈判和签约。', 'M4 2h11l3 3v4 M4 2v19h9 M7 7h6m-6 4h5m-5 6h4 M13 16l6-6 3 3-6 6-4 1z'),
   'invoice-match': symbol('外协账单核对', '生产运营', '两张单据以等号匹配，表示核对委外封测账单。', 'M3 3h11v4 M3 3v14h3 M8 8h12v13l-3-2-3 2-3-2-3 2z M11 12h6m-6 3h6'),
   'dc-parametric': symbol('直流参数测试', '测试与质量', '仪表盘下的直流标记表示晶圆测试中的直流参数测量。', 'M3 14a9 9 0 0 1 18 0z M12 13l4-6 M6 18h12 M6 21h2m3 0h2m3 0h2'),
-  'margin-window': symbol('功能与裕度测试', '测试与质量', '两条边界包住有效波形，表示验证功能及其工作裕度。', 'M3 4v16m18-16v16 M1 5h4m14 0h4 M6 15h3V9h5v6h4 M6 20h12'),
+  'margin-window': symbol('功能与裕度测试', '测试与质量', '两条边界包住有效波形，表示验证功能及其工作裕度。', 'M4 4v16m16-16v16 M2 5h4m12 0h4 M7 15h3V9h4v6h3 M7 20h10'),
   'wafer-repair': symbol('晶圆修复', '测试与质量', '晶圆内的旁路绕过失效单元，表示存储晶圆测试中的修复环节。', 'M7 20a9 9 0 1 1 10 0z M5 13h4V8h6v5h4 M10.5 14l3 3m0-3-3 3'),
   'wafer-burn-in': symbol('晶圆级老化', '测试与质量', '热流位于整片晶圆上方，用于区分晶圆级与封装后老化。', 'M7 3c-3 3 2 3-1 6m7-7c-3 3 2 4-1 7m7-6c-3 3 2 3-1 6 M3 14c0-4 18-4 18 0s-18 4-18 0z M3 14v3c0 4 18 4 18 0v-3'),
   'ball-attach': symbol('成品植球', '封装与互连', '封装基板下方排列独立焊球，适合 BGA 植球工序与外协对接。', 'M3 4h18v4H3z M2 11h20 M7 16a2 2 0 1 1-4 0 2 2 0 0 1 4 0z M14 16a2 2 0 1 1-4 0 2 2 0 0 1 4 0z M21 16a2 2 0 1 1-4 0 2 2 0 0 1 4 0z'),
@@ -145,17 +152,17 @@ export const backendIcons = {
   'build-signal': symbol('投产指令', '生产运营', '确认标记与指向生产线的箭头表示已校验的投产需求。', 'M3 3h12v7 M3 3v17h8 M6 8l2 2 4-5 M7 15h14m-4-4 4 4-4 4'),
   'global-at-network': symbol('全球封测协同', '生产运营', '互联线路连接两个厂区和中央封装单元，用于全球后道运营。', 'M2 3h5v5H2z M17 3h5v5h-5z M4.5 8v4H10m9.5-4v4H14 M7 16l5-3 5 3-5 3z M7 19l5 3 5-3'),
   'cis-test': symbol('影像传感器测试', '专业测试服务', '光线落在像素阵列上，适合 CMOS 影像传感器（CIS）与 CCD 测试。', 'M4 3l4 4m-4 0h4V3 M12 2v4m8-3-4 4 M4 11h16v10H4z M9 11v10m6-10v10M4 16h16'),
-  'rf-test': symbol('射频与无线测试', '专业测试服务', '天线接收弧线与端口表示 RF 收发测量。', 'M9 20h6m-3 0v-8 M10 10a2 2 0 1 0 4 0 2 2 0 1 0-4 0 M7 6a6 6 0 0 0 0 8m10-8a6 6 0 0 1 0 8 M4 3a10 10 0 0 0 0 14m16-14a10 10 0 0 1 0 14'),
+  'rf-test': symbol('射频与无线测试', '专业测试服务', '天线接收弧线与端口表示 RF 收发测量。', 'M9 20h6m-3 0v-8 M10 10a2 2 0 1 0 4 0 2 2 0 1 0-4 0 M7 6q-4 4 0 8m10-8q4 4 0 8 M5 3q-6 7 0 14m14-14q6 7 0 14'),
   'mixed-signal-test': symbol('混合信号测试', '专业测试服务', '连续波与方波分列上下，对应模拟和数字信号的联合测试。', 'M2 8q3-8 6 0t6 0 6 0 M2 18h4v-5h6v5h5v-5h5'),
   'display-driver': symbol('显示驱动测试', '专业测试服务', '屏幕的列电极连接底部驱动芯片，适合 LCD 驱动器测试。', 'M2 3h20v11H2z M6 6v5m4-5v5m4-5v5m4-5v5 M8 18h8v3H8z M6 14v2l2 2m10-4v2l-2 2m-4-4v4'),
   'mems-test': symbol('微机电传感器测试', '专业测试服务', '弹性悬臂支撑中央质量块，用于 MEMS 器件测试。', 'M2 7v10m20-10v10 M2 12h2l1-3 2 6 1-3h1m6 0h1l1-3 2 6 1-3h2 M9 8h6v8H9z'),
   'test-correlation': symbol('测试相关性验证', '专业测试服务', '散点与对角参考线用于核对不同测试平台的结果。', 'M3 3v18h18 M7 17 20 4 M7 12h1m2 3h1m1-7h1m3 3h1m2-5h1'),
-  'platform-conversion': symbol('测试平台转换', '专业测试服务', '不同形状的平台端口和双向箭头表示测试模式移植。', 'M2 4h6v7H2z M16 14h6v7h-6z M11 6h9v5m-3-3 3 3 3-3 M13 18H4v-5m-3 3 3-3 3 3'),
+  'platform-conversion': symbol('测试平台转换', '专业测试服务', '不同形状的平台端口和双向箭头表示测试模式移植。', 'M2 4h6v7H2z M16 14h6v7h-6z M11 6h8v5m-3-3 3 3 3-3 M13 18H5v-5m-3 3 3-3 3 3'),
   'load-board': symbol('测试载板设计', '专业测试服务', '带边缘触点的电路板将中央器件连接到测试机。', 'M2 4h20v14H2z M9 8h6v6H9z M5 8h2m8 3h4 M5 18v3m4-3v3m6-3v3m4-3v3'),
   'test-socket': symbol('测试插座', '专业测试服务', '掀开的压盖与接触座表示成品芯片的可更换测试插座。', 'M4 10l3-7h12l-3 7z M4 13h16v7H4z M8 16.5h1m2 0h1m2 0h1 M7 10v3m10-3v3'),
   'strip-handler': symbol('条带分选设备', '专业测试服务', '夹爪逐格搬运条带上的器件，适合 Strip Handler 研发。', 'M2 15h20v6H2z M7 15v6m5-6v6m5-6v6 M12 2v3 M8 9V5h8v4l-2 2m-6-2 2 2'),
   'parameter-compensation': symbol('动态参数补偿', '专业测试服务', '偏移的测量曲线与校正箭头表示动态测试参数补偿。', 'M3 3v17h18 M6 16l4-5 4 2 6-8 M7 4v5m-2-2 2 2 2-2 M16 17h4'),
-  'efab-data': symbol('虚拟工厂数据服务', '专业测试服务', '工厂轮廓与向外传输的箭头表示 e-Fab 测试数据交付。', 'M2 20V9l5-3v4l5-3v4 M13 7V3h4l1 6 M2 20h9 M5 15h2 M12 14h10m-3-3 3 3-3 3 M21 20H12m3-3-3 3 3 3'),
+  'efab-data': symbol('虚拟工厂数据服务', '专业测试服务', '工厂轮廓与向外传输的箭头表示 e-Fab 测试数据交付。', 'M2 20V9l5-3v4l5-3v4 M13 7V3h4l1 6 M2 20h7 M5 15h2 M12 14h10m-3-3 3 3-3 3 M21 19H12m3-3-3 3 3 3'),
 }
 
 export function getDepartmentIcon(node) {
@@ -165,7 +172,7 @@ export function getDepartmentIcon(node) {
 
 export function BackendIcon({ name, size = 24, label, className, color, strokeWidth = 1.55 }) {
   if (!Object.hasOwn(backendIcons, name)) return null
-  return <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color ?? "currentColor"}
+  return <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox={iconViewBox(strokeWidth)} fill="none" stroke={color ?? "currentColor"}
     strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}
     data-backend-icon={name} aria-hidden={label ? undefined : true} role={label ? 'img' : undefined} aria-label={label}>
     <path d={backendIcons[name].path} />

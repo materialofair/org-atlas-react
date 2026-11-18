@@ -20,6 +20,21 @@
 
 美光在 2024 年回顾中还介绍了两个不同的场景：台中 AATT 整合探针、3D 封装与测试能力；槟城设施的产品范围包括 NAND、PC DRAM、SSD 和内存模组。产品或工艺本身也可以成为细分团队的图标，例如为模组组选 `dimm`、为盘卡组选 `ssd`。其历史认证附件还记录了部分厂区的减薄、切割、打线和通电老化活动。[美光 2024 年进展摘要，第 12 页](https://sg.micron.com/content/dam/micron/global/public/documents/about/misc/2024/2024-micron-progress-summary.pdf) · [美光历史厂区认证范围](https://sg.micron.com/content/dam/micron/global/public/documents/about/certificate/iso-14001.pdf)
 
+### 台湾职能的补充图标
+
+可在「美光 Micron」中搜索“台湾”，或直接搜索以下键名。跨厂共用的图形只占一张卡，按地区检索时仍可查看对应地区的来源。台湾门户的组织节点、工序图例和通用团队图标都可在美光集合中找到。
+
+| 使用场景 | 图标键名 | 选图依据 |
+| --- | --- | --- |
+| 工业工程投资评估 | `equipment-capex` | IE 对照设备产能模型与资本支出计划 |
+| 失效模式与影响分析 | `risk-fmea` | QE 与封装、测试工程协作执行 FMEA |
+| 客户退货处置 | `quality-return` | QE 跟进客户退回产品及异常处置 |
+| 质量变更评审 | `change-review` | QE 的跨部门职责包括变更管理 |
+| 安全训练与演练 | `safety-drill` | EHS 联合制造及厂务安排训练和演练 |
+| 智能制造与 AI | `smart-factory-ai` | 横向 SMAI 团队结合制造数据开发分析应用，与前后道团队协作 |
+
+这些名称描述工作内容。台湾门户将相关工作作为可浏览条目，实际团队边界、岗位隶属和主管以使用方资料为准。[美光台湾职类地图](https://tw.micron.com/about/careers/job-map)
+
 ## SK 海力士公开的 HBM 分工
 
 海力士在 2024 年 4 月介绍了 P&T（封装与测试）的职责，以及硅通孔 TSV 和模塑底填 MR-MUF 在 HBM 封装中的作用。图标库将三种常见关注点分开：`hbm` 表示堆叠整体，`tsv` 表示贯穿硅层的互连，`underfill` 表示芯片间隙填充。[SK hynix P&T 访谈](https://news.skhynix.com/en/top-team-insights-motto-of-package-and-technology-head-woojin-choi/)

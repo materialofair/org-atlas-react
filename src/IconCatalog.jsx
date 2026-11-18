@@ -27,11 +27,16 @@ export function IconCatalog({ returnUrl, theme, themeControl, defaultScope, pale
   const [selected, setSelected] = useState(null)
   const term = searchText(query)
   const collection = productionCollections[scope]
-  const sections = (collection?.sections ?? allSections).map(section => ({
+  const sourceSections = term && collection?.sourceSections ? collection.sourceSections : collection?.sections ?? allSections
+  const shown = new Set()
+  const sections = sourceSections.map(section => ({
     ...section,
     icons: section.icons.filter(id => {
       const icon = backendIcons[id]
-      return [id, icon.name, icon.group, icon.description, section.name, collection?.name].some(value => value && searchText(value).includes(term))
+      const matches = [id, icon.name, icon.group, icon.description, section.name, collection?.name].some(value => value && searchText(value).includes(term))
+      if (!matches || shown.has(id)) return false
+      shown.add(id)
+      return true
     }),
   })).filter(section => section.icons.length)
   const filters = [['all', '全部图标', entries.length],

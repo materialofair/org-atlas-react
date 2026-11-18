@@ -3,6 +3,8 @@ import type { ReactElement, ReactNode } from 'react'
 export type BackendIconName =
   | 'it-team' | 'factory-software' | 'data-pipeline' | 'industrial-iot'
   | 'operations-team' | 'ops-dispatch' | 'shift-roster' | 'ops-kpi'
+  | 'equipment-capex' | 'risk-fmea' | 'quality-return'
+  | 'change-review' | 'safety-drill' | 'smart-factory-ai'
   | 'backend-overview' | 'package' | 'wafer' | 'dicing' | 'bump' | 'attach'
   | 'bond' | 'mold' | 'stack' | 'finish' | 'probe'
   | 'ate' | 'reliability' | 'analysis' | 'equipment' | 'planning'
@@ -73,9 +75,16 @@ export declare function OrgExplorer(props: OrgExplorerProps): ReactElement
 
 export declare function BackendOverview(props: { color?: string; className?: string; label?: string }): ReactElement
 export type ProductionCollection = 'samsung' | 'hynix' | 'cxmt' | 'micron' | 'micron-hq' | 'kyec'
+interface IconSection {
+  readonly name: string
+  readonly source: string
+  readonly icons: readonly BackendIconName[]
+}
 export declare const productionCollections: Readonly<Record<ProductionCollection, {
   readonly name: string
-  readonly sections: readonly { readonly name: string; readonly source: string; readonly icons: readonly BackendIconName[] }[]
+  readonly sections: readonly IconSection[]
+  /** Original groups before deduplication, for region or source searches. */
+  readonly sourceSections?: readonly IconSection[]
 }>>
 
 export type IconExportFormat = 'png' | 'jpg' | 'svg' | 'jsx'

@@ -1,9 +1,7 @@
 import { micronHqSections } from '../lib/micron-hq.js'
 import { xian } from '../lib/micron-xian.js'
 
-// Public functions follow Micron Taiwan's Back-End job map. Subteams illustrate the work.
-export const jobMap = 'https://tw.micron.com/about/careers/job-map-tch'
-export const siteArticle = 'https://tw.micron.com/about/blog/company/events/taiwan-new-facility-supports-hbm3e-ramp-dram-tech-deployment'
+export { jobMap, siteArticle } from '../lib/micron-taiwan.js'
 
 function unit(id, name, icon, description, children) {
   return { id, name, icon, description, children }
@@ -35,7 +33,7 @@ export const backend = unit('backend', '美光后道封装测试', 'backend-over
     ]),
     unit('industrial', '工业工程（IE）', 'industrial', '建立设备产能模型，评估扩产投资与实际产出的差距。', [
       unit('capacity', '产能建模', 'capacity-model', '对照目标负载与机台可用产能。'),
-      unit('capex', '设备投资评估', 'planning'), unit('ie-project', '改善项目组', 'project')]),
+      unit('capex', '设备投资评估', 'equipment-capex'), unit('ie-project', '改善项目组', 'project')]),
     unit('operations', '生产制造（MFG）', 'manufacturing', '跟踪在制品、生产进度与出货目标，协调产线资源。', [
       unit('lot-control', '在制品流转', 'lot-flow'), unit('scheduling', '投产排程', 'planning'),
       unit('production-control', '现场协调', 'coordination')]),
@@ -46,9 +44,11 @@ export const backend = unit('backend', '美光后道封装测试', 'backend-over
     unit('test', '测试（Test）', 'ate', '执行产品测试，分析失效模式与测试良率，推动量产改善。', [
       unit('final-test', '成品电测', 'ate'), unit('memory-binning', '性能分档', 'binning'), unit('slt', '系统验证', 'slt')]),
     unit('quality', '质量（QE）', 'quality-engineering', '跟进质量异常和客户反馈，确认不合格品得到妥善处置。', [
-      unit('quality-release', '质量放行评审', 'quality-release'), unit('failure-lab', '失效分析', 'analysis'), unit('customer-qual', '客户质量支持', 'support')]),
+      unit('quality-release', '质量放行评审', 'quality-release'), unit('failure-lab', '失效分析', 'analysis'), unit('customer-qual', '客户质量支持', 'support'),
+      unit('quality-fmea', '失效模式与影响分析', 'risk-fmea'), unit('quality-returns', '客户退货处置', 'quality-return'),
+      unit('quality-change', '质量变更评审', 'change-review')]),
     unit('site-ehs', '环境安全卫生（EHS）', 'ehs', '识别现场作业风险，协调安全、职业健康和环境管理。', [
-      unit('risk', '现场风险评估', 'ehs'), unit('drills', '教育训练与演练', 'team')]),
+      unit('risk', '现场风险评估', 'ehs'), unit('drills', '教育训练与演练', 'safety-drill')]),
     unit('facility-services', '厂务运营工程（FAC）', 'facilities', '管理水、电、气化、空调、系统整合与总务六个方向，保障厂务系统稳定运行。', facilitySections),
   ])
 
