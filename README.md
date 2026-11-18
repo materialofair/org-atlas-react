@@ -6,7 +6,9 @@
 
 最低版本为 React 18.0.0。组件使用宿主项目的 React 实例，Web 项目请搭配相同版本的 React DOM。示例组织和负责人均为虚构数据。
 
-先在本地从源码生成安装包：
+从 [GitHub Releases](https://github.com/materialofair/org-atlas-react/releases) 可下载源码、已编译的组件安装包和静态 Demo。接入步骤、源码入口和验证命令也整理在 [AGENTS.md](AGENTS.md)。
+
+如需自己构建安装包：
 
 ```sh
 git clone https://github.com/materialofair/org-atlas-react.git
@@ -18,7 +20,7 @@ npm pack
 将生成的压缩包复制到宿主项目，在宿主项目目录执行：
 
 ```sh
-npm install ./org-atlas-react-1.2.0.tgz
+npm install ./org-atlas-react-1.2.1.tgz
 ```
 
 ```tsx
@@ -98,7 +100,7 @@ npm run dev -- --port 5188
 - `npm run build` 生成组件库和生产版 Demo，分别位于 `dist/lib` 与 `dist/demo`。
 - `npm pack` 重新构建库并在当前目录生成可分发的 tgz。
 - `npm run test:browser` 验证七级下穿、返回、主题和移动布局。先启动 Demo，本机需要 Chrome 或通过 `npx playwright install chromium` 安装 Chromium。可用 `ORG_DEMO_URL` 指定测试地址。
-- `node tests/react-compat.mjs 18.0.0 ./org-atlas-react-1.2.0.tgz` 在临时宿主中安装指定 React 版本和组件包，完成生产构建并在浏览器中验证七级往返。已验证 18.0.0、18.2.0、18.3.1 和 19.3.1。
+- `node tests/react-compat.mjs 18.0.0 ./org-atlas-react-1.2.1.tgz` 在临时宿主中安装指定 React 版本和组件包，完成生产构建并在浏览器中验证七级往返。已验证 18.0.0、18.2.0、18.3.1 和 19.3.1。
 - `src/departments.js` 存放可替换的示例组织数据。
 
 ## 许可证

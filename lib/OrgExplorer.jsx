@@ -184,8 +184,11 @@ export function OrgExplorer({ root, rootLevel = 1, title = "组织图谱", selec
     const doc = element.ownerDocument
     function onShortcut(event) {
       if (event.defaultPrevented || !(event.metaKey || event.ctrlKey) || event.key.toLowerCase() !== "k") return
-      const activeExplorer = doc.activeElement?.closest(".org-explorer")
-      if ((activeExplorer || doc.querySelector(".org-explorer")) !== element) return
+      const focus = doc.activeElement
+      const activeExplorer = focus === doc.body || focus === doc.documentElement
+        ? doc.querySelector(".org-explorer")
+        : focus?.closest(".org-explorer")
+      if (activeExplorer !== element) return
       event.preventDefault()
       if (!dialog.current.open) dialog.current.showModal()
     }
@@ -197,7 +200,8 @@ export function OrgExplorer({ root, rootLevel = 1, title = "组织图谱", selec
     <section ref={container} aria-label={title} className={`org-explorer ${className}`.trim()} data-theme={theme}>
       <header className="oe-header"><div className="oe-wrap oe-bar">
         <DepartmentLink className="oe-brand" node={root} navigation={navigation}>
-          <span className="oe-brand-mark"><Network size={19} /></span>{title}
+          <span className="oe-brand-mark"><Network size={19} /></span>
+          <span className="oe-brand-label" title={title}>{title}</span>
         </DepartmentLink>
         <div className="oe-toolbar">
           <Button className="oe-search" aria-label="搜索部门或负责人" onClick={() => dialog.current.showModal()}>

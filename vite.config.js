@@ -5,6 +5,7 @@ import tailwindcss from '@tailwindcss/vite'
 const localFile = (path) => fileURLToPath(new URL(path, import.meta.url))
 
 export default defineConfig(({ command }) => ({
+  base: './',
   plugins: command === 'serve' ? [tailwindcss()] : [],
   resolve: {
     // Develop against live sources. Production resolves the actual package exports.

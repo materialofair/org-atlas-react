@@ -46,12 +46,15 @@
 .oe-brand {
   @apply inline-flex items-center;
   gap: 10px;
+  min-width: 0;
   font-size: 19px;
   font-weight: 680;
   white-space: nowrap;
 }
+.oe-brand-label { overflow: hidden; text-overflow: ellipsis; }
 .oe-brand-mark, .oe-symbol, .oe-avatar, .oe-total { @apply inline-grid place-items-center; }
 .oe-brand-mark {
+  flex: none;
   background: var(--oe-primary);
   color: var(--oe-on-primary);
   width: 32px;
@@ -60,6 +63,7 @@
 }
 .oe-toolbar, .oe-actions, .oe-meta, .oe-leader, .oe-section-title { @apply flex items-center; }
 .oe-toolbar, .oe-actions { gap: 10px; }
+.oe-toolbar { flex: none; }
 .oe-button {
   @apply inline-flex items-center justify-center;
   gap: 7px;
@@ -133,7 +137,7 @@
 .oe-hero h1:focus { outline: none; }
 .oe-hero p, .oe-summary { color: var(--oe-subtle); line-height: 1.8; overflow-wrap: anywhere; }
 .oe-meta { gap: 7px; flex-wrap: wrap; margin-top: 17px; color: var(--oe-subtle); font-size: 12px; }
-.oe-meta strong { color: var(--oe-fg); }
+.oe-meta strong { color: var(--oe-fg); overflow-wrap: anywhere; }
 .oe-divider { width: 1px; height: 13px; margin-inline: 5px; background: var(--oe-border); }
 .oe-avatar { width: 23px; height: 23px; border-radius: 50%; background: var(--oe-muted); color: var(--oe-subtle); font-size: 11px; font-weight: 600; }
 .oe-browser { margin-top: 30px; }
@@ -226,9 +230,10 @@
 .oe-results { max-height: 50vh; overflow: auto; padding: 5px; }
 .oe-result { @apply flex items-center justify-between; width: 100%; gap: 12px; padding: 9px 11px; border-radius: calc(var(--oe-radius) * .7); text-align: start; }
 .oe-result:hover, .oe-result:focus-visible { background: var(--oe-muted); }
+.oe-result > :first-child { flex: 1; min-width: 0; }
 .oe-result strong, .oe-result small { display: block; overflow-wrap: anywhere; }
 .oe-result small, .oe-result-leader { color: var(--oe-subtle); font-size: 11px; }
-.oe-result-leader { white-space: nowrap; }
+.oe-result-leader { max-inline-size: 45%; overflow-wrap: anywhere; text-align: end; }
 .oe-no-results { padding: 26px; text-align: center; color: var(--oe-subtle); }
 @container orgAtlas (max-width: 960px) {
   .oe-wrap { width: calc(100% - 42px); }

@@ -9,6 +9,7 @@ export function Campus() {
     canvas.width = 540 * scale
     canvas.height = 240 * scale
     const ctx = canvas.getContext('2d')
+    if (!ctx) return
     ctx.scale(scale, scale)
     const point = (x, y, z = 0) => [284 + (x - y) * 0.92, 132 + (x + y) * 0.38 - z]
     function line(a, b, color, width = 0.65) {
