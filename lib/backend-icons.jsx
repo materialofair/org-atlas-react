@@ -84,6 +84,10 @@ export const backendIcons = {
   'mobile-dram': symbol('移动内存', '存储产品与先进封装', '手机轮廓内的存储芯片表示移动 DRAM 产品和导入项目。', 'M6 2h12v20H6z M9 8h6v6H9z M10 6v2m3-2v2m-3 6v2m3-2v2 M11 19h2'),
   'line-expansion': symbol('产线扩建', '生产支持', '已有工位旁的新增工位和加号，表示扩建规划与新线导入。', 'M2 10h8v8H2z M14 10h8v8h-8z M4 21h16 M18 2v6m-3-3h6 M4 13h4m9 1h2'),
   'production-supervision': symbol('生产现场管理', '生产支持', '人员轮廓配合产线看板，用于生产主管与现场管理岗位。', 'M9 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0z M1 20v-3a5 5 0 0 1 10 0v3 M13 3h9v12h-9z M15 7h5m-5 4h3'),
+  'external-assembly': symbol('外部封装工程', '封装与互连', '封装框中的裸片与外侧接口相连，适合外部封装工程协作。', 'M3 5h13v14H3z M6 9h7v6H6z M16 9h5V5m-2 2 2-2 2 2 M16 15h5v4'),
+  'module-fa': symbol('模组失效分析', '测试与质量', '模组板上的器件与放大镜表示定位失效位置，适合 Module FA。', 'M2 5h19v5 M10 15H2V5 M5 8h3v3H5z M11 8h3 M5 15v3m3-3v3 M19 14a4 4 0 1 1-8 0 4 4 0 0 1 8 0z M18 17l4 4'),
+  'qms': symbol('质量管理体系', '测试与质量', '带勾选标记的受控文件叠页，适合 QMS 及体系审核团队。', 'M2 6v15h13 M6 2h12l3 3v13H6z M17 2v4h4 M9 9l1 1 2-3m2 2h3 M9 14l1 1 2-3m2 2h3'),
+  'supply-planning': symbol('供应计划', '生产支持', '日程表与待交付箱件相叠，表示按时间协调供料与发运。', 'M9 17H3V4h16v4 M3 8h13 M7 2v4m7-4v4 M6 11h3m-3 3h2 M12 13l5-3 5 3v6l-5 3-5-3z M12 13l5 3 5-3m-5 3v6'),
 }
 
 export function getDepartmentIcon(node) {

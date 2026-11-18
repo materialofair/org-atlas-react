@@ -18,6 +18,7 @@ export type BackendIconName =
   | 'warehouse' | 'outbound-logistics' | 'equipment-auto' | 'equipment-commission'
   | 'equipment-alarm' | 'downtime' | 'shift-handover' | 'plasma-grind'
   | 'sustainability-coe' | 'mobile-dram' | 'line-expansion' | 'production-supervision'
+  | 'external-assembly' | 'module-fa' | 'qms' | 'supply-planning'
 export declare function getDepartmentIcon(node: Department): BackendIconName
 export declare const backendIcons: Readonly<Record<BackendIconName, { readonly name: string; readonly group: string; readonly description: string; readonly path: string }>>
 export declare function BackendIcon(props: { name: BackendIconName; size?: number; label?: string; className?: string }): ReactElement | null
