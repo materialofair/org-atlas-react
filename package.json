@@ -1,0 +1,52 @@
+{
+  "name": "org-atlas-react",
+  "version": "1.2.0",
+  "description": "A themeable React department directory with drill-down navigation.",
+  "type": "module",
+  "main": "./dist/lib/index.js",
+  "types": "./dist/lib/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/lib/index.d.ts",
+      "import": "./dist/lib/index.js"
+    },
+    "./style.css": {
+      "types": "./dist/lib/style.d.css.ts",
+      "default": "./dist/lib/style.css"
+    }
+  },
+  "files": [
+    "dist/lib"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build:lib": "vite build --config vite.lib.config.js",
+    "build": "npm run build:lib && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "prepack": "npm run build:lib",
+    "test:browser": "node tests/explorer.browser.mjs"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "lucide-react": "^1.75.0",
+    "playwright": "^1.65.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "tailwindcss": "^4.3.5",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/materialofair/org-atlas-react.git"
+  }
+}

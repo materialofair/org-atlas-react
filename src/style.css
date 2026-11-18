@@ -1,0 +1,89 @@
+.demo-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  color-scheme: light;
+  background: #f8faf9;
+}
+
+.demo-page[data-demo-theme="dark"] {
+  color-scheme: dark;
+  background: #141a18;
+}
+
+@media (prefers-color-scheme: dark) {
+  .demo-page[data-demo-theme="system"] {
+    color-scheme: dark;
+    background: #141a18;
+  }
+}
+
+.demo-theme-picker {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  box-sizing: border-box;
+  border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.demo-theme-picker select {
+  appearance: none;
+  margin: 0;
+  padding-block: 0;
+  padding-inline: 33px 36px;
+  position: relative;
+  z-index: 1;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  height: 100%;
+  font: inherit;
+}
+
+.demo-theme-picker svg {
+  position: absolute;
+  pointer-events: none;
+}
+
+.demo-theme-picker svg:first-child {
+  inset-inline-start: 11px;
+}
+
+.demo-theme-picker svg:last-child {
+  inset-inline-end: 11px;
+}
+
+.demo-theme-picker:has(select:focus-visible) {
+  outline: 2px solid var(--oe-ring);
+  outline-offset: 2px;
+}
+.demo-theme-picker select:focus-visible { outline: 0; }
+
+@container orgAtlas (max-width: 610px) {
+  .demo-theme-picker {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .demo-theme-picker select {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+  }
+
+  .demo-theme-picker svg:first-child { inset-inline-start: auto; }
+
+  .demo-theme-picker svg:last-child {
+    display: none;
+  }
+}

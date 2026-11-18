@@ -1,0 +1,276 @@
+import assert from 'node:assert/strict'
+import { existsSync } from 'node:fs'
+import { chromium } from 'playwright'
+import { root } from '../src/departments.js'
+
+const demoUrl = process.env.ORG_DEMO_URL || 'http://127.0.0.1:5188'
+const companyUrl = new URL('?levels=7', demoUrl).href
+const chromeChannel = process.env.PLAYWRIGHT_CHANNEL ||
+  (existsSync('/Applications/Google Chrome.app') ? 'chrome' : undefined)
+
+function seventhLevelPath(node, ancestors = []) {
+  const path = [...ancestors, node]
+  if (path.length === 7) return path
+  for (const child of node.children ?? []) {
+    const result = seventhLevelPath(child, path)
+    if (result) return result
+  }
+}
+
+assert.equal(root.children.length, 8, 'The demo should show all eight branches')
+const branchPaths = root.children.map(child => seventhLevelPath(child, [root]))
+assert.ok(branchPaths.every(Boolean), 'Every demo branch should reach level seven')
+
+const browser = await chromium.launch({ channel: chromeChannel })
+try {
+  const page = await browser.newPage({ viewport: { width: 1440, height: 900 }, colorScheme: 'light' })
+  page.setDefaultTimeout(5000)
+  const errors = []
+  page.on('pageerror', error => errors.push(error.message))
+
+  async function assertSelected(node) {
+    await page.getByRole('heading', { level: 1, name: node.name, exact: true }).waitFor()
+    const profile = page.locator('.oe-hero')
+    if (node.description?.trim()) await profile.getByText(node.description, { exact: true }).waitFor()
+    else assert.equal(await profile.locator('p').count(), 0)
+    if (node.leader?.trim()) await profile.getByText(node.leader, { exact: true }).waitFor()
+    else assert.equal(await profile.getByText('负责人', { exact: true }).count(), 0)
+  }
+
+  async function measureCards() {
+    const cards = page.locator('.oe-cards [data-slot=card]')
+    await cards.first().waitFor()
+    return cards.evaluateAll(items => items.map(card => {
+      const box = card.getBoundingClientRect()
+      const footer = card.querySelector('.oe-card-foot')?.getBoundingClientRect()
+      return { height: box.height, footerInset: footer ? box.bottom - footer.bottom : null }
+    }))
+  }
+
+  function assertAligned(values, label) {
+    assert.ok(Math.max(...values) - Math.min(...values) <= 1, label + ': ' + values.join(', '))
+  }
+
+  const portalBranch = branchPaths[0].slice(1)
+  await page.goto(demoUrl)
+  await assertSelected(portalBranch[0])
+  await page.getByText('二级部门', { exact: true }).waitFor()
+  assert.equal(await page.getByRole('link', { name: '返回上一级' }).count(), 0)
+  assert.deepEqual(await page.locator('.oe-card h3').allTextContents(), portalBranch[0].children.map(n => n.name))
+  for (const [i, node] of portalBranch.slice(1).entries()) {
+    await page.getByRole('heading', { name: node.name, exact: true }).getByRole('link').click()
+    await assertSelected(node)
+    await page.locator('.oe-badge').getByText(['三级部门','四级部门','五级部门','六级部门','七级部门'][i]).waitFor()
+  }
+  await page.reload()
+  await assertSelected(portalBranch.at(-1))
+  await page.getByRole('navigation', { name: '部门路径' }).getByRole('link', { name: portalBranch[0].name }).click()
+  await assertSelected(portalBranch[0])
+  await page.getByRole('button', { name: /搜索部门/ }).click()
+  const finder = page.getByRole('dialog')
+  await finder.getByRole('textbox').fill('体验设计部')
+  await finder.getByText('没有找到匹配的部门或负责人').waitFor()
+  await finder.getByRole('textbox').fill('江澜')
+  await finder.getByRole('link').click()
+  await assertSelected(portalBranch.at(-1))
+  await page.goto(new URL('#/design', demoUrl).href)
+  await assertSelected(portalBranch[0])
+  console.log('PASS · 默认部门门户、二至七级标识、部门内搜索、刷新与越界链接回退')
+
+  for (const width of [768, 390, 1440]) {
+    await page.setViewportSize({ width, height: 900 })
+    await page.goto(new URL('#/product-tech', companyUrl).href)
+    const metrics = await measureCards()
+    assertAligned(metrics.map(m => m.height), 'Homepage card heights at ' + width)
+    assertAligned(metrics.map(m => m.footerInset), 'Homepage footers at ' + width)
+    await page.goto(new URL('#/product', companyUrl).href)
+    const mixed = await measureCards()
+    assertAligned(mixed.map(m => m.height), 'Mixed card heights at ' + width)
+    await page.getByRole('button', { name: '列表视图' }).click()
+    assertAligned((await measureCards()).map(m => m.height), 'List row heights at ' + width)
+    await page.getByRole('button', { name: '卡片视图' }).click()
+    await page.goto(new URL('#/strategy', companyUrl).href)
+    const sparse = await measureCards()
+    assertAligned(sparse.map(m => m.height), 'Name-only card heights at ' + width)
+    assert.ok(sparse[0].height < mixed[0].height, 'Name-only groups should stay compact')
+  }
+  console.log('PASS · 首页、混排卡片与列表同组等高，页脚对齐，纯名称组保持紧凑')
+
+  await page.goto(new URL('#/product-tech', companyUrl).href)
+  const designCard = page.getByRole('heading', { name: '体验设计部' }).getByRole('link')
+  await designCard.focus()
+  await page.keyboard.press('Enter')
+  await page.getByRole('heading', { name: '体验设计部', level: 1 }).waitFor()
+  await page.getByRole('link', { name: '返回上一级' }).press('Enter')
+  await designCard.waitFor()
+  assert.ok(await designCard.evaluate(link => link === document.activeElement), 'Return focus to the department just visited')
+  await page.keyboard.press('Tab')
+  assert.equal(await page.locator(':focus').textContent(), '应用研发部')
+
+  const branch = branchPaths[0]
+  const leaf = branch.at(-1)
+  const parent = branch.at(-2)
+  await page.goto(companyUrl)
+  await assertSelected(root)
+
+  assert.equal(await page.locator('.oe-cards [data-slot=card]').count(), root.children.length)
+  await page.getByRole('button', { name: '列表视图' }).click()
+  assert.equal(await page.getByRole('button', { name: '列表视图' }).getAttribute('aria-pressed'), 'true')
+  await page.getByRole('button', { name: '卡片视图' }).click()
+  assert.equal(await page.getByRole('button', { name: '卡片视图' }).getAttribute('aria-pressed'), 'true')
+
+  for (const node of branch.slice(1)) {
+    await page.getByRole('heading', { name: node.name, exact: true }).getByRole('link').click()
+    await assertSelected(node)
+  }
+  await page.getByText('七级部门', { exact: true }).waitFor()
+
+  const deepLink = page.url()
+  await page.reload()
+  await assertSelected(leaf)
+  await page.goBack()
+  await assertSelected(parent)
+  await page.goForward()
+  await assertSelected(leaf)
+  for (const node of branch.slice(0, -1).reverse()) {
+    await page.getByRole('link', { name: '返回上一级' }).click()
+    await assertSelected(node)
+  }
+  for (const path of branchPaths.slice(1)) {
+    await page.getByRole('link', { name: '组织图谱', exact: true }).click()
+    for (const node of path.slice(1)) {
+      await page.getByRole('heading', { name: node.name, exact: true }).getByRole('link').click()
+      await assertSelected(node)
+    }
+    await page.getByText('七级部门', { exact: true }).waitFor()
+  }
+  console.log('PASS · 八个分支逐级进入第七级、逐级返回、刷新、浏览器历史')
+
+  const search = page.getByRole('button', { name: /搜索部门/ })
+  await search.click()
+  const dialog = page.getByRole('dialog')
+  await dialog.getByRole('textbox').fill(leaf.leader)
+  await dialog.getByRole('link').filter({ hasText: leaf.name }).click()
+  await assertSelected(leaf)
+  assert.equal(page.url(), deepLink)
+  console.log('PASS · 按七级部门负责人搜索并定位')
+
+  const theme = page.getByRole('combobox', { name: '显示主题' })
+  const headingColor = () => page.getByRole('heading', { level: 1 }).evaluate(
+    element => getComputedStyle(element).color,
+  )
+  await theme.selectOption('light')
+  const light = await headingColor()
+  await theme.selectOption('dark')
+  const dark = await headingColor()
+  assert.notEqual(light, dark, 'Theme must change rendered text color')
+  await page.reload()
+  await assertSelected(leaf)
+  assert.equal(await theme.inputValue(), 'dark')
+  assert.equal(await headingColor(), dark)
+  await theme.selectOption('system')
+  assert.equal(await headingColor(), light)
+  await page.emulateMedia({ colorScheme: 'dark' })
+  assert.equal(await headingColor(), dark)
+  console.log('PASS · 明暗主题、刷新持久化、系统主题响应')
+
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto(deepLink)
+  await assertSelected(leaf)
+  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
+    'The seven-level breadcrumb must fit within the mobile viewport')
+  const breadcrumb = page.getByRole('navigation', { name: '部门路径' })
+  await breadcrumb.getByRole('link', { name: branch[2].name, exact: true }).click()
+  await assertSelected(branch[2])
+  await page.goto(new URL('#/product', companyUrl).href)
+  await page.getByRole('combobox', { name: '切换同级部门' }).selectOption('design')
+  await page.getByRole('heading', { name: '体验设计部', level: 1 }).waitFor()
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.getByRole('navigation', { name: '同级部门' }).getByRole('link', { name: '产品管理部' }).click()
+  const strategy = branch[1].children.find(node => node.id === 'strategy')
+  const enterprise = branch[1].children.find(node => node.id === 'enterprise')
+  const enterpriseCard = page.locator('[data-slot=card]').filter({ has: page.getByRole('heading', { name: enterprise.name }) })
+  assert.equal(await enterpriseCard.locator('.oe-summary').count(), 0)
+  await enterpriseCard.getByText(enterprise.leader, { exact: true }).waitFor()
+  await page.getByRole('heading', { name: strategy.name }).getByRole('link').click()
+  await assertSelected(strategy)
+  for (const view of ['卡片视图', '列表视图']) {
+    await page.getByRole('button', { name: view }).click()
+    assert.equal(await page.locator('[data-slot=card]').count(), strategy.children.length)
+    assert.equal(await page.locator('[data-slot=card] :is(.oe-summary, .oe-card-foot)').count(), 0)
+  }
+  await search.click()
+  const nameOnly = strategy.children[0]
+  await dialog.getByRole('textbox').fill(nameOnly.name)
+  const result = dialog.getByRole('link').filter({ hasText: nameOnly.name })
+  assert.equal(await result.locator('.oe-result-leader').count(), 0)
+  await result.click()
+  await assertSelected(nameOnly)
+  await page.setViewportSize({ width: 390, height: 844 })
+  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth))
+  console.log('PASS · 混排、纯名称网格和列表、缺资料搜索与详情、桌面和手机同级导航')
+
+  const twoLevels = new URL('?levels=2', demoUrl).href
+  await page.goto(twoLevels)
+  await page.getByRole('heading', { name: '设计系统部' }).getByRole('link').click()
+  await page.getByText('二级部门', { exact: true }).waitFor()
+  await page.locator('.oe-leaf').waitFor()
+  assert.equal(await page.locator('[data-slot=card]').count(), 0)
+  const picker = page.getByRole('combobox', { name: '切换同级部门' })
+  await picker.focus()
+  await page.keyboard.press('Tab')
+  await page.keyboard.press('Shift+Tab')
+  assert.ok(await picker.evaluate(select => select.matches(':focus-visible')))
+  await picker.selectOption('inclusive-research')
+  await page.getByRole('heading', { level: 1, name: '企业产品体验设计与无障碍研究部' }).waitFor()
+
+  for (const width of [320, 390, 768, 960]) {
+    await page.setViewportSize({ width, height: 844 })
+    const geometry = await picker.evaluate(select => {
+      const box = select.getBoundingClientRect()
+      const icon = select.nextElementSibling.getBoundingClientRect()
+      return {
+        inset: box.right - icon.right,
+        centerOffset: (box.top + box.height / 2) - (icon.top + icon.height / 2),
+        textGap: parseFloat(getComputedStyle(select).paddingInlineEnd) - (box.right - icon.left),
+        height: box.height,
+        fits: document.documentElement.scrollWidth <= innerWidth,
+      }
+    })
+    assert.equal(geometry.inset, 12)
+    assert.ok(Math.abs(geometry.centerOffset) < 1)
+    assert.ok(geometry.textGap >= 8)
+    assert.ok(geometry.fits)
+    assert.ok(geometry.height >= (width <= 610 ? 44 : 40))
+  }
+  await page.reload()
+  await page.getByRole('heading', { level: 1, name: '企业产品体验设计与无障碍研究部' }).waitFor()
+  await page.getByRole('link', { name: '返回上一级' }).click()
+  await page.getByRole('heading', { level: 1, name: '设计中心' }).waitFor()
+  await search.click()
+  await dialog.getByRole('textbox').fill('设计系统部')
+  await dialog.getByRole('link').click()
+  await page.locator('.oe-leaf').waitFor()
+  console.log('PASS · 二级组织、长名称、键盘焦点及四种宽度的箭头留白')
+
+  await page.goto(new URL('?levels=3', companyUrl).href)
+  await page.getByRole('heading', { name: '客户支持部' }).getByRole('link').click()
+  await page.getByRole('heading', { name: '技术支持组' }).getByRole('link').click()
+  await page.getByText('三级部门', { exact: true }).waitFor()
+  await page.locator('.oe-leaf').waitFor()
+  await page.getByRole('link', { name: '返回上一级' }).click()
+  await picker.selectOption('service-quality')
+  await page.getByText('二级部门', { exact: true }).waitFor()
+  await page.locator('.oe-leaf').waitFor()
+  await search.click()
+  await dialog.getByRole('textbox').fill('技术支持组')
+  await dialog.getByRole('link').click()
+  await page.getByText('三级部门', { exact: true }).waitFor()
+  await page.getByRole('navigation', { name: '部门路径' }).getByRole('link', { name: '客户服务中心' }).click()
+  await page.getByRole('heading', { level: 1, name: '客户服务中心' }).waitFor()
+  console.log('PASS · 三级组织，二级、三级分支末级混排、搜索和返回')
+  assert.deepEqual(errors, [])
+  console.log('PASS · 手机直达七级、面包屑返回、无页面运行时错误')
+} finally {
+  await browser.close()
+}
