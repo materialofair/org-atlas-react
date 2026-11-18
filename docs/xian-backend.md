@@ -22,4 +22,4 @@ Demo 页尾的「进入西安厂区」打开 `?site=xian`。页面把工序、�
 | 西安岗位表中的专业方向 | `external-assembly`、`module-fa`、`qms`、`supply-planning` | 带外部接口的封装、带放大镜的模组、受控文件、带交付箱的日程表。 |
 | 项目与产品方向 | `line-expansion`、`mobile-dram`、`sustainability-coe` | 新增工位、手机内存、厂房与叶片。 |
 
-其余工序复用共享库中的 `burn-in`、`grinding`、`yield-map`、`industrial`、`reliability`、`nand` 和 `ssd` 等图标。西安节点的数据和引用在 `src/xian.js` 中维护，图标源文件为 `lib/backend-icons.jsx`。
+其余工序复用共享库中的 `burn-in`、`grinding`、`yield-map`、`industrial`、`reliability`、`nand` 和 `ssd` 等图标。西安节点的数据和引用在 `lib/micron-xian.js` 中维护，图标源文件为 `lib/backend-icons.jsx`。

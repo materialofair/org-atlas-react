@@ -11,4 +11,4 @@
 | 新品供应计划 | Boise 的 NPO 供应计划岗位结合良率、周期、厂区负载与产能边界向制造端确认投产需求。它属于跨制造环节的配套职能，图鉴收录厂区负载和投产指令。[美光岗位记录](https://careers.micron.com/careers/apply?pid=44508070) |
 | 全球运营 | 美光在 2017 年的公告中把全球封测运营与供应链履约、采购、质量等并列。此处引用历史公告说明业务范围。各厂具体产线和现任领导需独立核实。[美光全球运营公告](https://investors.micron.com/news/press-release/2017/Micron-Appoints-Manish-Bhatia-as-EVP-of-Global-Operations-10-16-2017/default.aspx) |
 
-在 Demo 中打开 `?site=micron-hq` 可浏览职能、子项及岗位原文，`?view=icons&collection=micron-hq` 可直接选图。独立专题包内的 README 列出每枚 SVG 的中文说明。
+在 Demo 中打开 `?site=micron-hq` 可浏览职能、子项及岗位原文，`?view=icons&collection=micron` 可直接选图。独立专题包内的 README 列出每枚 SVG 的中文说明。

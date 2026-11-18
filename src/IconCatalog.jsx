@@ -1,31 +1,41 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ArrowLeft } from 'lucide-react'
 import { BackendIcon, backendIcons, productionCollections } from 'org-atlas-react'
 import { IconExportDialog } from './IconExportDialog'
-import { demoDepartments } from './departments'
 
 const entries = Object.entries(backendIcons)
-const xianIcons = new Set(Array.from(demoDepartments(undefined, 'xian').byId.values(), node => node.icon))
 const groups = [...new Set(entries.map(([, icon]) => icon.group))]
 const allSections = groups.map(name => ({ name, icons: entries.filter(([, icon]) => icon.group === name).map(([id]) => id) }))
 
+function searchText(value) {
+  return value.toLowerCase().replace(/\s+/g, '')
+}
+
 export function IconCatalog({ returnUrl, theme, themeControl, defaultScope, paletteStyle, palette }) {
   const urlScope = new URL(window.location.href).searchParams.get('collection')
-  const [scope, setScope] = useState(['all', 'xian'].includes(urlScope) || Object.hasOwn(productionCollections, urlScope) ? urlScope : defaultScope)
+  const [scope, setScope] = useState(() => {
+    if (urlScope === 'xian' || urlScope === 'micron-hq') return 'micron'
+    return urlScope === 'all' || Object.hasOwn(productionCollections, urlScope) ? urlScope : defaultScope
+  })
+  useEffect(() => {
+    if (urlScope !== 'xian' && urlScope !== 'micron-hq') return
+    const url = new URL(window.location.href)
+    url.searchParams.set('collection', 'micron')
+    window.history.replaceState(window.history.state, '', url)
+  }, [urlScope])
   const [query, setQuery] = useState('')
   const [selected, setSelected] = useState(null)
-  const term = query.trim().toLowerCase()
+  const term = searchText(query)
   const collection = productionCollections[scope]
   const sections = (collection?.sections ?? allSections).map(section => ({
     ...section,
     icons: section.icons.filter(id => {
       const icon = backendIcons[id]
-      return (scope !== 'xian' || xianIcons.has(id)) &&
-        [id, icon.name, icon.group, icon.description, section.name, collection?.name].some(value => value?.toLowerCase().includes(term))
+      return [id, icon.name, icon.group, icon.description, section.name, collection?.name].some(value => value && searchText(value).includes(term))
     }),
   })).filter(section => section.icons.length)
-  const filters = [['all', '全部图标', entries.length], ['xian', '西安示例', xianIcons.size],
-    ...Object.entries(productionCollections).map(([id, group]) => [id, group.name, group.sections.flatMap(s => s.icons).length])]
+  const filters = [['all', '全部图标', entries.length],
+    ...Object.entries(productionCollections).filter(([id]) => id !== 'micron-hq').map(([id, group]) => [id, group.name, group.sections.flatMap(s => s.icons).length])]
   return <main className="org-explorer fab-catalog" data-theme={theme} style={paletteStyle}>
     <header className="oe-header"><div className="oe-wrap oe-bar">
       <a className="fab-link" href={returnUrl}><ArrowLeft size={16} />返回组织目录</a>

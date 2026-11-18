@@ -1,6 +1,8 @@
 import type { ReactElement, ReactNode } from 'react'
 
 export type BackendIconName =
+  | 'it-team' | 'factory-software' | 'data-pipeline' | 'industrial-iot'
+  | 'operations-team' | 'ops-dispatch' | 'shift-roster' | 'ops-kpi'
   | 'backend-overview' | 'package' | 'wafer' | 'dicing' | 'bump' | 'attach'
   | 'bond' | 'mold' | 'stack' | 'finish' | 'probe'
   | 'ate' | 'reliability' | 'analysis' | 'equipment' | 'planning'
@@ -70,7 +72,7 @@ export interface OrgExplorerProps {
 export declare function OrgExplorer(props: OrgExplorerProps): ReactElement
 
 export declare function BackendOverview(props: { color?: string; className?: string; label?: string }): ReactElement
-export type ProductionCollection = 'samsung' | 'hynix' | 'cxmt' | 'micron-hq' | 'kyec'
+export type ProductionCollection = 'samsung' | 'hynix' | 'cxmt' | 'micron' | 'micron-hq' | 'kyec'
 export declare const productionCollections: Readonly<Record<ProductionCollection, {
   readonly name: string
   readonly sections: readonly { readonly name: string; readonly source: string; readonly icons: readonly BackendIconName[] }[]

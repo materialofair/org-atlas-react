@@ -15,7 +15,7 @@ function catalogLink(open) {
   const url = new URL(window.location.href)
   if (open) {
     url.searchParams.set('view', 'icons')
-    if (url.searchParams.get('site') === 'micron-hq') url.searchParams.set('collection', 'micron-hq')
+    if (root.evidence) url.searchParams.set('collection', 'micron')
   }
   else { url.searchParams.delete('view'); url.searchParams.delete('collection') }
   return url.href
@@ -126,7 +126,7 @@ function App() {
     </label>
     <ThemeSelect value={theme} onChange={selectTheme} />
   </div>
-  if (catalogOpen) return <IconCatalog palette={palette} paletteStyle={paletteStyle} defaultScope={root.evidence ? root.id : 'all'} returnUrl={catalogLink(false)} theme={theme} themeControl={themeControl} />
+  if (catalogOpen) return <IconCatalog palette={palette} paletteStyle={paletteStyle} defaultScope={root.evidence ? 'micron' : 'all'} returnUrl={catalogLink(false)} theme={theme} themeControl={themeControl} />
   const sourceInfo = evidence
     ? <>{root.id === 'micron-hq' ? '美光总部资料' : '西安公开资料'} · <a href={evidence.url}>{evidence.label}</a></>
     : <>{publicScope ? '美光公开职能 · 门户示例' : '模拟团队 · 用于展示职能下钻'} · <a href={jobMap}>美光职类地图</a>

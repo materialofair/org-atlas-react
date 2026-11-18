@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { existsSync } from 'node:fs'
 import { chromium } from 'playwright'
-import { backend, root } from '../src/departments.js'
+import { demoDepartments, backend, root } from '../src/departments.js'
 
 const demoUrl = process.env.ORG_DEMO_URL || 'http://127.0.0.1:5188'
 const companyUrl = new URL('?levels=7', demoUrl).href
@@ -59,7 +59,7 @@ try {
   const catalog = await page.locator('.fab-icon-grid article').evaluateAll(cards =>
     cards.map(card => ({ key: card.querySelector('code').textContent, icon: card.querySelector('svg')?.dataset.backendIcon,
       described: !!card.querySelector('p').textContent.trim() })))
-  assert.equal(catalog.length, 144)
+  assert.equal(catalog.length, 152)
   assert.equal(new Set(catalog.map(item => item.key)).size, catalog.length)
   assert.ok(catalog.every(item => item.key === item.icon && item.described))
   assert.equal(catalog.filter(item => ['org-unit', 'team', 'project', 'support', 'coordination', 'workcell'].includes(item.key)).length, 6)
@@ -82,11 +82,11 @@ try {
   checkIcon(root)
 
   const iconSearch = page.getByRole('searchbox', { name: '搜索团队图标' })
-  for (const [query, key] of [['TSE', 'test-solutions'], ['底填', 'underfill'], ['FAC', 'facilities'], ['通用组织', 'team'], ['测试覆盖', 'test-coverage']]) {
+  for (const [query, key] of [['TSE', 'test-solutions'], ['底填', 'underfill'], ['FAC', 'facilities'], ['通用组织', 'team'], ['测试覆盖', 'test-coverage'], ['IT团队', 'it-team'], ['运营团队', 'operations-team']]) {
     await iconSearch.fill(query)
     await page.locator('.fab-icon-grid article').filter({ has: page.getByText(key, { exact: true }) }).waitFor()
   }
-  for (const [name, query] of [[/三星 TSP/, 'CoA'], [/SK 海力士/, 'TAT'], [/长鑫存储 CXMT/, '晶圆级老化'], [/美光总部/, 'DOE'], [/京元电子/, 'CIS']]) {
+  for (const [name, query] of [[/三星 TSP/, 'CoA'], [/SK 海力士/, 'TAT'], [/长鑫存储 CXMT/, '晶圆级老化'], [/美光 Micron/, 'DOE'], [/京元电子/, 'CIS']]) {
     await page.getByRole('button', { name }).click()
     await iconSearch.fill(query)
     assert.equal(await page.locator('.fab-icon-grid article').count(), 1)
@@ -99,7 +99,7 @@ try {
   assert.equal(await page.locator('.fab-icon-grid article').count(), catalog.length)
   await page.getByRole('link', { name: '返回组织目录' }).click()
   await assertSelected(portalBranch[1])
-  console.log('PASS · 144 枚图标、职能搜索与说明、部门映射、图鉴返回当前部门')
+  console.log('PASS · 152 枚图标、职能搜索与说明、部门映射、图鉴返回当前部门')
   await page.goto(demoUrl)
   await assertSelected(portalBranch[0])
   await page.getByText('二级部门', { exact: true }).waitFor()
@@ -344,13 +344,21 @@ try {
   await page.getByRole('heading', { name: '停机数据分析', level: 1 }).waitFor()
   assert.match(await page.locator('.fab-footer span a').getAttribute('href'), /bysjy/)
   await page.getByRole('link', { name: '后道团队图标库' }).click()
-  await page.getByRole('button', { name: /西安示例/, pressed: true }).waitFor()
-  const xianCount = await page.locator('.fab-icon-grid article').count()
-  assert.ok(xianCount >= 16 && xianCount < catalog.length)
+  await page.getByRole('button', { name: /美光 Micron/, pressed: true }).waitFor()
+  const micronKeys = await page.locator('.fab-icon-grid code').allTextContents()
+  assert.equal(new Set(micronKeys).size, micronKeys.length)
+  for (const site of ['xian', 'micron-hq']) {
+    for (const node of demoDepartments(undefined, site).byId.values()) {
+      if (node.icon) assert.ok(micronKeys.includes(node.icon), site + ': ' + node.icon)
+    }
+  }
+  for (const key of ['it-team', 'factory-software', 'data-pipeline', 'industrial-iot', 'operations-team', 'ops-dispatch', 'shift-roster', 'ops-kpi']) {
+    assert.ok(micronKeys.includes(key), key)
+  }
   await page.getByRole('button', { name: /全部图标/ }).click()
   assert.equal(await page.locator('.fab-icon-grid article').count(), catalog.length)
-  await page.getByRole('button', { name: /西安示例/ }).click()
-  assert.equal(await page.locator('.fab-icon-grid article').count(), xianCount)
+  await page.getByRole('button', { name: /美光 Micron/ }).click()
+  assert.equal(await page.locator('.fab-icon-grid article').count(), micronKeys.length)
   await page.getByRole('searchbox').fill('QMS')
   await page.getByRole('heading', { name: '质量管理体系', exact: true }).waitFor()
   await page.getByRole('searchbox').fill('PSRG')
@@ -369,11 +377,18 @@ try {
   await page.getByRole('heading', { name: '探针卡验证', level: 1 }).waitFor()
   assert.match(await page.locator('.fab-footer span a').getAttribute('href'), /pid=44281038/)
   await page.getByRole('link', { name: '后道团队图标库' }).click()
-  await page.getByRole('button', { name: /美光总部/, pressed: true }).waitFor()
-  assert.equal(await page.locator('.fab-icon-grid article').count(), 25)
+  await page.getByRole('button', { name: /美光 Micron/, pressed: true }).waitFor()
+  assert.equal(await page.locator('.fab-icon-grid article').count(), micronKeys.length)
   await page.getByRole('link', { name: '返回组织目录' }).click()
   await page.getByRole('heading', { name: '探针卡验证', level: 1 }).waitFor()
   console.log('PASS · 美光总部入口、六组职责、子项证据、专题图标库与返回')
+  for (const legacy of ['xian', 'micron-hq']) {
+    await page.goto(new URL('?levels=7&view=icons&collection=' + legacy + '#/backend', demoUrl).href)
+    await page.getByRole('button', { name: /美光 Micron/, pressed: true }).waitFor()
+    assert.equal(new URL(page.url()).searchParams.get('collection'), 'micron')
+    assert.equal(new URL(page.url()).hash, '#/backend')
+    assert.equal(await page.getByRole('button', { name: /西安示例/ }).count(), 0)
+  }
   assert.deepEqual(errors, [])
   console.log('PASS · 手机直达七级、面包屑返回、无页面运行时错误')
 } finally {

@@ -1,5 +1,5 @@
 import { micronHqSections } from '../lib/micron-hq.js'
-import { xian } from './xian.js'
+import { xian } from '../lib/micron-xian.js'
 
 // Public functions follow Micron Taiwan's Back-End job map. Subteams illustrate the work.
 export const jobMap = 'https://tw.micron.com/about/careers/job-map-tch'
@@ -86,5 +86,5 @@ export function demoDepartments(levels, site) {
     node.children?.forEach(visit)
   }
   visit(selected)
-  return { root: selected, byId, rootLevel: selected === backend || sites.has(site) ? 2 : 1, title: selected === hq ? '美光总部 · 职能目录' : selected === xian ? '美光西安 · 厂区示例' : '美光后道 · 门户示例' }
+  return { root: selected, byId, rootLevel: selected === backend || sites.has(site) ? 2 : 1, title: selected === hq ? '美光总部 · 职能目录' : selected === xian ? '美光西安 · 厂区目录' : '美光后道 · 门户示例' }
 }
