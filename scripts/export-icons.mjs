@@ -17,7 +17,7 @@ for (const [name, palette] of Object.entries(accents)) {
   }
 }
 const guide = ['# 半导体后道团队图标', '', '图标采用 24 × 24 坐标系。内联 SVG 时颜色跟随 currentColor。', '',
-  '[存储器后道职能与选图依据](memory-backend.md) · [西安厂区资料与选图](xian-backend.md) · [三星与 SK 海力士公开职能](samsung-hynix.md)', '',
+  '[存储器后道职能与选图依据](memory-backend.md) · [西安厂区资料与选图](xian-backend.md) · [三星与 SK 海力士公开职能](samsung-hynix.md) · [长鑫后道职能](cxmt-backend.md)', '',
   '后道门户总标使用 [backend-overview.svg](backend-overview.svg)。页头大图使用[带四个职能节点的展开图](artwork/backend-overview.svg)。', '',
   '| 文件 | 团队图标 | 类别 | 图形含义与适用团队 |', '| --- | --- | --- | --- |']
 for (const [key, icon] of Object.entries(backendIcons)) {
@@ -42,12 +42,18 @@ for (const [id, company] of Object.entries(productionCollections)) {
   await writeFile(new URL('README.md', dir), companyGuide.join('\n') + '\n')
 }
 await copyFile(new URL('../LICENSE', import.meta.url), new URL('LICENSE', productionOut))
-await copyFile(new URL('../docs/samsung-hynix.md', import.meta.url), new URL('README.md', productionOut))
+const index = ['# 后道职能图标专题', '', ...Object.entries(productionCollections).map(([id, company]) =>
+  `- [${company.name} 图标与用法](${id}/README.md)`), '',
+  '[三星与 SK 海力士调研](samsung-hynix.md) · [长鑫后道调研](cxmt-backend.md)']
+await writeFile(new URL('README.md', productionOut), index.join('\n') + '\n')
+for (const file of ['samsung-hynix.md', 'cxmt-backend.md']) {
+  const source = new URL('../docs/' + file, import.meta.url)
+  for (const dest of [out, productionOut]) await copyFile(source, new URL(file, dest))
+}
 guide.push('', '## 总图配色', '')
 for (const [id, palette] of Object.entries(accents)) {
   guide.push(`- ${palette.name} · [浅色](artwork/backend-overview-${id}-light.svg) / [深色](artwork/backend-overview-${id}-dark.svg)`)
 }
-await copyFile(new URL('../docs/samsung-hynix.md', import.meta.url), new URL('samsung-hynix.md', out))
 await writeFile(new URL('README.md', out), guide.join('\n') + '\n')
 await copyFile(new URL('../LICENSE', import.meta.url), new URL('LICENSE', out))
 await copyFile(new URL('../docs/memory-backend.md', import.meta.url), new URL('memory-backend.md', out))
