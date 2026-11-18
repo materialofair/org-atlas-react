@@ -18,7 +18,8 @@ try {
   writeFileSync(join(root, 'main.jsx'), `
     import React from 'react'
     import { createRoot } from 'react-dom/client'
-    import { OrgExplorer } from 'org-atlas-react'
+    import { BackendOverview, OrgExplorer } from 'org-atlas-react'
+    import staticArt from 'org-atlas-react/backend-overview.svg'
     import 'org-atlas-react/style.css'
 
     let node
@@ -32,6 +33,11 @@ try {
       { id: 'group', name: '设计系统部', leader: 'Maximilian Alexander von Hohenzollern-Schwarzenberg' }
     ] }
     createRoot(document.querySelector('#root')).render(<>
+      <div style={{ width: 80, '--primary': '#164ec0' }}>
+        <BackendOverview label="宿主主色" />
+        <BackendOverview label="独立配色" color="#aa4477" />
+        <img src={staticArt} width="80" alt="静态总图" />
+      </div>
       <input aria-label="宿主搜索" />
       <OrgExplorer root={node} />
       <OrgExplorer root={second} title="全球产品平台与技术创新事业部组织门户" toolbar={<button>主题</button>} />
@@ -53,6 +59,13 @@ try {
   }
   // React 18.0.0 includes the release commit in its runtime version string.
   assert.equal((await page.title()).split('-')[0], version)
+  const firstArt = page.getByRole('img', { name: '宿主主色' })
+  const secondArt = page.getByRole('img', { name: '独立配色' })
+  assert.equal(await firstArt.evaluate(el => getComputedStyle(el).color), 'rgb(22, 78, 192)')
+  assert.equal(await secondArt.evaluate(el => getComputedStyle(el).color), 'rgb(170, 68, 119)')
+  assert.notEqual(await firstArt.locator('linearGradient').first().getAttribute('id'),
+    await secondArt.locator('linearGradient').first().getAttribute('id'))
+  await page.getByRole('img', { name: '静态总图' }).evaluate(img => img.decode())
   const primary = page.getByRole('region', { name: '组织图谱', exact: true })
   const embedded = page.getByRole('region', { name: '全球产品平台与技术创新事业部组织门户' })
   await embedded.getByRole('button', { name: '主题', exact: true }).waitFor()
