@@ -17,7 +17,7 @@ npm run dev -- --port 5188
 
 ## 在其他项目里使用
 
-从 GitHub Release 下载名为 `org-atlas-react-<版本>.tgz` 的组件包，例如将 v1.18.0 的包放在宿主项目根目录后执行 `npm install ./org-atlas-react-1.18.0.tgz`。Web 宿主使用版本匹配的 React 18+ 和 React DOM。CSS 已随包编译，导入一次即可。
+从 GitHub Release 下载名为 `org-atlas-react-<版本>.tgz` 的组件包，例如将 v1.19.0 的包放在宿主项目根目录后执行 `npm install ./org-atlas-react-1.19.0.tgz`。Web 宿主使用版本匹配的 React 18+ 和 React DOM。CSS 已随包编译，导入一次即可。
 
 ```tsx
 import { OrgExplorer, type Department } from 'org-atlas-react'
@@ -42,6 +42,7 @@ export function DepartmentPortal({ department }: { department: Department }) {
 | 新增公开属性或导出 | 同步 `lib/index.js`、`lib/index.d.ts`、README 和调用示例 |
 | 后道图标形状、说明和展示页 | `lib/backend-icons.jsx`、`lib/index.d.ts`、`src/IconCatalog.jsx`。行业依据见 `docs/memory-backend.md`。新增图标时同步键名类型和示例数据，执行 `npm run export:icons` 检查独立 SVG，并用 `npm run test:icons` 检查全库边界和导出轮廓。 |
 | 单图导出与下载 | `lib/icon-export.js` 读取注册表的相同 path，提供源码与 Blob API。`src/IconExportDialog.jsx` 管理预览与下载，`tests/icon-export.browser.mjs` 解码检查四种格式。 |
+| 芯片全流程专题 | `lib/chip-lifecycle.js` 维护从设计到交货的工段及出处，通过 `productionCollections.lifecycle.sections` 读取。与后道专题共用工位键。 |
 | 后道制造工序专题 | `productionCollections.process.sections` 定义工段、选图与原始资料。区分引线框架和基板路线，在 `?view=icons&collection=process` 检查新增工位。 |
 | 京元专业测试专题 | `lib/production-collections.js`、`docs/kyec-testing.md`。集合 ID 为 `kyec`，保留专业测试厂的排名口径。 |
 | 演示组织及门户根节点 | `src/departments.js` |

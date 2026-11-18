@@ -22,7 +22,7 @@ const themeHelp = ['内联 SVG 随 CSS color 换色。通过外部文件动态�
   '普通 img 请切换 themes/{jade,blue,plum,copper,slate}/{light,dark}/ 下的同名 SVG。', '',
   '如果图标独立传递含义，使用 role="img" 和 aria-label 提供名称。']
 await copyFile(maskStyles, new URL('icon-mask.css', out))
-const guide = ['# 半导体后道团队图标', '', '图标采用 24 × 24 坐标系。内联 SVG 时颜色跟随 currentColor。', '',
+const guide = ['# 半导体图标库', '', '图标采用 24 × 24 坐标系。内联 SVG 时颜色跟随 currentColor。', '',
   '[存储器后道职能与选图依据](memory-backend.md) · [西安厂区资料与选图](xian-backend.md) · [三星与 SK 海力士公开职能](samsung-hynix.md) · [长鑫后道职能](cxmt-backend.md) · [美光总部职能](micron-hq.md) · [京元电子专业测试](kyec-testing.md)', '',
   '后道门户总标使用 [backend-overview.svg](backend-overview.svg)。页头大图使用[质量、成本、人才、安全、产出五项总览图](artwork/backend-overview.svg)。', '',
   ...themeHelp, '', '外部 img 标签直接选 themes/blue/dark/ 等目录中的具名配色 SVG。', '',
@@ -48,7 +48,7 @@ for (const [id, company] of Object.entries(productionCollections)) {
   await mkdir(dir, { recursive: true })
   await copyFile(maskStyles, new URL('icon-mask.css', dir))
   const sections = []
-  const sourceLabel = id === 'process' ? '工序来源' : '职能来源'
+  const sourceLabel = id === 'lifecycle' ? '流程来源' : id === 'process' ? '工序来源' : '职能来源'
   for (const section of company.sourceSections ?? company.sections) {
     const files = section.icons.map(key => `[${backendIcons[key].name}](${key}.svg)`)
     sections.push(`- ${section.name} · ${files.join('、')}。[${sourceLabel}](${section.source})`)
@@ -73,7 +73,7 @@ for (const [id, company] of Object.entries(productionCollections)) {
   await writeFile(new URL('README.md', dir), companyGuide.join('\n') + '\n')
 }
 await copyFile(new URL('../LICENSE', import.meta.url), new URL('LICENSE', productionOut))
-const index = ['# 后道职能图标专题', '', ...Object.entries(productionCollections).map(([id, company]) =>
+const index = ['# 半导体图标专题', '', ...Object.entries(productionCollections).map(([id, company]) =>
   `- [${company.name} 图标与用法](${id}/README.md)`), '',
   '[三星与 SK 海力士调研](samsung-hynix.md) · [长鑫后道调研](cxmt-backend.md) · [美光总部调研](micron-hq.md) · [美光西安资料](xian-backend.md) · [京元电子专业测试](kyec-testing.md)']
 await writeFile(new URL('README.md', productionOut), index.join('\n') + '\n')

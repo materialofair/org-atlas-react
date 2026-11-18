@@ -20,7 +20,7 @@ export function IconCatalog({ returnUrl, theme, themeControl, defaultScope, pale
   const [selected, setSelected] = useState(null)
   const results = useMemo(() => catalogResults(query), [query])
   const { sections, matches, total, name } = results[scope]
-  const sourceLabel = scope === 'process' ? '工序来源' : '职能来源'
+  const sourceLabel = scope === 'lifecycle' ? '流程来源' : scope === 'process' ? '工序来源' : '职能来源'
   const searching = Boolean(query.trim())
   return <main className="org-explorer fab-catalog" data-theme={theme} style={paletteStyle}>
     <header className="oe-header"><div className="oe-wrap oe-bar">
@@ -28,8 +28,10 @@ export function IconCatalog({ returnUrl, theme, themeControl, defaultScope, pale
       {themeControl}
     </div></header>
     <div className="oe-wrap fab-library">
-      <h1>后道团队图标库</h1>
-      <p>点击图标可调色、下载图片或复制代码。全库按唯一图标计数，同一图标可出现在多个合集。</p>
+      <h1>半导体图标库</h1>
+      <p>{scope === 'lifecycle'
+        ? '数字与模拟芯片可选择各自的设计分支。晶圆工艺按层重复，首片验证用于工程样片。点击图标可调色或导出。'
+        : '点击图标可调色、下载图片或复制代码。全库按唯一图标计数，同一图标可出现在多个合集。'}</p>
       <div className="fab-catalog-filter" role="group" aria-label="图标范围">
         {Object.entries(results).map(([id, item]) => <button key={id} type="button" className="oe-button"
           aria-pressed={scope === id} onClick={() => {
@@ -40,7 +42,7 @@ export function IconCatalog({ returnUrl, theme, themeControl, defaultScope, pale
           }}>{item.name} · {searching ? item.matches + ' / ' : ''}{item.total}</button>)}
       </div>
       <input className="fab-icon-search" type="search" aria-label="搜索团队图标"
-        placeholder="搜索名称、职能或标识，如 Leader、离职率、OEE" value={query} onChange={event => setQuery(event.target.value)} />
+        placeholder="搜索名称或缩写，如光刻、RTL、OEE" value={query} onChange={event => setQuery(event.target.value)} />
       <p role="status">{searching
         ? (matches ? `${name} · 找到 ${matches} 枚，共 ${total} 枚` : `${name} · 没有匹配的图标（0 / ${total}）`)
         : `${name} · 显示 ${matches} 枚图标`}</p>

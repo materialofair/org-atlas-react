@@ -11,6 +11,21 @@ const channel = process.env.PLAYWRIGHT_CHANNEL || (existsSync('/Applications/Goo
 const browser = await chromium.launch({ channel })
 try {
   const page = await browser.newPage({ colorScheme: 'light', permissions: ['clipboard-read', 'clipboard-write'] })
+  await page.goto(new URL('?view=icons&collection=lifecycle', base).href)
+  assert.equal(await page.getByRole('button', { name: /芯片全流程/, pressed: true }).count(), 1)
+  const lifecycleIds = await page.locator('.fab-icon-grid code').allTextContents()
+  assert.equal(new Set(lifecycleIds).size, lifecycleIds.length)
+  const milestones = ['chip-spec', 'rtl-design', 'tapeout', 'photomask', 'wafer-etch', 'probe', 'bond', 'ate', 'silicon-bringup', 'quality-release', 'outbound-logistics', 'delivery-receipt']
+  let last = -1
+  for (const key of milestones) {
+    const index = lifecycleIds.indexOf(key)
+    assert.ok(index > last, key)
+    last = index
+  }
+  await page.getByRole('searchbox').fill('GDSII')
+  await page.getByRole('button', { name: '流片数据交付', exact: true }).click()
+  await page.getByRole('dialog', { name: '流片数据交付' }).waitFor()
+  console.log('PASS · 芯片全流程专题、设计到签收顺序、GDSII 搜索及导出入口')
   await page.goto(new URL('?view=icons&collection=process', base).href)
   assert.equal(await page.getByRole('button', { name: /后道制造工序/, pressed: true }).count(), 1)
   const stationIds = await page.locator('.fab-icon-grid code').allTextContents()

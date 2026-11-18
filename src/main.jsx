@@ -102,7 +102,7 @@ function App() {
   const paletteStyle = { '--org-primary': `light-dark(${palette.light}, ${palette.dark})`, '--org-primary-foreground': 'light-dark(white, #172022)' }
 
   useEffect(() => {
-    document.title = catalogOpen ? '后道团队图标库' : byId.get(id).name + ' · ' + title
+    document.title = catalogOpen ? '半导体图标库' : byId.get(id).name + ' · ' + title
   }, [id])
 
   function selectTheme(next) {
@@ -142,7 +142,7 @@ function App() {
         renderArtwork={departmentArt}
         brandMark={root.icon === 'backend-overview' ? <BackendIcon name="backend-overview" size={23} /> : undefined}
         itemLabel={root.evidence ? '条目' : '部门'}
-        toolbar={<><a className="fab-link" href={catalogLink(true)} aria-label="后道团队图标库" title="后道团队图标库">
+        toolbar={<><a className="fab-link" href={catalogLink(true)} aria-label="半导体图标库" title="半导体图标库">
           <BookOpen size={16} /><span>图标库</span>
         </a>{themeControl}</>}
       />

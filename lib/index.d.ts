@@ -40,6 +40,12 @@ export type BackendIconName =
   | 'test-load-split' | 'order-due-date' | 'vendor-onboarding' | 'vendor-scorecard'
   | 'contract-review' | 'invoice-match' | 'dc-parametric' | 'margin-window'
   | 'wafer-repair' | 'wafer-burn-in' | 'ball-attach' | 'dram-array-test'
+  | 'chip-spec' | 'chip-architecture' | 'rtl-design' | 'analog-schematic'
+  | 'logic-verification' | 'logic-synthesis' | 'scan-chain' | 'chip-floorplan'
+  | 'place-route' | 'design-signoff' | 'tapeout' | 'photomask'
+  | 'film-deposition' | 'resist-coat' | 'lithography' | 'wafer-etch'
+  | 'ion-implant' | 'wafer-cmp' | 'metal-interconnect' | 'silicon-bringup'
+  | 'shipment-notice' | 'delivery-receipt'
   | 'wafer-mount' | 'uv-tape-release' | 'die-pick' | 'epoxy-dispense' | 'die-attach-cure'
   | 'plasma-clean' | 'post-mold-cure' | 'lead-plating' | 'trim-form' | 'solder-reflow'
   | 'package-singulation' | 'laser-mark' | 'xray-inspection' | 'acoustic-microscopy' | 'dry-pack'
@@ -102,7 +108,7 @@ export interface BackendOverviewProps {
   label?: string
 }
 export declare function BackendOverview(props: BackendOverviewProps): ReactElement
-export type ProductionCollection = 'process' | 'samsung' | 'hynix' | 'cxmt' | 'micron' | 'micron-hq' | 'kyec'
+export type ProductionCollection = 'lifecycle' | 'process' | 'samsung' | 'hynix' | 'cxmt' | 'micron' | 'micron-hq' | 'kyec'
 interface IconSection {
   readonly name: string
   readonly source: string
