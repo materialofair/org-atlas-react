@@ -1,6 +1,6 @@
 {
   "name": "org-atlas-react",
-  "version": "1.15.0",
+  "version": "1.15.1",
   "description": "A themeable React department directory with drill-down navigation.",
   "type": "module",
   "main": "./dist/lib/index.js",
