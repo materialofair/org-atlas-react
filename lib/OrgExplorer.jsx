@@ -8,6 +8,8 @@ import {
 } from "lucide-react"
 import { Campus } from "./Campus.jsx"
 
+import { BackendIcon, backendIcons } from "./backend-icons.jsx"
+
 const icons = [Layers3, PenTool, CodeXml, ChartNoAxesColumnIncreasing, Boxes, BadgeCheck, ShieldCheck, Workflow]
 const levelNumber = new Intl.NumberFormat("zh-CN-u-nu-hanidec")
 
@@ -55,7 +57,7 @@ function DepartmentCard({ entry, navigation }) {
   return (
     <article className="oe-card" data-slot="card" data-tone={branch % icons.length}>
       <div className="oe-card-top">
-        <span className="oe-symbol"><Icon size={20} strokeWidth={1.75} /></span>
+        <span className="oe-symbol">{Object.hasOwn(backendIcons, node.icon) ? <BackendIcon name={node.icon} size={23} /> : <Icon size={20} strokeWidth={1.75} />}</span>
         <h3><DepartmentLink className="oe-card-link" data-department-id={node.id} node={node} navigation={navigation}>{node.name}</DepartmentLink></h3>
         <ArrowRight aria-hidden="true" size={17} className="oe-open" />
       </div>
@@ -144,7 +146,7 @@ function Breadcrumbs({ root, path, navigation }) {
   )
 }
 
-export function OrgExplorer({ root, rootLevel = 1, title = "组织图谱", selectedId, onNavigate, getHref, theme = "system", className = "", toolbar }) {
+export function OrgExplorer({ root, rootLevel = 1, title = "组织图谱", selectedId, onNavigate, getHref, theme = "system", className = "", toolbar, renderArtwork }) {
   const index = useMemo(() => indexDepartments(root), [root])
   const entries = useMemo(() => Array.from(index.values()), [index])
   const [internalId, setInternalId] = useState(root.id)
@@ -213,7 +215,7 @@ export function OrgExplorer({ root, rootLevel = 1, title = "组织图谱", selec
       <div className="oe-wrap oe-body">
         <Breadcrumbs root={root} path={path} navigation={navigation} />
         <section className="oe-hero">
-          <Campus />
+          {renderArtwork?.(node) ?? <Campus />}
           <div className="oe-hero-content">
             <span className="oe-badge"><span className="oe-dot" />{levelNumber.format(rootLevel + path.length - 1)}级部门</span>
             <h1 tabIndex={-1} ref={heading}>{node.name}</h1>

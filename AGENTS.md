@@ -11,11 +11,11 @@ npm ci
 npm run dev -- --port 5188
 ```
 
-打开 `http://127.0.0.1:5188/`。默认首页是产品管理部门户，应显示“二级部门”和三个直属团队。`/?levels=2`、`/?levels=3` 和 `/?levels=7` 分别演示两级、混合深度和完整组织数据。部署构建后的 Demo 时，通过 HTTP 静态服务打开解压目录的 `index.html`。
+打开 `http://127.0.0.1:5188/`。默认首页是封装制造部门户，应显示“二级部门”和六个直属团队。`/?levels=2`、`/?levels=3` 和 `/?levels=7` 分别演示两级、混合深度和完整组织数据。`/?view=icons` 展示图标及其使用说明。部署构建后的 Demo 时，通过 HTTP 静态服务打开解压目录的 `index.html`。
 
 ## 在其他项目里使用
 
-从 GitHub Release 下载名为 `org-atlas-react-<版本>.tgz` 的组件包，例如将 v1.2.1 的包放在宿主项目根目录后执行 `npm install ./org-atlas-react-1.2.1.tgz`。Web 宿主使用版本匹配的 React 18+ 和 React DOM。CSS 已随包编译，导入一次即可。
+从 GitHub Release 下载名为 `org-atlas-react-<版本>.tgz` 的组件包，例如将 v1.3.0 的包放在宿主项目根目录后执行 `npm install ./org-atlas-react-1.3.0.tgz`。Web 宿主使用版本匹配的 React 18+ 和 React DOM。CSS 已随包编译，导入一次即可。
 
 ```tsx
 import { OrgExplorer, type Department } from 'org-atlas-react'
@@ -38,6 +38,7 @@ export function DepartmentPortal({ department }: { department: Department }) {
 | 下穿、返回焦点、面包屑、搜索、同级切换 | `lib/OrgExplorer.jsx` |
 | 卡片尺寸、窄屏控件、明暗主题、宿主嵌入 | `lib/style.css`。断点跟随组件容器宽度 |
 | 新增公开属性或导出 | 同步 `lib/index.js`、`lib/index.d.ts`、README 和调用示例 |
+| 后道图标形状、说明和展示页 | `lib/backend-icons.jsx`、`lib/index.d.ts`、`src/IconCatalog.jsx`。新增图标时同步键名类型和示例数据，执行 `npm run export:icons` 检查独立 SVG。 |
 | 演示组织及门户根节点 | `src/departments.js` |
 | 演示路由、主题持久化与门户工具栏 | `src/main.jsx`、`src/style.css` |
 | 发包内容、外置 React、声明和图标许可 | `package.json`、`vite.lib.config.js` |
@@ -69,4 +70,4 @@ node tests/react-compat.mjs 19.3.1 "./org-atlas-react-${version}.tgz"
 
 ## 交付文件
 
-源码 ZIP 从发布标签对应的 Git 提交导出，包含此指南、源码、锁文件和测试。组件 TGZ 由 `npm pack` 生成，含 ESM、CSS、类型及许可证。静态 Demo ZIP 的网站入口为 `dist/demo` 的内容，随附依赖许可。Release 中的 `SHA256SUMS` 用于校验这三个下载文件。发布时核对标签、远端提交、压缩包文件清单，并从 GitHub 下载资产验证校验值。在下载目录执行 `shasum -a 256 -c SHA256SUMS`（Linux 可用 `sha256sum -c SHA256SUMS`）。
+源码 ZIP 从发布标签对应的 Git 提交导出，包含此指南、源码、锁文件和测试。组件 TGZ 由 `npm pack` 生成，含 ESM、CSS、类型及许可证。静态 Demo ZIP 的网站入口为 `dist/demo` 的内容，随附依赖许可。Release 中的 `SHA256SUMS` 用于校验源码、组件、Demo 和独立 SVG 图标包。发布时核对标签、远端提交、压缩包文件清单，并从 GitHub 下载资产验证校验值。在下载目录执行 `shasum -a 256 -c SHA256SUMS`（Linux 可用 `sha256sum -c SHA256SUMS`）。
