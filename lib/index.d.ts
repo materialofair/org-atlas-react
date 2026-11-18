@@ -19,6 +19,11 @@ export type BackendIconName =
   | 'equipment-alarm' | 'downtime' | 'shift-handover' | 'plasma-grind'
   | 'sustainability-coe' | 'mobile-dram' | 'line-expansion' | 'production-supervision'
   | 'external-assembly' | 'module-fa' | 'qms' | 'supply-planning'
+  | 'bottleneck-control' | 'unit-cost' | 'sample-delivery' | 'osat-sourcing'
+  | 'safety-stock' | 'fifo-lanes' | 'incoming-coa' | 'anomaly-monitor'
+  | 'tester-control' | 'defect-classifier' | 'hbm-schedule' | 'production-progress'
+  | 'test-tat' | 'mobile-package-test' | 'soc-program' | 'hbm-stack-test'
+  | 'package-section' | 'package-design' | 'material-qualification' | 'equipment-throughput'
 export declare function getDepartmentIcon(node: Department): BackendIconName
 export declare const backendIcons: Readonly<Record<BackendIconName, { readonly name: string; readonly group: string; readonly description: string; readonly path: string }>>
 export declare function BackendIcon(props: { name: BackendIconName; size?: number; label?: string; className?: string }): ReactElement | null
@@ -52,3 +57,10 @@ export interface OrgExplorerProps {
 }
 
 export declare function OrgExplorer(props: OrgExplorerProps): ReactElement
+
+export declare function BackendOverview(props: { color?: string; className?: string; label?: string }): ReactElement
+export type ProductionCollection = 'samsung' | 'hynix'
+export declare const productionCollections: Readonly<Record<ProductionCollection, {
+  readonly name: string
+  readonly sections: readonly { readonly name: string; readonly source: string; readonly icons: readonly BackendIconName[] }[]
+}>>

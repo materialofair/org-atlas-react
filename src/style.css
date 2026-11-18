@@ -130,10 +130,18 @@
   position: absolute; inset: 0 0 0 auto; width: 35%; display: grid; place-items: center;
   color: var(--oe-primary); pointer-events: none;
 }
-.fab-overview-art img { width: 100%; height: 100%; max-width: 420px; object-fit: contain; }
-.fab-overview-art svg { display: none; }
+.fab-overview-art .fab-overview-wide { width: 100%; height: 100%; max-width: 420px; object-fit: contain; }
+.fab-overview-art [data-backend-icon] { display: none; }
 @container orgAtlas (max-width: 610px) {
   .fab-overview-art { inset: 13px 16px auto auto; width: 33px; height: 33px; }
-  .fab-overview-art img { display: none; }
-  .fab-overview-art svg { display: block; }
+  .fab-overview-art .fab-overview-wide { display: none; }
+  .fab-overview-art [data-backend-icon] { display: block; }
 }
+
+.fab-appearance { display: flex; align-items: center; gap: 5px; }
+.fab-accent-picker { display: grid; place-items: center; position: relative; width: 34px; height: 34px; border-radius: 7px; }
+.fab-accent-picker::before { content: ''; width: 14px; height: 14px; border-radius: 50%; background: var(--oe-primary); outline: 1px solid var(--oe-border); outline-offset: 3px; }
+.fab-accent-picker select { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.fab-accent-picker:focus-within { outline: 2px solid var(--oe-ring); }
+.fab-group-heading { display: flex; flex-wrap: wrap; align-items: baseline; gap: 5px 12px; }
+.fab-group-heading a { font-size: 12px; color: var(--oe-primary); text-decoration: underline; text-underline-offset: 3px; }

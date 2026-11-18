@@ -13,11 +13,11 @@ npm run dev -- --port 5188
 
 打开 `http://127.0.0.1:5188/`。默认首页是美光后道封测门户，应显示“二级部门”和九张职能卡。美光公开职能来自台湾职类地图，下级为演示编组，负责人留空。`/?levels=2`、`/?levels=3` 和 `/?levels=7` 分别演示两级、混合深度和完整组织数据。`/?site=xian` 打开独立西安资料目录，按 `src/xian.js` 的条目来源更新，范围见 `docs/xian-backend.md`。
 
-`/?view=icons` 展示图标及其使用说明。部署构建后的 Demo 时，通过 HTTP 静态服务打开解压目录的 `index.html`。
+`/?view=icons` 展示图标及其使用说明。三星与 SK 海力士集合由 `lib/production-collections.js` 维护，更新职能时同步核对 `docs/samsung-hynix.md`。宽幅总图的单一图形源是 `lib/BackendOverview.jsx`，从这里修改后重新构建组件和独立 SVG。部署构建后的 Demo 时，通过 HTTP 静态服务打开解压目录的 `index.html`。
 
 ## 在其他项目里使用
 
-从 GitHub Release 下载名为 `org-atlas-react-<版本>.tgz` 的组件包，例如将 v1.7.0 的包放在宿主项目根目录后执行 `npm install ./org-atlas-react-1.7.0.tgz`。Web 宿主使用版本匹配的 React 18+ 和 React DOM。CSS 已随包编译，导入一次即可。
+从 GitHub Release 下载名为 `org-atlas-react-<版本>.tgz` 的组件包，例如将 v1.8.0 的包放在宿主项目根目录后执行 `npm install ./org-atlas-react-1.8.0.tgz`。Web 宿主使用版本匹配的 React 18+ 和 React DOM。CSS 已随包编译，导入一次即可。
 
 ```tsx
 import { OrgExplorer, type Department } from 'org-atlas-react'
