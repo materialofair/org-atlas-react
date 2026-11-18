@@ -68,6 +68,22 @@ export const backendIcons = {
   'gas-systems': symbol('气体与化学品', '生产支持', '阀头和双储罐表示集中供给，用于厂务气化系统。', 'M4 3h5m-3 0v3 M3 9q0-3 3-3h1q3 0 3 3v11H3z M15 3h5m-3 0v3 M14 9q0-3 3-3h1q3 0 3 3v11h-7z M4 13h5m6 0h5'),
   'air-systems': symbol('厂务空调', '生产支持', '三片风叶围绕轴心旋转，用于空调和空气处理团队。', 'M14 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0z M11 10c-4-2-3-6 0-8 3 1 5 5 2 8 M14 12c4-2 7 1 7 5-3 2-7 1-8-3 M11 14c0 5-4 6-8 4 0-4 3-7 7-6'),
   'fab-utilities': symbol('厂务公用系统', '生产支持', '主管连接多个供给支路，适合厂务 FAC 的水、电、气等运行团队。', 'M3 4h18v4H3z M6 8v6m6-6v6m6-6v6 M3 15h6v5H3z M11 15h3v5h-3z M17 15h4v5h-4z'),
+  'die-recovery': symbol('裸片回收', '封装与互连', '托盘上的裸片配以回转箭头，适合 Die Recovery 活动。', 'M5 11h8v7H5z M2 20h15 M9 6a7 7 0 0 1 12 5m0 0V6m0 5h-5'),
+  'post-electrical': symbol('电测后处理', '测试与质量', '测试波形结束后进入下一处理框，适合 Post Electrical。', 'M2 9h3l2-5 3 10 2-5h3 M4 18h9m-3-3 3 3-3 3 M16 13h6v8h-6z'),
+  'module-assembly': symbol('模组装联', '存储产品与先进封装', '待装器件落在长条模组板上，适合内存模组装配。', 'M9 2h6v4H9z M12 8v4m-2-2 2 2 2-2 M2 14h20v5H2z M5 19v2m3-2v2m8-2v2m3-2v2'),
+  'module-test': symbol('模组测试', '测试与质量', '插入测试座的模组带有状态波形，用于模组电性验证。', 'M3 5h18v9H3z M5 10h3l2-3 3 5 2-3h4 M5 16v3h14v-3 M8 19v2m8-2v2'),
+  warehouse: symbol('仓储管理', '生产支持', '货架分层放置周转箱，适合内部仓库、外部仓储和物料保管。', 'M3 3v18m18-18v18 M3 12h18M3 19h18 M5 6h6v6H5z M14 7h5v5h-5z M8 14h8v5H8z'),
+  'outbound-logistics': symbol('物流交接', '生产支持', '载货车与车轮表示批次运输、配送和交接。', 'M2 5h12v11H2z M14 9h4l4 4v3h-8 M7 18a2 2 0 1 1-4 0 2 2 0 0 1 4 0z M21 18a2 2 0 1 1-4 0 2 2 0 0 1 4 0z'),
+  'equipment-auto': symbol('设备自动化', '生产支持', '关节机械臂与末端夹爪表示自动上下料和设备自动化。', 'M3 21h10m-8 0v-3h6v3 M8 18l3-8-5-4 2-3 8 6-5 9 M15 8l4-3m-1-2 3 1 1 3'),
+  'equipment-commission': symbol('设备调试', '生产支持', '三道调节滑轨用于设备安装后的调试与验收。', 'M4 3v6m0 5v7M2 9h4v5H2z M12 3v11m0 4v3m-2-7h4v4h-4z M20 3v3m0 5v10m-2-15h4v5h-4z'),
+  'equipment-alarm': symbol('设备报警', '生产支持', '带警示信号的灯塔表示机台报警与现场响应。', 'M6 18v-6a6 6 0 0 1 12 0v6 M4 18h16v3H4z M12 2v2M3 6l2 2m16-2-2 2 M12 9v4m0 2v.1'),
+  downtime: symbol('停机分析', '生产支持', '时钟旁的暂停键表示停机时长与设备利用率分析。', 'M15 4a8 8 0 1 0-5 15 M10 6v6l3 2 M15 12h2v9h-2z M20 12h2v9h-2z'),
+  'shift-handover': symbol('轮班交接', '生产支持', '交接单与指向下一班的箭头，适合异常记录与值班交接。', 'M12 20H3V3h13v7 M6 7h7m-7 4h4m-4 4h3 M12 15h9m-4-4 4 4-4 4'),
+  'plasma-grind': symbol('等离子研磨', '晶圆加工', '放电符号位于晶圆截面上方，适合 PSRG 晶圆减薄改造项目。', 'M4 3h16v3H4z M8 8l-2 4h3l-2 3m8-7-2 4h3l-2 3 M2 18q10 3 20 0m-20 3q10 3 20 0'),
+  'sustainability-coe': symbol('制造可持续发展', '生产支持', '厂房与叶片结合，用于制造可持续发展卓越中心及协作项目。', 'M2 21V10l5-3v4l5-3v5 M2 21h19 M5 16h2m2 0h2 M14 16c-3-5 1-10 8-11 0 7-2 11-8 11zm-1 4 6-11'),
+  'mobile-dram': symbol('移动内存', '存储产品与先进封装', '手机轮廓内的存储芯片表示移动 DRAM 产品和导入项目。', 'M6 2h12v20H6z M9 8h6v6H9z M10 6v2m3-2v2m-3 6v2m3-2v2 M11 19h2'),
+  'line-expansion': symbol('产线扩建', '生产支持', '已有工位旁的新增工位和加号，表示扩建规划与新线导入。', 'M2 10h8v8H2z M14 10h8v8h-8z M4 21h16 M18 2v6m-3-3h6 M4 13h4m9 1h2'),
+  'production-supervision': symbol('生产现场管理', '生产支持', '人员轮廓配合产线看板，用于生产主管与现场管理岗位。', 'M9 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0z M1 20v-3a5 5 0 0 1 10 0v3 M13 3h9v12h-9z M15 7h5m-5 4h3'),
 }
 
 export function getDepartmentIcon(node) {

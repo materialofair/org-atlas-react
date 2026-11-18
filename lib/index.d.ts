@@ -14,6 +14,10 @@ export type BackendIconName =
   | 'org-unit' | 'team' | 'project' | 'support' | 'coordination' | 'workcell'
   | 'capacity-model' | 'lot-flow' | 'process-transfer' | 'test-coverage' | 'quality-release' | 'fab-utilities'
   | 'water-systems' | 'power-systems' | 'gas-systems' | 'air-systems'
+  | 'die-recovery' | 'post-electrical' | 'module-assembly' | 'module-test'
+  | 'warehouse' | 'outbound-logistics' | 'equipment-auto' | 'equipment-commission'
+  | 'equipment-alarm' | 'downtime' | 'shift-handover' | 'plasma-grind'
+  | 'sustainability-coe' | 'mobile-dram' | 'line-expansion' | 'production-supervision'
 export declare function getDepartmentIcon(node: Department): BackendIconName
 export declare const backendIcons: Readonly<Record<BackendIconName, { readonly name: string; readonly group: string; readonly description: string; readonly path: string }>>
 export declare function BackendIcon(props: { name: BackendIconName; size?: number; label?: string; className?: string }): ReactElement | null
@@ -34,6 +38,7 @@ export interface OrgExplorerProps {
   root: Department
   /** The organizational level of root, counting from 1. Defaults to 1. */
   rootLevel?: number
+  itemLabel?: string
   title?: string
   selectedId?: string
   onNavigate?: (department: Department) => void

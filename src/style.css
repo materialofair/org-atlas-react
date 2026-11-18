@@ -120,4 +120,8 @@
   .fab-icon-grid:has(> :nth-child(6):last-child) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
+.fab-catalog-filter { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+.fab-catalog-filter [aria-pressed="true"] { background: var(--oe-fg); color: var(--oe-card); }
 .fab-icon-search { display: block; width: min(100%, 30rem); margin-top: 16px; padding: 9px 12px; border: 1px solid var(--oe-border); border-radius: 7px; background: var(--oe-card); color: var(--oe-fg); }
+
+.fab-footer nav { display: flex; gap: 16px; flex-wrap: wrap; }

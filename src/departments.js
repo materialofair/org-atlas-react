@@ -1,3 +1,5 @@
+import { xian } from './xian.js'
+
 // Public functions follow Micron Taiwan's Back-End job map. Subteams illustrate the work.
 export const jobMap = 'https://tw.micron.com/about/careers/job-map-tch'
 export const siteArticle = 'https://tw.micron.com/about/blog/company/events/taiwan-new-facility-supports-hbm3e-ramp-dram-tech-deployment'
@@ -62,13 +64,13 @@ const threeLevels = unit('test-center', '测试职能示例', 'ate', undefined, 
   unit('test-quality', '测试质量部', 'quality-engineering'),
 ])
 const samples = new Map([['2', twoLevels], ['3', threeLevels], ['7', root]])
-export function demoDepartments(levels) {
-  const selected = samples.get(levels) ?? backend
+export function demoDepartments(levels, site) {
+  const selected = site === 'xian' ? xian : samples.get(levels) ?? backend
   const byId = new Map()
   function visit(node) {
     byId.set(node.id, node)
     node.children?.forEach(visit)
   }
   visit(selected)
-  return { root: selected, byId, rootLevel: selected === backend ? 2 : 1, title: '美光后道 · 门户示例' }
+  return { root: selected, byId, rootLevel: selected === backend || selected === xian ? 2 : 1, title: selected === xian ? '美光西安 · 厂区示例' : '美光后道 · 门户示例' }
 }

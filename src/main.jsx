@@ -24,7 +24,7 @@ function departmentArt(node) {
   </div>
 }
 
-const { root, byId, rootLevel, title } = demoDepartments(pageUrl.searchParams.get('levels'))
+const { root, byId, rootLevel, title } = demoDepartments(pageUrl.searchParams.get('levels'), pageUrl.searchParams.get('site'))
 const themeKey = 'org-atlas-demo.theme'
 const themes = {
   system: { label: '跟随系统', Icon: Monitor },
@@ -97,8 +97,13 @@ function App() {
 
   const officialFunction = backend.children.some(node => node.id === id) || facilitySections.some(node => node.id === id)
   const publicScope = id === 'backend' || id === 'micron-tw' || officialFunction
+  const evidence = byId.get(id).evidence
   const themeControl = <ThemeSelect value={theme} onChange={selectTheme} />
-  if (catalogOpen) return <IconCatalog returnUrl={catalogLink(false)} theme={theme} themeControl={themeControl} />
+  if (catalogOpen) return <IconCatalog xianSite={root.id === 'xian'} returnUrl={catalogLink(false)} theme={theme} themeControl={themeControl} />
+  const sourceInfo = evidence
+    ? <>西安公开资料 · <a href={evidence.url}>{evidence.label}</a></>
+    : <>{publicScope ? '美光公开职能 · 门户示例' : '模拟团队 · 用于展示职能下钻'} · <a href={jobMap}>美光职类地图</a>
+        {id === 'hbm-integration' && <> · <a href={siteArticle}>台中厂区资料</a></>}</>
   return (
     <div className="demo-page" data-demo-theme={theme}>
       <OrgExplorer
@@ -110,13 +115,17 @@ function App() {
         getHref={departmentHref}
         theme={theme}
         renderArtwork={departmentArt}
+        itemLabel={root.id === 'xian' ? '条目' : '部门'}
         toolbar={<><a className="fab-link" href={catalogLink(true)} aria-label="后道团队图标库" title="后道团队图标库">
           <BookOpen size={16} /><span>图标库</span>
         </a>{themeControl}</>}
       />
-      <footer className="fab-footer"><span>{publicScope ? '美光公开职能 · 门户示例' : '模拟团队 · 用于展示职能下钻'} · <a href={jobMap}>美光职类地图</a>
-        {id === 'hbm-integration' && <> · <a href={siteArticle}>台中厂区资料</a></>}</span>
-        <a href={rootLevel === 2 ? '?levels=7' : '?'}>{rootLevel === 2 ? '查看上级目录' : '进入美光后道门户'}</a>
+      <footer className="fab-footer">
+        <span>{sourceInfo}</span>
+        <nav aria-label="厂区导航">
+          <a href={root.id === 'xian' ? '?' : '?site=xian'}>{root.id === 'xian' ? '进入台湾门户' : '进入西安厂区'}</a>
+          {root.id !== 'xian' && <a href={rootLevel === 2 ? '?levels=7' : '?'}>{rootLevel === 2 ? '查看上级目录' : '进入美光后道门户'}</a>}
+        </nav>
       </footer>
     </div>
   )
