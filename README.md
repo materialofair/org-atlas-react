@@ -4,7 +4,7 @@
 
 ## 安装与使用
 
-最低版本为 React 18.0.0。组件使用宿主项目的 React 实例，Web 项目请搭配相同版本的 React DOM。示例组织和负责人均为虚构数据。
+最低版本为 React 18.0.0。组件使用宿主项目的 React 实例，Web 项目请搭配相同版本的 React DOM。Demo 采用美光台湾公开的后道职能，负责人留空。
 
 从 [GitHub Releases](https://github.com/materialofair/org-atlas-react/releases) 可下载源码、已编译的组件安装包和静态 Demo。接入步骤、源码入口和验证命令也整理在 [AGENTS.md](AGENTS.md)。
 
@@ -20,7 +20,7 @@ npm pack
 将生成的压缩包复制到宿主项目，在宿主项目目录执行：
 
 ```sh
-npm install ./org-atlas-react-1.4.0.tgz
+npm install ./org-atlas-react-1.5.0.tgz
 ```
 
 ```tsx
@@ -59,9 +59,9 @@ export function AssemblyPortal({ department }: { department: Department }) {
 
 ## 半导体后道演示与图标
 
-首页是二级封装制造部门户，可进入引线键合、固晶贴装、塑封成型、切单成型、成品后处理和封装工艺整合六个团队。页尾的“查看事业群全貌”可切至八个二级部门。选取引线键合课 → 铜线生产组 → QFN 键合线 → 甲班键合班组 → 细线键合单元，可从三级走到七级。
+默认首页为二级「美光后道封装测试」。九张职能卡片可直接进入对应团队；页尾可打开上级目录。示例七级路径为美光台湾 → 后道封装测试 → 封装 → 引线键合 → 键合生产组 → 键合轮班组 → 键合作业单元。
 
-顶栏的“图标库”（`?view=icons`）收录 48 枚图标，覆盖晶圆加工、封装与互连、存储产品与先进封装、测试与质量、工程与产品导入、生产支持六类。可按中文职责、英文标识或缩写（例如 TSE、TSV、HBM）检索。每项列有图形含义、适用团队和英文标识。通过 `Department.icon` 指定标识；缺省时组件显示通用部门图标。也可在组件外使用：
+图标库（`?view=icons`）收录 64 枚图标。拿不准专业图标时，可以选择通用部门 `org-unit`、团队 `team`、项目 `project`、支持 `support`、协作 `coordination` 或作业单元 `workcell`。也可以直接省略 `Department.icon`，有下级会显示部门图标，末级会显示团队图标。未知键同样适用此规则。自定义详情插图时可用 `getDepartmentIcon(node)` 获取与卡片一致的图标。也可在组件外使用：
 
 ```tsx
 import { BackendIcon, backendIcons } from 'org-atlas-react'
@@ -73,15 +73,7 @@ React 组件使用 `currentColor` 跟随主题；相邻已有文字时可省略 
 
 ### 行业依据
 
-美光台湾岗位地图中的九类后道职能，以及 SK 海力士公开的 HBM PE 团队分工，已映射到本项目的图标键名。选图示例、公开出处与 Demo 路径见[存储器后道团队与图标选用](https://github.com/materialofair/org-atlas-react/blob/v1.4.0/docs/memory-backend.md)。
-
-| 公开业务与工艺 | 演示中的组织划分 |
-| --- | --- |
-| [Amkor 的装联说明](https://amkor.com/blog/automotive-chip-shortages-an-assembly-perspective/)介绍了划片、固晶和引线键合的关系。 | 把晶圆加工与封装制造设为两个部；键合、固晶和塑封各有直属团队。 |
-| [日月光凸块服务](https://ase.aseglobal.com/bumping-services/)及 [Amkor 封装技术](https://amkor.com/technology/)列出铜柱、倒装和堆叠等能力。 | 晶圆加工部下设铜柱凸块课；先进封装部覆盖倒装、扇出和重布线。 |
-| [Amkor 测试服务](https://amkor.com/test-services/)分别列出晶圆探针、成品与系统级测试；[日月光实验室](https://ase.aseglobal.com/lab-services/)覆盖材料、热应力和失效分析。 | 测试工程部负责量产电测；质量与可靠性部负责试验验证和失效分析。 |
-
-以上来源支持工艺和能力的选择。设备工程、生产运营、物料供应的划分，以及部门名称、汇报关系、七级班组和负责人均为演示建模。首页的引线键合 BGA 分解图由 ImageGen 生成，用作结构示意。
+职能名称和职责来自美光台湾中英文职类地图；先进封装示例另参照美光台中厂区资料。下级编组和层级用于演示。首页的引线键合 BGA 分解图为生成的结构示意图。查看[职能与选图说明](https://github.com/materialofair/org-atlas-react/blob/v1.5.0/docs/memory-backend.md)、[美光中文职类地图](https://tw.micron.com/about/careers/job-map-tch)和[台中先进封测厂资料](https://tw.micron.com/about/blog/company/events/taiwan-new-facility-supports-hbm3e-ramp-dram-tech-deployment)。
 
 ## 组件接口
 
@@ -124,12 +116,12 @@ npm ci
 npm run dev -- --port 5188
 ```
 
-启动后，打开 `/?levels=2` 查看两级组织，`/?levels=3` 查看同时含二级和三级末级部门的组织。默认首页展示封装制造部门户，`/?levels=7` 可以浏览全组织。
+启动后，打开 `/?levels=2` 查看两级组织，`/?levels=3` 查看同时含二级和三级末级部门的组织。默认首页展示美光后道门户，`/?levels=7` 可以浏览全组织。
 
 - `npm run build` 生成组件库和生产版 Demo，分别位于 `dist/lib` 与 `dist/demo`。
 - `npm pack` 重新构建库并在当前目录生成可分发的 tgz。
 - `npm run test:browser` 验证七级下穿、返回、主题和移动布局。先启动 Demo，本机需要 Chrome 或通过 `npx playwright install chromium` 安装 Chromium。可用 `ORG_DEMO_URL` 指定测试地址。
-- `node tests/react-compat.mjs 18.0.0 ./org-atlas-react-1.4.0.tgz` 在临时宿主中安装指定 React 版本和组件包，完成生产构建并在浏览器中验证七级往返。已验证 18.0.0、18.2.0、18.3.1 和 19.3.1。
+- `node tests/react-compat.mjs 18.0.0 ./org-atlas-react-1.5.0.tgz` 在临时宿主中安装指定 React 版本和组件包，完成生产构建并在浏览器中验证七级往返。已验证 18.0.0、18.2.0、18.3.1 和 19.3.1。
 - `src/departments.js` 存放可替换的示例组织数据。
 
 ## 许可证

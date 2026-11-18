@@ -116,7 +116,7 @@
   .fab-hero-icon { width: 40px; height: 40px; }
 }
 @container orgAtlas (min-width: 961px) {
-  .demo-page .oe-cards[data-view="grid"]:has(> :nth-child(6):last-child),
+  .demo-page .oe-cards[data-view="grid"]:has(> :nth-child(6):last-child, > :nth-child(9):last-child),
   .fab-icon-grid:has(> :nth-child(6):last-child) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 

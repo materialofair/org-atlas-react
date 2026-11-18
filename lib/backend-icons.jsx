@@ -4,6 +4,12 @@ import React from 'react'
 const symbol = (name, group, description, path) => ({ name, group, description, path })
 
 export const backendIcons = {
+  'org-unit': symbol('通用部门', '通用组织', '组织树表示带下级的部门。节点未指定图标时，有下级自动使用此图。', 'M9 2h6v5H9z M12 7v5M5 16v-4h14v4 M2 16h6v5H2z M16 16h6v5h-6z'),
+  team: symbol('通用团队', '通用组织', '并肩的人形适合职能未定的小组。无下级且未指定图标时自动使用。', 'M13 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0z M3 20v-2a7 6 0 0 1 14 0v2z M16 5a3 3 0 0 1 0 6m2 2c3 1 4 3 4 6'),
+  project: symbol('通用项目组', '通用组织', '旗帜代表共同交付目标，适合专项、试点或临时项目。', 'M5 21V3m0 1c4-3 7 3 13 0v9c-6 3-9-3-13 0 M2 21h7'),
+  support: symbol('通用支持组', '通用组织', '耳麦表示响应请求，适合服务窗口、值班或支持团队。', 'M4 13v-2a8 8 0 0 1 16 0v4 M3 12h4v7H3z M17 12h4v7h-4z M19 19q0 3-6 3'),
+  coordination: symbol('通用协作组', '通用组织', '两组对接箭头表示交接与协调，适合跨部门协作。', 'M3 8h16l-4-4m4 4-4 4 M21 16H5l4-4m-4 4 4 4'),
+  workcell: symbol('通用作业单元', '通用组织', '同一框内的工位表示共同作业，适合产线班组或现场单元。', 'M3 4h18v15H3z M6 8h4v6H6z M14 8h4v6h-4z M6 19v2m12-2v2'),
   package: symbol('封装总成', '封装与互连', '芯体与外部引脚，适合封装装联（Assembly）、事业群及产品整合团队。', 'M6 6h12v12H6z M9 9h6v6H9z M9 3v3m6-3v3M9 18v3m6-3v3M3 9h3m-3 6h3m12-6h3m-3 6h3'),
   wafer: symbol('晶圆', '晶圆加工', '圆片上的管芯阵列，适合晶圆服务、薄化与来料管理团队。', 'M8 21a9.4 9.4 0 1 1 8 0z M7 5v12m5-14v16m5-14v12M4 8h16M3 13h18M6 17h12'),
   dicing: symbol('晶圆切割', '晶圆加工', '圆形刀片沿道切入工件，适合划片、切割与分选团队。', 'M6 13a7 7 0 1 1 12 0 M12 7a1.5 1.5 0 1 0 .01 0z M12 2v2m5 0-1 2m3 2-2 1M7 4l1 2 M3 16h7l2 3 2-3h7v5H3z'),
@@ -52,7 +58,23 @@ export const backendIcons = {
   npi: symbol('新品导入', '工程与产品导入', '样品沿箭头跨入量产窗口，适合 NPI、试产移交与爬坡团队。', 'M2 7h7v7H2z M6 16v3h8m-3-3 3 3-3 3 M13 3h8v12h-5m-3-12v5'),
   'thermal-cycle': symbol('温度循环', '测试与质量', '循环箭头环绕冷热温标，适合温循试验与环境应力验证。', 'M3 10a9 9 0 0 1 16-4l2 2m0-5v5h-5 M21 14a9 9 0 0 1-16 4l-2-2m0 5v-5h5 M11 7v6a2 2 0 1 0 2 0V7a1 1 0 0 0-2 0z'),
   'fan-out': symbol('扇出封装', '存储产品与先进封装', '中央裸片的连接向四角展开，适合扇出封装和面板级互连团队。', 'M8 8h8v8H8z M8 10H5L2 7m6 7H5l-3 3m14-7h3l3-3m-6 7h3l3 3 M10 8V4L8 2m6 6V4l2-2m-6 14v4l-2 2m6-6v4l2 2'),
+  'capacity-model': symbol('产能建模', '生产支持', '目标容量线叠加柱形负载，适合工业工程 IE 的产能评估。', 'M3 3v18h18 M6 17v-5h3v5z M12 17V8h3v9z M18 17V6h3v11z M5 5h4m2 0h3'),
+  'lot-flow': symbol('在制品流转', '生产支持', '批次托盘沿箭头移交，适合生产制造 MFG 的在制品控制。', 'M2 5h7v6H2z M5 5v2 M15 14h7v6h-7z M18 14v2 M11 7h7v4m-3-2 3 3 3-3'),
+  'process-transfer': symbol('制程移交', '工程与产品导入', '样品跨过交接线进入产线，适合制程整合 PIE 与量产移交。', 'M2 7h5v5H2z M11 3v4m0 9v5 M7 12h10m-3-3 3 3-3 3 M18 17h4v4h-4z'),
+  'test-coverage': symbol('测试覆盖', '测试与质量', '测试矩阵中的勾选格表示覆盖项目，适合产品工程测试 TSE。', 'M3 3h18v18H3z M3 9h18M9 3v18 M12 15l2 2 4-5 M5 6h1'),
+  'quality-release': symbol('质量放行', '测试与质量', '批次越过检验关卡，适合质量 QE 放行和异常品处置。', 'M3 4h10v8H3z M5 8l2 2 4-4 M3 17h15m-4-4 4 4-4 4 M21 12v9'),
+  'water-systems': symbol('厂务水系统', '生产支持', '水滴和双层水面表示水处理与供水，用于厂务水务团队。', 'M12 2c-2 4-6 7-6 11a6 6 0 0 0 12 0c0-4-4-7-6-11z M9 13q0 3 3 3 M3 21h18'),
+  'power-systems': symbol('厂务电力', '生产支持', '配电柜内的闪电表示电能分配，用于供配电团队。', 'M4 2h16v20H4z M13 5l-5 8h4l-1 5 6-9h-5z'),
+  'gas-systems': symbol('气体与化学品', '生产支持', '阀头和双储罐表示集中供给，用于厂务气化系统。', 'M4 3h5m-3 0v3 M3 9q0-3 3-3h1q3 0 3 3v11H3z M15 3h5m-3 0v3 M14 9q0-3 3-3h1q3 0 3 3v11h-7z M4 13h5m6 0h5'),
+  'air-systems': symbol('厂务空调', '生产支持', '三片风叶围绕轴心旋转，用于空调和空气处理团队。', 'M14 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0z M11 10c-4-2-3-6 0-8 3 1 5 5 2 8 M14 12c4-2 7 1 7 5-3 2-7 1-8-3 M11 14c0 5-4 6-8 4 0-4 3-7 7-6'),
+  'fab-utilities': symbol('厂务公用系统', '生产支持', '主管连接多个供给支路，适合厂务 FAC 的水、电、气等运行团队。', 'M3 4h18v4H3z M6 8v6m6-6v6m6-6v6 M3 15h6v5H3z M11 15h3v5h-3z M17 15h4v5h-4z'),
 }
+
+export function getDepartmentIcon(node) {
+  if (Object.hasOwn(backendIcons, node.icon)) return node.icon
+  return node.children?.length ? 'org-unit' : 'team'
+}
+
 export function BackendIcon({ name, size = 24, label, className }) {
   if (!Object.hasOwn(backendIcons, name)) return null
   return <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"

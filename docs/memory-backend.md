@@ -11,7 +11,7 @@
 | 工业工程 IE | 设备产能模型、扩产资源 | `industrial` 节拍表 |
 | 制造 MFG | 投产、产出与交期 | `manufacturing` 厂房 |
 | 制程整合 PIE | 跨站流程、新品导入、异常协调 | `process-integration` 工序汇合 |
-| 测试解决方案 TSE | 产品表征、测试方案与测试效率 | `test-solutions` 代码括号与脉冲 |
+| 产品工程测试 TSE | 产品表征、测试方案与测试效率 | `test-solutions` 代码括号与脉冲 |
 | 装联 Assembly | 封装产线稳定性与良率 | `package` 芯体和引脚 |
 | 测试 Test | 量产电测、结果与失效模式 | `ate` 测试波形 |
 | 质量工程 QE | 异常品处置、质量控制与客户反馈 | `quality-engineering` 检验表 |
@@ -26,17 +26,30 @@
 
 同年 9 月，海力士描述了当时 HBM Business 下 HBM PE 部门中的产品工程、应用工程和项目管理团队。PE 关注产品测试与验证，AE 在系统层面评估产品，PM 协调客户与内部团队的交付节奏。客户认证是这组工作的重要目标，可在以认证为主责的团队使用单独的图章图标。[SK hynix HBM PE 访谈](https://news.skhynix.com/en/munphil-park-aims-to-strengthen-ai-memory-leadership/)
 
-| Demo 中的使用场景 | 图标键名 | 视觉区别 |
+| 图标适用场景 | 图标键名 | 视觉区别 |
 | --- | --- | --- |
 | 存储产品工程课 | `product-engineering` | 芯片和量尺 |
 | 存储应用工程组 | `application-engineering` | 主机和外接器件 |
 | HBM 项目管理组 | `project-management` | 里程碑时间线 |
 | 客户认证组 | `customer-certification` | 报告和认可章 |
 
-## Demo 里的位置
+## 美光后道门户怎么浏览
 
-- 从默认的封装制造部门户进入「封装工艺整合课」，可以找到新品导入、内存模组装联和 SSD 装联导入。
-- 点页尾「查看事业群全貌」后，进入「先进封装部 → HBM 堆叠整合课」可查看 TSV、模塑底填和项目管理。
-- 进入「测试工程部」可分别查看测试解决方案课和存储产品工程课。前者包含表征、老化与分档，后者包含 DRAM、NAND 和应用工程。
+首页的九类职能按美光台湾中文职类地图命名，以英文版核对缩写。中文的「产品工程测试」对应英文的 Test Solutions Engineering；「测试」是另一个独立入口。默认从二级门户进入，页尾可浏览「美光台湾」这一示例上级。下级编组及七级导航是展示方式，负责人未公开即省略。[美光中文职类地图](https://tw.micron.com/about/careers/job-map-tch) · [美光英文岗位地图](https://tw.micron.com/about/careers/job-map)
 
-Demo 的八个二级部门、下属团队的汇报线和负责人均为虚构。上述企业链接记录公开描述时的范围。全部图标由项目自绘，采用 MIT 协议。
+| 从首页进入 | 细分图标 | 设计含义 |
+| --- | --- | --- |
+| 工业工程 → 产能建模 | `capacity-model` | 柱形负载与容量目标线 |
+| 生产制造 → 在制品流转 | `lot-flow` | 作业批次的站间转移 |
+| 制程整合 → 试产转量产 | `process-transfer` | 样品跨过制程交接线 |
+| 产品工程测试 → 测试覆盖评估 | `test-coverage` | 勾选的测试矩阵 |
+| 质量 → 质量放行评审 | `quality-release` | 通过检验关卡的批次 |
+| 厂务运营工程 → 系统整合 | `fab-utilities` | 公用系统的主管与分支 |
+
+美光还公开列出 FAC 的六个方向：水务、电力、气体与化学品、空调、系统整合和总务。前四项分别用水滴、配电柜、储罐和风叶表示。门户将这六项标记为公开职能。[来源：英文职类地图的 Back-End / Facilities](https://tw.micron.com/about/careers/job-map)
+
+「封装 → 先进封装与 HBM」参考台中厂区披露的先进封测与 DRAM 产品能力。工艺能力的公开记录用于解释卡片主题，团队编组为示例。海力士部分仅作为共享图标库的历史设计参考。[美光台中先进封装测试厂](https://tw.micron.com/about/blog/company/events/taiwan-new-facility-supports-hbm3e-ramp-dram-tech-deployment)
+
+## 职责未知时
+
+只提供名称与 ID 即可使用。省略图标时，有子节点自动显示 `org-unit`，无子节点显示 `team`。已知是项目、支持、跨部门协作或作业单元，可显式选择 `project`、`support`、`coordination`、`workcell`。全部图标均由本项目绘制，使用 MIT 许可证。

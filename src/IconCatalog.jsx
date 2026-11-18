@@ -17,7 +17,7 @@ export function IconCatalog({ returnUrl, theme, themeControl }) {
     </div></header>
     <div className="oe-wrap fab-library">
       <h1>后道团队图标库</h1>
-      <p>选择与团队职责相符的图标。卡片下方的英文标识可直接填入部门数据的 <code>icon</code> 字段。</p>
+      <p>不确定用哪一枚时，可从通用组织中选择，也可省略 <code>icon</code>。有下级时自动使用部门图标，末级使用团队图标。</p>
       <input className="fab-icon-search" type="search" aria-label="搜索团队图标"
         placeholder="搜索名称、职能或标识，如 TSE、底填" value={query} onChange={event => setQuery(event.target.value)} />
       {!matches.length && <p role="status">没有匹配的团队图标</p>}

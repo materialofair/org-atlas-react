@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useSyncExternalStore } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BookOpen, ChevronDown, Monitor, Moon, Sun } from 'lucide-react'
-import { BackendIcon, OrgExplorer } from 'org-atlas-react'
+import { BackendIcon, getDepartmentIcon, OrgExplorer } from 'org-atlas-react'
 import 'org-atlas-react/style.css'
-import { demoDepartments } from './departments'
+import { backend, demoDepartments, facilitySections, jobMap, siteArticle } from './departments'
 import { IconCatalog } from './IconCatalog'
 import packageImage from './assets/wire-bond-package.webp'
 import './style.css'
@@ -20,7 +20,7 @@ function departmentArt(node) {
   return <div className="fab-art" aria-hidden="true">
     {node.icon === 'package'
       ? <img src={packageImage} alt="" />
-      : <BackendIcon className="fab-hero-icon" name={node.icon} size={96} />}
+      : <BackendIcon className="fab-hero-icon" name={getDepartmentIcon(node)} size={96} />}
   </div>
 }
 
@@ -95,6 +95,8 @@ function App() {
     }
   }
 
+  const officialFunction = backend.children.some(node => node.id === id) || facilitySections.some(node => node.id === id)
+  const publicScope = id === 'backend' || id === 'micron-tw' || officialFunction
   const themeControl = <ThemeSelect value={theme} onChange={selectTheme} />
   if (catalogOpen) return <IconCatalog returnUrl={catalogLink(false)} theme={theme} themeControl={themeControl} />
   return (
@@ -112,8 +114,9 @@ function App() {
           <BookOpen size={16} /><span>图标库</span>
         </a>{themeControl}</>}
       />
-      <footer className="fab-footer"><span>示例组织 · 部门与负责人均为虚构</span>
-        <a href={rootLevel === 2 ? '?levels=7' : '?'}>{rootLevel === 2 ? '查看事业群全貌' : '进入封装制造部门户'}</a>
+      <footer className="fab-footer"><span>{publicScope ? '美光公开职能 · 门户示例' : '模拟团队 · 用于展示职能下钻'} · <a href={jobMap}>美光职类地图</a>
+        {id === 'hbm-integration' && <> · <a href={siteArticle}>台中厂区资料</a></>}</span>
+        <a href={rootLevel === 2 ? '?levels=7' : '?'}>{rootLevel === 2 ? '查看上级目录' : '进入美光后道门户'}</a>
       </footer>
     </div>
   )

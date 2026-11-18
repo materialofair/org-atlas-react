@@ -2,15 +2,14 @@
 
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import {
-  ArrowLeft, ArrowRight, BadgeCheck, Boxes, Building2, ChartNoAxesColumnIncreasing,
-  ChevronDown, ChevronRight, CodeXml, GitFork, Grid2X2, Layers3, List, Network, PenTool,
-  Search, ShieldCheck, Workflow, X,
+  ArrowLeft, ArrowRight, Building2,
+  ChevronDown, ChevronRight, GitFork, Grid2X2, List, Network,
+  Search, X,
 } from "lucide-react"
 import { Campus } from "./Campus.jsx"
 
-import { BackendIcon, backendIcons } from "./backend-icons.jsx"
+import { BackendIcon, getDepartmentIcon } from "./backend-icons.jsx"
 
-const icons = [Layers3, PenTool, CodeXml, ChartNoAxesColumnIncreasing, Boxes, BadgeCheck, ShieldCheck, Workflow]
 const levelNumber = new Intl.NumberFormat("zh-CN-u-nu-hanidec")
 
 function indexDepartments(root) {
@@ -50,14 +49,13 @@ function Avatar({ name }) {
 
 function DepartmentCard({ entry, navigation }) {
   const { node, branch } = entry
-  const Icon = icons[branch % icons.length]
   const count = node.children?.length || 0
   const leader = node.leader?.trim()
   const description = node.description?.trim()
   return (
-    <article className="oe-card" data-slot="card" data-tone={branch % icons.length}>
+    <article className="oe-card" data-slot="card" data-tone={branch % 8}>
       <div className="oe-card-top">
-        <span className="oe-symbol">{Object.hasOwn(backendIcons, node.icon) ? <BackendIcon name={node.icon} size={23} /> : <Icon size={20} strokeWidth={1.75} />}</span>
+        <span className="oe-symbol"><BackendIcon name={getDepartmentIcon(node)} size={23} /></span>
         <h3><DepartmentLink className="oe-card-link" data-department-id={node.id} node={node} navigation={navigation}>{node.name}</DepartmentLink></h3>
         <ArrowRight aria-hidden="true" size={17} className="oe-open" />
       </div>

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { existsSync } from 'node:fs'
 import { chromium } from 'playwright'
-import { root } from '../src/departments.js'
+import { backend, root } from '../src/departments.js'
 
 const demoUrl = process.env.ORG_DEMO_URL || 'http://127.0.0.1:5188'
 const companyUrl = new URL('?levels=7', demoUrl).href
@@ -17,9 +17,9 @@ function seventhLevelPath(node, ancestors = []) {
   }
 }
 
-assert.equal(root.children.length, 8, 'The demo should show all eight branches')
-const branchPaths = root.children.map(child => seventhLevelPath(child, [root]))
-assert.ok(branchPaths.every(Boolean), 'Every demo branch should reach level seven')
+assert.equal(backend.children.length, 9, 'Micron Taiwan lists nine back-end functions')
+const branch = seventhLevelPath(root)
+assert.equal(branch.length, 7)
 
 const browser = await chromium.launch({ channel: chromeChannel })
 try {
@@ -51,27 +51,26 @@ try {
     assert.ok(Math.max(...values) - Math.min(...values) <= 1, label + ': ' + values.join(', '))
   }
 
-  const portalBranch = branchPaths[0].slice(1)
-  await page.goto(new URL('#/wire-bond', demoUrl).href)
+  const portalBranch = branch.slice(1)
+  await page.goto(new URL('#/assembly', demoUrl).href)
   await assertSelected(portalBranch[1])
   await page.getByRole('link', { name: '后道团队图标库' }).click()
   await page.getByRole('heading', { name: '后道团队图标库' }).waitFor()
   const catalog = await page.locator('.fab-icon-grid article').evaluateAll(cards =>
     cards.map(card => ({ key: card.querySelector('code').textContent, icon: card.querySelector('svg')?.dataset.backendIcon,
       described: !!card.querySelector('p').textContent.trim() })))
-  assert.equal(catalog.length, 48)
+  assert.equal(catalog.length, 64)
   assert.equal(new Set(catalog.map(item => item.key)).size, catalog.length)
   assert.ok(catalog.every(item => item.key === item.icon && item.described))
-  const usedIcons = new Set()
+  assert.equal(catalog.filter(item => ['org-unit', 'team', 'project', 'support', 'coordination', 'workcell'].includes(item.key)).length, 6)
   function checkIcon(node) {
-    usedIcons.add(node.icon)
-    assert.ok(catalog.some(item => item.key === node.icon), node.name)
+    if (node.icon) assert.ok(catalog.some(item => item.key === node.icon), node.name)
     node.children?.forEach(checkIcon)
   }
   checkIcon(root)
-  assert.deepEqual(usedIcons, new Set(catalog.map(item => item.key)))
+
   const iconSearch = page.getByRole('searchbox', { name: '搜索团队图标' })
-  for (const [query, key] of [['TSE', 'test-solutions'], ['底填', 'underfill'], ['FAC', 'facilities']]) {
+  for (const [query, key] of [['TSE', 'test-solutions'], ['底填', 'underfill'], ['FAC', 'facilities'], ['通用组织', 'team'], ['测试覆盖', 'test-coverage']]) {
     await iconSearch.fill(query)
     await page.locator('.fab-icon-grid article').filter({ has: page.getByText(key, { exact: true }) }).waitFor()
   }
@@ -81,7 +80,7 @@ try {
   assert.equal(await page.locator('.fab-icon-grid article').count(), catalog.length)
   await page.getByRole('link', { name: '返回组织目录' }).click()
   await assertSelected(portalBranch[1])
-  console.log('PASS · 48 枚图标、职能搜索与说明、部门映射、图鉴返回当前部门')
+  console.log('PASS · 64 枚图标、职能搜索与说明、部门映射、图鉴返回当前部门')
   await page.goto(demoUrl)
   await assertSelected(portalBranch[0])
   await page.getByText('二级部门', { exact: true }).waitFor()
@@ -103,11 +102,15 @@ try {
   const finder = page.getByRole('dialog')
   await finder.getByRole('textbox').fill('晶圆加工部')
   await finder.getByText('没有找到匹配的部门或负责人').waitFor()
-  await finder.getByRole('textbox').fill('江澜')
+  await finder.getByRole('textbox').fill(portalBranch.at(-1).name)
   await finder.getByRole('link').click()
   await assertSelected(portalBranch.at(-1))
   await page.goto(new URL('#/wafer-services', demoUrl).href)
   await assertSelected(portalBranch[0])
+  for (const [id, childIcon] of [['wire-bond', 'org-unit'], ['bond-shift', 'team']]) {
+    await page.goto(new URL('#/' + id, demoUrl).href)
+    await page.locator('.oe-card .oe-symbol svg[data-backend-icon="' + childIcon + '"]').waitFor()
+  }
   console.log('PASS · 默认部门门户、二至七级标识、部门内搜索、刷新与越界链接回退')
 
   for (const width of [768, 390, 1440]) {
@@ -130,17 +133,16 @@ try {
   console.log('PASS · 首页、混排卡片与列表同组等高，页脚对齐，纯名称组保持紧凑')
 
   await page.goto(new URL('#/backend', companyUrl).href)
-  const waferCard = page.getByRole('heading', { name: '晶圆加工部' }).getByRole('link')
+  const waferCard = page.getByRole('heading', { name: '工业工程（IE）' }).getByRole('link')
   await waferCard.focus()
   await page.keyboard.press('Enter')
-  await page.getByRole('heading', { name: '晶圆加工部', level: 1 }).waitFor()
+  await page.getByRole('heading', { name: '工业工程（IE）', level: 1 }).waitFor()
   await page.getByRole('link', { name: '返回上一级' }).press('Enter')
   await waferCard.waitFor()
   assert.ok(await waferCard.evaluate(link => link === document.activeElement), 'Return focus to the department just visited')
   await page.keyboard.press('Tab')
-  assert.equal(await page.locator(':focus').textContent(), '先进封装部')
+  assert.equal(await page.locator(':focus').textContent(), '生产制造（MFG）')
 
-  const branch = branchPaths[0]
   const leaf = branch.at(-1)
   const parent = branch.at(-2)
   await page.goto(companyUrl)
@@ -169,24 +171,21 @@ try {
     await page.getByRole('link', { name: '返回上一级' }).click()
     await assertSelected(node)
   }
-  for (const path of branchPaths.slice(1)) {
-    await page.getByRole('link', { name: '组织图谱', exact: true }).click()
-    for (const node of path.slice(1)) {
-      await page.getByRole('heading', { name: node.name, exact: true }).getByRole('link').click()
-      await assertSelected(node)
-    }
-    await page.getByText('七级部门', { exact: true }).waitFor()
+  for (const unit of backend.children) {
+    await page.goto(new URL('#/' + unit.id, companyUrl).href)
+    await assertSelected(unit)
+    await page.getByRole('link', { name: '美光职类地图' }).waitFor()
   }
-  console.log('PASS · 八个分支逐级进入第七级、逐级返回、刷新、浏览器历史')
+  console.log('PASS · 九个公开职能、七级示例、逐级返回、刷新与浏览器历史')
 
   const search = page.getByRole('button', { name: /搜索部门/ })
   await search.click()
   const dialog = page.getByRole('dialog')
-  await dialog.getByRole('textbox').fill(leaf.leader)
+  await dialog.getByRole('textbox').fill(leaf.name)
   await dialog.getByRole('link').filter({ hasText: leaf.name }).click()
   await assertSelected(leaf)
   assert.equal(page.url(), deepLink)
-  console.log('PASS · 按七级部门负责人搜索并定位')
+  console.log('PASS · 按七级团队名称搜索并定位')
 
   const theme = page.getByRole('combobox', { name: '显示主题' })
   const headingColor = () => page.getByRole('heading', { level: 1 }).evaluate(
@@ -216,15 +215,15 @@ try {
   await breadcrumb.getByRole('link', { name: branch[2].name, exact: true }).click()
   await assertSelected(branch[2])
   await page.goto(new URL('#/assembly', companyUrl).href)
-  await page.getByRole('combobox', { name: '切换同级部门' }).selectOption('wafer-services')
-  await page.getByRole('heading', { name: '晶圆加工部', level: 1 }).waitFor()
+  await page.getByRole('combobox', { name: '切换同级部门' }).selectOption('industrial')
+  await page.getByRole('heading', { name: '工业工程（IE）', level: 1 }).waitFor()
   await page.setViewportSize({ width: 1440, height: 900 })
-  await page.getByRole('navigation', { name: '同级部门' }).getByRole('link', { name: '封装制造部' }).click()
-  const finishing = branch[1].children.find(node => node.id === 'finish-line')
-  const singulation = branch[1].children.find(node => node.id === 'singulation')
+  await page.getByRole('navigation', { name: '同级部门' }).getByRole('link', { name: '封装（Assembly）' }).click()
+  const finishing = branch[2].children.find(node => node.id === 'finish-line')
+  const singulation = branch[2].children.find(node => node.id === 'singulation')
   const singulationCard = page.locator('[data-slot=card]').filter({ has: page.getByRole('heading', { name: singulation.name }) })
   assert.equal(await singulationCard.locator('.oe-summary').count(), 0)
-  await singulationCard.getByText(singulation.leader, { exact: true }).waitFor()
+  assert.equal(await singulationCard.locator('.oe-leader').count(), 0)
   await page.getByRole('heading', { name: finishing.name }).getByRole('link').click()
   await assertSelected(finishing)
   for (const view of ['卡片视图', '列表视图']) {
@@ -279,7 +278,7 @@ try {
   await page.reload()
   await page.getByRole('heading', { level: 1, name: '先进封装声学扫描与无损检测部' }).waitFor()
   await page.getByRole('link', { name: '返回上一级' }).click()
-  await page.getByRole('heading', { level: 1, name: '封装分析中心' }).waitFor()
+  await page.getByRole('heading', { level: 1, name: '质量分析示例' }).waitFor()
   await search.click()
   await dialog.getByRole('textbox').fill('截面分析部')
   await dialog.getByRole('link').click()
@@ -299,8 +298,8 @@ try {
   await dialog.getByRole('textbox').fill('高低温测试组')
   await dialog.getByRole('link').click()
   await page.getByText('三级部门', { exact: true }).waitFor()
-  await page.getByRole('navigation', { name: '部门路径' }).getByRole('link', { name: '成品测试中心' }).click()
-  await page.getByRole('heading', { level: 1, name: '成品测试中心' }).waitFor()
+  await page.getByRole('navigation', { name: '部门路径' }).getByRole('link', { name: '测试职能示例' }).click()
+  await page.getByRole('heading', { level: 1, name: '测试职能示例' }).waitFor()
   console.log('PASS · 三级组织，二级、三级分支末级混排、搜索和返回')
   assert.deepEqual(errors, [])
   console.log('PASS · 手机直达七级、面包屑返回、无页面运行时错误')

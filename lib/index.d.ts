@@ -11,6 +11,10 @@ export type BackendIconName =
   | 'quality-engineering' | 'ehs' | 'facilities' | 'product-engineering' | 'application-engineering'
   | 'project-management' | 'customer-certification' | 'traceability' | 'optical' | 'metrology'
   | 'npi' | 'thermal-cycle' | 'fan-out'
+  | 'org-unit' | 'team' | 'project' | 'support' | 'coordination' | 'workcell'
+  | 'capacity-model' | 'lot-flow' | 'process-transfer' | 'test-coverage' | 'quality-release' | 'fab-utilities'
+  | 'water-systems' | 'power-systems' | 'gas-systems' | 'air-systems'
+export declare function getDepartmentIcon(node: Department): BackendIconName
 export declare const backendIcons: Readonly<Record<BackendIconName, { readonly name: string; readonly group: string; readonly description: string; readonly path: string }>>
 export declare function BackendIcon(props: { name: BackendIconName; size?: number; label?: string; className?: string }): ReactElement | null
 
