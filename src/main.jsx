@@ -22,9 +22,8 @@ function catalogLink(open) {
 }
 function departmentArt(node) {
   if (node.icon === 'backend-overview') {
-    return <div className="fab-overview-art" aria-hidden="true">
-      <BackendOverview className="fab-overview-wide" color="var(--oe-primary)" />
-      <BackendIcon name="backend-overview" size={30} />
+    return <div className="fab-overview-art">
+      <BackendOverview className="fab-overview-wide" color="var(--oe-primary)" label="封装测试，质量、成本、人才、安全、产出" />
     </div>
   }
   return <div className="fab-art" aria-hidden="true">

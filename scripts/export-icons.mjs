@@ -24,7 +24,7 @@ const themeHelp = ['内联 SVG 随 CSS color 换色。通过外部文件动态�
 await copyFile(maskStyles, new URL('icon-mask.css', out))
 const guide = ['# 半导体后道团队图标', '', '图标采用 24 × 24 坐标系。内联 SVG 时颜色跟随 currentColor。', '',
   '[存储器后道职能与选图依据](memory-backend.md) · [西安厂区资料与选图](xian-backend.md) · [三星与 SK 海力士公开职能](samsung-hynix.md) · [长鑫后道职能](cxmt-backend.md) · [美光总部职能](micron-hq.md) · [京元电子专业测试](kyec-testing.md)', '',
-  '后道门户总标使用 [backend-overview.svg](backend-overview.svg)。页头大图使用[带四个职能节点的展开图](artwork/backend-overview.svg)。', '',
+  '后道门户总标使用 [backend-overview.svg](backend-overview.svg)。页头大图使用[质量、成本、人才、安全、产出五项总览图](artwork/backend-overview.svg)。', '',
   ...themeHelp, '', '外部 img 标签直接选 themes/blue/dark/ 等目录中的具名配色 SVG。', '',
   '| 文件 | 团队图标 | 类别 | 图形含义与适用团队 |', '| --- | --- | --- | --- |']
 for (const [key, icon] of Object.entries(backendIcons)) {

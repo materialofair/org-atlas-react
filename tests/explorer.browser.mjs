@@ -142,6 +142,8 @@ try {
   assert.deepEqual(await page.locator('.oe-card h3').allTextContents(), portalBranch[0].children.map(n => n.name))
   const wideArt = page.locator('.fab-overview-wide')
   await wideArt.waitFor()
+  const functions = ['质量', '成本', '人才', '安全', '产出']
+  assert.deepEqual(await wideArt.locator('text').allTextContents(), functions)
   const accentSelect = page.getByRole('combobox', { name: '主题色', exact: true })
   const tones = new Set()
   for (const value of ['blue', 'plum', 'copper', 'slate', 'jade']) {
@@ -371,7 +373,8 @@ try {
   await page.getByRole('link', { name: '进入西安厂区' }).click()
   await page.getByRole('heading', { name: '美光西安封装测试', level: 1 }).waitFor()
   assert.equal(await page.locator('.oe-card h3').count(), 8)
-  await page.locator('.fab-overview-art svg[data-backend-icon="backend-overview"]').waitFor({ state: 'attached' })
+  await wideArt.waitFor({ state: 'visible' })
+  assert.deepEqual(await wideArt.locator('text').allTextContents(), functions)
   await page.getByRole('heading', { name: '工程与设备岗位' }).getByRole('link').click()
   await page.getByRole('heading', { name: '设备与自动化工程' }).getByRole('link').click()
   await page.getByRole('heading', { name: '停机数据分析' }).getByRole('link').click()

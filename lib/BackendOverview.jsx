@@ -1,4 +1,13 @@
 import React, { useId } from 'react'
+import { backendIcons } from './backend-icons.jsx'
+
+const functions = [
+  { name: '质量', x: 46, y: 62, path: backendIcons['quality-engineering'].path },
+  { name: '成本', x: 80, y: 138, path: backendIcons['unit-cost'].path },
+  { name: '人才', x: 170, y: 21, path: backendIcons.team.path },
+  { name: '安全', x: 294, y: 62, path: 'M12 2.5 20 6v5.5c0 4.5-3.7 8-8 10-4.3-2-8-5.5-8-10V6z M12 7.5v7m-3.5-3.5h7' },
+  { name: '产出', x: 260, y: 138, path: 'M5 3.5h8v7H5z M5 14.5h14a3 3 0 0 1 0 6H5a3 3 0 0 1 0-6z M6 17.5h.2m11.6 0h.2 M16 7h6m-2.6-2.7L22 7l-2.6 2.7' },
+]
 
 export function BackendOverview({ color, className, label }) {
   const id = useId()
@@ -17,22 +26,20 @@ export function BackendOverview({ color, className, label }) {
       </linearGradient>
     </defs>
 
-    <g stroke="color-mix(in srgb, currentColor 77%, white)" strokeWidth="1.6">
-      <path d="M73 41h28l27 16h28 M67 119h28l34-21h14 M269 45h-28l-26 15h-28 M274 118h-29l-29-18h-17"/>
-      <path d="M91 47h8l19 11m124 53h7" opacity=".5"/>
+    <g stroke="currentColor" strokeOpacity=".48" strokeWidth="1.25">
+      <path d="M84 62h18l31 19h15 M118 138h5l21-22 M170 37v27 M256 62h-18l-31 19h-15 M222 138h-5l-21-22"/>
     </g>
-    <g fill="color-mix(in srgb, currentColor 13%, white)" stroke="color-mix(in srgb, currentColor 75%, white)" strokeWidth="1.3">
-      <rect x="47" y="28" width="26" height="26" rx="8"/>
-      <rect x="41" y="106" width="26" height="26" rx="8"/>
-      <rect x="269" y="32" width="26" height="26" rx="8"/>
-      <rect x="274" y="105" width="26" height="26" rx="8"/>
-    </g>
-    <g stroke="color-mix(in srgb, currentColor 60%, black)" strokeWidth="1.6">
-      <path d="M54 47h12m-10-3v-4m4 4v-8m4 8v-6"/>
-      <path d="M48 115h12m-12 7h12"/><rect x="51" y="112.8" width="2.8" height="4.4" rx="1" fill="color-mix(in srgb, currentColor 24%, white)"/><rect x="55" y="119.8" width="2.8" height="4.4" rx="1" fill="color-mix(in srgb, currentColor 24%, white)"/>
-      <path d="m282 38 6 2v4q0 4-6 7-6-3-6-7v-4zm-2.6 6 1.9 1.9 3.6-4"/>
-      <path d="M280 124v-10l4 2v-4l5 3v-5h3v14zm3-4h1m3 0h1"/>
-    </g>
+    {functions.map(({ name, x, y, path }) => (
+      <g key={name} transform={`translate(${x} ${y})`}>
+        <rect x="-38" y="-15" width="76" height="30" rx="12"
+          fill="currentColor" fillOpacity=".05" stroke="currentColor" strokeOpacity=".32"/>
+        <svg x="-29" y="-10" width="20" height="20" viewBox="0 0 24 24">
+          <path d={path} stroke="currentColor" strokeWidth="1.8"/>
+        </svg>
+        <text x="8" y="5" textAnchor="middle" fill="currentColor"
+          fontFamily="system-ui, sans-serif" fontSize="14" fontWeight="600">{name}</text>
+      </g>
+    ))}
 
     <path d="m110 101 60-29 60 29v6l-60 30-60-30z" fill="color-mix(in srgb, currentColor 43%, black)"/>
     <path d="m110 101 60-30 60 30-60 30z" fill={`url(#${substrate})`} stroke="color-mix(in srgb, currentColor 93%, white)"/>

@@ -126,16 +126,18 @@
 
 .fab-footer nav { display: flex; gap: 16px; flex-wrap: wrap; }
 
-.fab-overview-art {
-  position: absolute; inset: 0 0 0 auto; width: 35%; display: grid; place-items: center;
-  color: var(--oe-primary); pointer-events: none;
+.oe-hero:has(> .fab-overview-art) {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(300px, 2fr);
+  align-items: center;
 }
-.fab-overview-art .fab-overview-wide { width: 100%; height: 100%; max-width: 420px; object-fit: contain; }
-.fab-overview-art [data-backend-icon] { display: none; }
-@container orgAtlas (max-width: 610px) {
-  .fab-overview-art { inset: 13px 16px auto auto; width: 33px; height: 33px; }
-  .fab-overview-art .fab-overview-wide { display: none; }
-  .fab-overview-art [data-backend-icon] { display: block; }
+.oe-hero:has(> .fab-overview-art) .oe-hero-content { grid-area: 1 / 1; width: 100%; }
+.fab-overview-art { grid-area: 1 / 2; padding: 12px 18px 12px 0; }
+.fab-overview-wide { display: block; width: 100%; max-width: 410px; height: auto; margin: auto; }
+@container orgAtlas (max-width: 680px) {
+  .oe-hero:has(> .fab-overview-art) { grid-template-columns: minmax(0, 1fr); }
+  .fab-overview-art { grid-area: 2 / 1; padding: 0 8px 12px; }
+  .fab-overview-wide { max-width: 320px; }
 }
 
 .fab-appearance { display: flex; align-items: center; gap: 5px; }
