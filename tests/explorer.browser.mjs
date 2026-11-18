@@ -109,8 +109,8 @@ try {
   const workplace = page.getByRole('button', { name: /职场与 KPI/ })
   await workplace.click()
   await iconSearch.fill('')
-  assert.equal(await page.locator('.fab-icon-grid code').count(), 18)
-  for (const [query, key] of [['Leader', 'team-leader'], ['继任者', 'successor'], ['离职率', 'attrition-rate'], ['FPY', 'first-pass-yield']]) {
+  assert.equal(await page.locator('.fab-icon-grid code').count(), 30)
+  for (const [query, key] of [['Buddy', 'buddy'], ['入职伙伴', 'buddy'], ['无尘室', 'fab-operator'], ['带教导师', 'mentor'], ['缺勤率', 'absence-rate'], ['MTTR', 'mean-repair-time'], ['Leader', 'team-leader'], ['继任者', 'successor'], ['离职率', 'attrition-rate'], ['FPY', 'first-pass-yield']]) {
     await iconSearch.fill(query)
     await page.locator('.fab-icon-grid').getByText(key, { exact: true }).waitFor()
   }
