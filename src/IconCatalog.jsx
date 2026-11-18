@@ -1,21 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { ArrowLeft } from 'lucide-react'
-import { BackendIcon, backendIcons, productionCollections } from 'org-atlas-react'
+import { BackendIcon, backendIcons } from 'org-atlas-react'
 import { IconExportDialog } from './IconExportDialog'
-
-const entries = Object.entries(backendIcons)
-const groups = [...new Set(entries.map(([, icon]) => icon.group))]
-const allSections = groups.map(name => ({ name, icons: entries.filter(([, icon]) => icon.group === name).map(([id]) => id) }))
-
-function searchText(value) {
-  return value.toLowerCase().replace(/\s+/g, '')
-}
+import { catalogResults, scopes } from './icon-scopes'
 
 export function IconCatalog({ returnUrl, theme, themeControl, defaultScope, paletteStyle, palette }) {
   const urlScope = new URL(window.location.href).searchParams.get('collection')
   const [scope, setScope] = useState(() => {
     if (urlScope === 'xian' || urlScope === 'micron-hq') return 'micron'
-    return urlScope === 'all' || Object.hasOwn(productionCollections, urlScope) ? urlScope : defaultScope
+    return Object.hasOwn(scopes, urlScope) ? urlScope : defaultScope
   })
   useEffect(() => {
     if (urlScope !== 'xian' && urlScope !== 'micron-hq') return
@@ -25,22 +18,9 @@ export function IconCatalog({ returnUrl, theme, themeControl, defaultScope, pale
   }, [urlScope])
   const [query, setQuery] = useState('')
   const [selected, setSelected] = useState(null)
-  const term = searchText(query)
-  const collection = productionCollections[scope]
-  const sourceSections = term && collection?.sourceSections ? collection.sourceSections : collection?.sections ?? allSections
-  const shown = new Set()
-  const sections = sourceSections.map(section => ({
-    ...section,
-    icons: section.icons.filter(id => {
-      const icon = backendIcons[id]
-      const matches = [id, icon.name, icon.group, icon.description, section.name, collection?.name].some(value => value && searchText(value).includes(term))
-      if (!matches || shown.has(id)) return false
-      shown.add(id)
-      return true
-    }),
-  })).filter(section => section.icons.length)
-  const filters = [['all', '全部图标', entries.length],
-    ...Object.entries(productionCollections).filter(([id]) => id !== 'micron-hq').map(([id, group]) => [id, group.name, group.sections.flatMap(s => s.icons).length])]
+  const results = useMemo(() => catalogResults(query), [query])
+  const { sections, matches, total, name } = results[scope]
+  const searching = Boolean(query.trim())
   return <main className="org-explorer fab-catalog" data-theme={theme} style={paletteStyle}>
     <header className="oe-header"><div className="oe-wrap oe-bar">
       <a className="fab-link" href={returnUrl}><ArrowLeft size={16} />返回组织目录</a>
@@ -48,19 +28,21 @@ export function IconCatalog({ returnUrl, theme, themeControl, defaultScope, pale
     </div></header>
     <div className="oe-wrap fab-library">
       <h1>后道团队图标库</h1>
-      <p>按职能查找图标，点击卡片可调色、下载图片或复制代码。不确定时可省略 <code>icon</code>，目录会根据是否有下级自动选择部门或团队图标。</p>
+      <p>点击图标可调色、下载图片或复制代码。全库按唯一图标计数，同一图标可出现在多个合集。</p>
       <div className="fab-catalog-filter" role="group" aria-label="图标范围">
-        {filters.map(([id, label, count]) => <button key={id} type="button" className="oe-button"
+        {Object.entries(results).map(([id, item]) => <button key={id} type="button" className="oe-button"
           aria-pressed={scope === id} onClick={() => {
             setScope(id)
             const url = new URL(window.location.href)
             url.searchParams.set('collection', id)
             window.history.replaceState(null, '', url)
-          }}>{label} · {count}</button>)}
+          }}>{item.name} · {searching ? item.matches + ' / ' : ''}{item.total}</button>)}
       </div>
       <input className="fab-icon-search" type="search" aria-label="搜索团队图标"
-        placeholder="搜索名称、职能或标识，如 TAT、来料" value={query} onChange={event => setQuery(event.target.value)} />
-      {!sections.length && <p role="status">没有匹配的团队图标</p>}
+        placeholder="搜索名称、职能或标识，如 Leader、离职率、OEE" value={query} onChange={event => setQuery(event.target.value)} />
+      <p role="status">{searching
+        ? (matches ? `${name} · 找到 ${matches} 枚，共 ${total} 枚` : `${name} · 没有匹配的图标（0 / ${total}）`)
+        : `${name} · 显示 ${matches} 枚图标`}</p>
       {sections.map(({ name, source, icons }) => <section key={name}>
         <div className="fab-group-heading"><h2>{name}</h2>{source && <a href={source} aria-label={name + '职能来源'}>职能来源 ↗</a>}</div>
         <div className="fab-icon-grid">{icons.map(id => {

@@ -68,7 +68,11 @@ try {
   const catalog = await page.locator('.fab-icon-grid article').evaluateAll(cards =>
     cards.map(card => ({ key: card.querySelector('code').textContent, icon: card.querySelector('svg')?.dataset.backendIcon,
       described: !!card.querySelector('p').textContent.trim() })))
-  assert.equal(catalog.length, 158)
+  const allFilter = page.getByRole('button', { name: /全部图标/ })
+  await page.getByRole('searchbox').fill('FMEA')
+  assert.equal(await allFilter.innerText(), '全部图标 · 1 / ' + catalog.length)
+  await page.getByRole('searchbox').fill('')
+  assert.equal(await allFilter.innerText(), '全部图标 · ' + catalog.length)
   assert.equal(new Set(catalog.map(item => item.key)).size, catalog.length)
   assert.ok(catalog.every(item => item.key === item.icon && item.described))
   assert.equal(catalog.filter(item => ['org-unit', 'team', 'project', 'support', 'coordination', 'workcell'].includes(item.key)).length, 6)
@@ -91,6 +95,28 @@ try {
   checkIcon(root)
 
   const iconSearch = page.getByRole('searchbox', { name: '搜索团队图标' })
+  const buttons = page.getByRole('group', { name: '图标范围' }).getByRole('button')
+  for (const query of ['', '台湾', 'KPI', 'no-such-symbol']) {
+    await iconSearch.fill(query)
+    for (const button of await buttons.all()) {
+      await button.click()
+      const visible = await page.locator('.fab-icon-grid code').allTextContents()
+      const number = (await button.innerText()).split(' · ')[1].split(' / ')[0]
+      assert.equal(Number(number), visible.length)
+      assert.equal(new Set(visible).size, visible.length)
+    }
+  }
+  const workplace = page.getByRole('button', { name: /职场与 KPI/ })
+  await workplace.click()
+  await iconSearch.fill('')
+  assert.equal(await page.locator('.fab-icon-grid code').count(), 18)
+  for (const [query, key] of [['Leader', 'team-leader'], ['继任者', 'successor'], ['离职率', 'attrition-rate'], ['FPY', 'first-pass-yield']]) {
+    await iconSearch.fill(query)
+    await page.locator('.fab-icon-grid').getByText(key, { exact: true }).waitFor()
+  }
+  await page.reload()
+  await page.getByRole('button', { name: /职场与 KPI/, pressed: true }).waitFor()
+  await allFilter.click()
   for (const [query, key] of [['TSE', 'test-solutions'], ['底填', 'underfill'], ['FAC', 'facilities'], ['通用组织', 'team'], ['测试覆盖', 'test-coverage'], ['IT团队', 'it-team'], ['运营团队', 'operations-team']]) {
     await iconSearch.fill(query)
     await page.locator('.fab-icon-grid article').filter({ has: page.getByText(key, { exact: true }) }).waitFor()
@@ -108,7 +134,7 @@ try {
   assert.equal(await page.locator('.fab-icon-grid article').count(), catalog.length)
   await page.getByRole('link', { name: '返回组织目录' }).click()
   await assertSelected(portalBranch[1])
-  console.log('PASS · 158 枚图标、职能搜索与说明、部门映射、图鉴返回当前部门')
+  console.log('PASS · ' + catalog.length + ' 枚图标、职能搜索与说明、部门映射、图鉴返回当前部门')
   await page.goto(demoUrl)
   await assertSelected(portalBranch[0])
   await page.getByText('二级部门', { exact: true }).waitFor()
