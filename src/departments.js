@@ -1,3 +1,4 @@
+import { micronHqSections } from '../lib/micron-hq.js'
 import { xian } from './xian.js'
 
 // Public functions follow Micron Taiwan's Back-End job map. Subteams illustrate the work.
@@ -63,14 +64,27 @@ const threeLevels = unit('test-center', '测试职能示例', 'ate', undefined, 
     unit('ambient', '常温测试组', 'team'), unit('hot-cold', '高低温测试组', 'ate')]),
   unit('test-quality', '测试质量部', 'quality-engineering'),
 ])
+const hq = {
+  id: 'micron-hq', name: '美光总部 · 后道职能', icon: 'backend-overview',
+  description: '从博伊西公开岗位浏览先进封装、测试工程与供应计划，并了解全球封测协作。分组用于查找职能，负责人留空。',
+  evidence: { label: '美光年报 · 总部所在地', url: 'https://investors.micron.com/static-files/7a1f8c6f-1ce9-4efe-bc6e-722b6b9c4550' },
+  children: micronHqSections.map(section => {
+    const evidence = { label: section.name + ' · 美光资料', url: section.source }
+    return {
+      id: 'hq-' + section.id, name: section.name, description: section.description, icon: section.items[0][0], evidence,
+      children: section.items.map(([icon, name]) => ({ id: 'hq-' + icon, name, icon, evidence })),
+    }
+  }),
+}
+const sites = new Map([['xian', xian], ['micron-hq', hq]])
 const samples = new Map([['2', twoLevels], ['3', threeLevels], ['7', root]])
 export function demoDepartments(levels, site) {
-  const selected = site === 'xian' ? xian : samples.get(levels) ?? backend
+  const selected = sites.get(site) ?? samples.get(levels) ?? backend
   const byId = new Map()
   function visit(node) {
     byId.set(node.id, node)
     node.children?.forEach(visit)
   }
   visit(selected)
-  return { root: selected, byId, rootLevel: selected === backend || selected === xian ? 2 : 1, title: selected === xian ? '美光西安 · 厂区示例' : '美光后道 · 门户示例' }
+  return { root: selected, byId, rootLevel: selected === backend || sites.has(site) ? 2 : 1, title: selected === hq ? '美光总部 · 职能目录' : selected === xian ? '美光西安 · 厂区示例' : '美光后道 · 门户示例' }
 }

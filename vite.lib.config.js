@@ -10,7 +10,7 @@ export default defineConfig({
       generateBundle() {
         const license = new URL('./LICENSE', import.meta.resolve('lucide-react/package.json'))
         this.emitFile({ type: 'asset', fileName: 'LICENSE-lucide.txt', source: readFileSync(license, 'utf8') })
-        for (const fileName of ['index.d.ts', 'style.d.css.ts']) {
+        for (const fileName of ['index.d.ts', 'style.d.css.ts', 'icon-mask.css']) {
           const source = readFileSync(new URL('./lib/' + fileName, import.meta.url), 'utf8')
           this.emitFile({ type: 'asset', fileName, source })
         }

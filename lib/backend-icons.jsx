@@ -122,6 +122,20 @@ export const backendIcons = {
   'ball-attach': symbol('成品植球', '封装与互连', '封装基板下方排列独立焊球，适合 BGA 植球工序与外协对接。', 'M3 4h18v4H3z M2 11h20 M7 16a2 2 0 1 1-4 0 2 2 0 0 1 4 0z M14 16a2 2 0 1 1-4 0 2 2 0 0 1 4 0z M21 16a2 2 0 1 1-4 0 2 2 0 0 1 4 0z'),
   'dram-array-test': symbol('核心存储测试', '测试与质量', '读写箭头指向存储阵列，表示成品测试中的核心存储功能验证。', 'M3 3h13v12H3z M3 9h13M9.5 3v12 M13 19h8m-3-3 3 3-3 3 M3 19h6m-3-3-3 3 3 3'),
   'module-layout': symbol('模组设计开发', '存储产品与先进封装', '模组板上绘出器件与布线，适合模组设计及开发岗位。', 'M2 5h20v13H2z M5 8h5v5H5z M10 10h4l2-2h3 M13 14h5 M5 18v3m3-3v3m8-3v3m3-3v3'),
+  'materials-roadmap': symbol('封装材料路线图', '封装与互连', '材料叠片旁的里程碑线表示按产品世代安排材料验证。', 'M2 7l6-3 6 3-6 3z M2 11l6 3 6-3 M3 19h18 M6 17v4m6-6v6m6-10v10'),
+  'temporary-bond-film': symbol('临时键合膜', '封装与互连', '薄膜的一角从支撑层揭起，表示临时键合材料。', 'M2 16l12-6 8 4-12 6z M3 12l7 3 6-3c3-2 2-6-1-8-1 3-4 4-7 5z'),
+  'carrier-substrate': symbol('封装载体', '封装与互连', '薄晶圆与下方较厚的支撑分开，用于玻璃或硅载体评估。', 'M3 7q9-6 18 0-9 6-18 0z M3 14q9-6 18 0-9 6-18 0z M3 14v3q9 6 18 0v-3'),
+  'wafer-reconstitution': symbol('晶圆重构', '封装与互连', '分散裸片归入同一圆形载体，适合重构晶圆整合。', 'M2 3h4v4H2z M8 2h4v4H8z M5 9l3 3m-3 0h3V9 M12 8a7 7 0 1 1-4 7 M12 12h3v3h-3z M16 16h3v3h-3z'),
+  'die-shift': symbol('晶粒偏移', '测试与质量', '角标给出参考位置，斜移的实线框表示晶粒位置偏差。', 'M3 9V4h5m3 0h5v4 M3 12v5h4 M9 10h11v11H9z M5 6l6 6m-3 0h3V9'),
+  'wafer-warpage': symbol('晶圆翘曲', '测试与质量', '弯曲剖面与水平基准之间的量距，表示晶圆翘曲评估。', 'M2 9q10 7 20 0v3q-10 7-20 0z M2 20h5m3 0h4m3 0h5 M12 4v6m-2-2 2 2 2-2'),
+  'experiment-matrix': symbol('工艺实验设计', '测试与质量', '矩阵中的不同组合对应 DOE 因子与试验条件。', 'M5 4v16h16 M8 7h3v3H8z M16 7l3 3m0-3-3 3 M8 14l3 3m0-3-3 3 M16 14h3v3h-3z'),
+  'test-architecture': symbol('可测试性架构', '测试与质量', '贯穿芯片的专用观测支路，用于 DFT 架构设计。', 'M5 4h14v16H5z M2 9h6l3 4h4m0-3v6 M19 9h3m-3 6h3 M8 2v2m8-2v2'),
+  'pattern-debug': symbol('测试向量调试', '测试与质量', '数字脉冲与定位游标表示调试测试向量。', 'M2 13h4V7h5v6h4V7h5v6h2 M13 3v3m0 9v6 M10 20l3-3 3 3'),
+  'probe-card': symbol('探针卡验证', '测试与质量', '卡板底部的斜探针接近水平焊盘，适合探针卡开发与验证。', 'M2 4h20v5H2z M6 9v3l-2 3m8-6v3l-2 3m8-6v3l-2 3 M2 19h5m2 0h5m2 0h5'),
+  'equipment-standard': symbol('设备规格与标准化', '生产运营', '量规和设备底座表示跨厂设备规范与资格确认。', 'M3 3h18v5H3z M6 3v3m4-3v2m4-2v3m4-3v2 M5 12h14v8H5z M8 16h3m3 0 1 1 2-3'),
+  'site-loading': symbol('厂区负载评估', '生产运营', '两座工厂各带独立负载条，适合对照厂区产能边界。', 'M2 20V8l4-3v4l4-3v14z M14 20V8l4-3v4l4-3v14z M5 16h2m-2-3h2m10 3h2'),
+  'build-signal': symbol('投产指令', '生产运营', '确认标记与指向生产线的箭头表示已校验的投产需求。', 'M3 3h12v7 M3 3v17h8 M6 8l2 2 4-5 M7 15h14m-4-4 4 4-4 4'),
+  'global-at-network': symbol('全球封测协同', '生产运营', '互联线路连接两个厂区和中央封装单元，用于全球后道运营。', 'M2 3h5v5H2z M17 3h5v5h-5z M4.5 8v4H10m9.5-4v4H14 M7 16l5-3 5 3-5 3z M7 19l5 3 5-3'),
 }
 
 export function getDepartmentIcon(node) {
@@ -129,9 +143,9 @@ export function getDepartmentIcon(node) {
   return node.children?.length ? 'org-unit' : 'team'
 }
 
-export function BackendIcon({ name, size = 24, label, className }) {
+export function BackendIcon({ name, size = 24, label, className, color }) {
   if (!Object.hasOwn(backendIcons, name)) return null
-  return <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"
+  return <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color ?? "currentColor"}
     strokeWidth="1.55" strokeLinecap="round" strokeLinejoin="round" className={className}
     data-backend-icon={name} aria-hidden={label ? undefined : true} role={label ? 'img' : undefined} aria-label={label}>
     <path d={backendIcons[name].path} />

@@ -59,10 +59,22 @@ try {
   const catalog = await page.locator('.fab-icon-grid article').evaluateAll(cards =>
     cards.map(card => ({ key: card.querySelector('code').textContent, icon: card.querySelector('svg')?.dataset.backendIcon,
       described: !!card.querySelector('p').textContent.trim() })))
-  assert.equal(catalog.length, 118)
+  assert.equal(catalog.length, 132)
   assert.equal(new Set(catalog.map(item => item.key)).size, catalog.length)
   assert.ok(catalog.every(item => item.key === item.icon && item.described))
   assert.equal(catalog.filter(item => ['org-unit', 'team', 'project', 'support', 'coordination', 'workcell'].includes(item.key)).length, 6)
+  // Verify every glyph, including older sets, against the resolved accent in all ten themes.
+  for (const mode of ['light', 'dark']) {
+    await page.getByRole('combobox', { name: '显示主题' }).selectOption(mode)
+    for (const accent of ['jade', 'blue', 'plum', 'copper', 'slate']) {
+      await page.getByRole('combobox', { name: '主题色', exact: true }).selectOption(accent)
+      const expected = await page.locator('.fab-accent-picker').evaluate(el => getComputedStyle(el, '::before').backgroundColor)
+      const strokes = await page.locator('.fab-sample path').evaluateAll(paths => [...new Set(paths.map(path => getComputedStyle(path).stroke))])
+      assert.deepEqual(strokes, [expected])
+    }
+  }
+  await page.getByRole('combobox', { name: '显示主题' }).selectOption('system')
+  await page.getByRole('combobox', { name: '主题色', exact: true }).selectOption('jade')
   function checkIcon(node) {
     if (node.icon) assert.ok(catalog.some(item => item.key === node.icon), node.name)
     node.children?.forEach(checkIcon)
@@ -74,7 +86,7 @@ try {
     await iconSearch.fill(query)
     await page.locator('.fab-icon-grid article').filter({ has: page.getByText(key, { exact: true }) }).waitFor()
   }
-  for (const [name, query] of [[/三星 TSP/, 'CoA'], [/SK 海力士/, 'TAT'], [/长鑫存储 CXMT/, '晶圆级老化']]) {
+  for (const [name, query] of [[/三星 TSP/, 'CoA'], [/SK 海力士/, 'TAT'], [/长鑫存储 CXMT/, '晶圆级老化'], [/美光总部/, 'DOE']]) {
     await page.getByRole('button', { name }).click()
     await iconSearch.fill(query)
     assert.equal(await page.locator('.fab-icon-grid article').count(), 1)
@@ -87,7 +99,7 @@ try {
   assert.equal(await page.locator('.fab-icon-grid article').count(), catalog.length)
   await page.getByRole('link', { name: '返回组织目录' }).click()
   await assertSelected(portalBranch[1])
-  console.log('PASS · 118 枚图标、职能搜索与说明、部门映射、图鉴返回当前部门')
+  console.log('PASS · 132 枚图标、职能搜索与说明、部门映射、图鉴返回当前部门')
   await page.goto(demoUrl)
   await assertSelected(portalBranch[0])
   await page.getByText('二级部门', { exact: true }).waitFor()
@@ -99,6 +111,9 @@ try {
   const tones = new Set()
   for (const value of ['blue', 'plum', 'copper', 'slate', 'jade']) {
     await accentSelect.selectOption(value)
+    const expected = await wideArt.evaluate(el => getComputedStyle(el).color)
+    assert.deepEqual(await page.locator('.oe-card .oe-symbol path').evaluateAll(paths =>
+      [...new Set(paths.map(path => getComputedStyle(path).stroke))]), [expected])
     tones.add(await wideArt.locator('stop').first().evaluate(stop => getComputedStyle(stop).stopColor))
   }
   assert.equal(tones.size, 5)
@@ -345,6 +360,20 @@ try {
   await page.getByRole('link', { name: '进入台湾门户' }).click()
   await assertSelected(backend)
   console.log('PASS · 西安厂区切换、多级岗位、来源、刷新、图标检索与返回')
+  await page.getByRole('link', { name: '进入美光总部' }).click()
+  await page.getByRole('heading', { name: '美光总部 · 后道职能', level: 1 }).waitFor()
+  assert.equal(await page.locator('.oe-card h3').count(), 6)
+  await page.getByRole('heading', { name: 'TSE · 关键设备组' }).getByRole('link').click()
+  await page.getByRole('heading', { name: '探针卡验证' }).getByRole('link').click()
+  await page.reload()
+  await page.getByRole('heading', { name: '探针卡验证', level: 1 }).waitFor()
+  assert.match(await page.locator('.fab-footer span a').getAttribute('href'), /pid=44281038/)
+  await page.getByRole('link', { name: '后道团队图标库' }).click()
+  await page.getByRole('button', { name: /美光总部/, pressed: true }).waitFor()
+  assert.equal(await page.locator('.fab-icon-grid article').count(), 25)
+  await page.getByRole('link', { name: '返回组织目录' }).click()
+  await page.getByRole('heading', { name: '探针卡验证', level: 1 }).waitFor()
+  console.log('PASS · 美光总部入口、六组职责、子项证据、专题图标库与返回')
   assert.deepEqual(errors, [])
   console.log('PASS · 手机直达七级、面包屑返回、无页面运行时错误')
 } finally {

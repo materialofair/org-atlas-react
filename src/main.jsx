@@ -13,7 +13,10 @@ const pageUrl = new URL(window.location.href)
 const catalogOpen = pageUrl.searchParams.get('view') === 'icons'
 function catalogLink(open) {
   const url = new URL(window.location.href)
-  if (open) url.searchParams.set('view', 'icons')
+  if (open) {
+    url.searchParams.set('view', 'icons')
+    if (url.searchParams.get('site') === 'micron-hq') url.searchParams.set('collection', 'micron-hq')
+  }
   else { url.searchParams.delete('view'); url.searchParams.delete('collection') }
   return url.href
 }
@@ -123,9 +126,9 @@ function App() {
     </label>
     <ThemeSelect value={theme} onChange={selectTheme} />
   </div>
-  if (catalogOpen) return <IconCatalog paletteStyle={paletteStyle} xianSite={root.id === 'xian'} returnUrl={catalogLink(false)} theme={theme} themeControl={themeControl} />
+  if (catalogOpen) return <IconCatalog paletteStyle={paletteStyle} defaultScope={root.evidence ? root.id : 'all'} returnUrl={catalogLink(false)} theme={theme} themeControl={themeControl} />
   const sourceInfo = evidence
-    ? <>西安公开资料 · <a href={evidence.url}>{evidence.label}</a></>
+    ? <>{root.id === 'micron-hq' ? '美光总部资料' : '西安公开资料'} · <a href={evidence.url}>{evidence.label}</a></>
     : <>{publicScope ? '美光公开职能 · 门户示例' : '模拟团队 · 用于展示职能下钻'} · <a href={jobMap}>美光职类地图</a>
         {id === 'hbm-integration' && <> · <a href={siteArticle}>台中厂区资料</a></>}</>
   return (
@@ -140,7 +143,7 @@ function App() {
         theme={theme}
         renderArtwork={departmentArt}
         brandMark={root.icon === 'backend-overview' ? <BackendIcon name="backend-overview" size={23} /> : undefined}
-        itemLabel={root.id === 'xian' ? '条目' : '部门'}
+        itemLabel={root.evidence ? '条目' : '部门'}
         toolbar={<><a className="fab-link" href={catalogLink(true)} aria-label="后道团队图标库" title="后道团队图标库">
           <BookOpen size={16} /><span>图标库</span>
         </a>{themeControl}</>}
@@ -148,8 +151,10 @@ function App() {
       <footer className="fab-footer">
         <span>{sourceInfo}</span>
         <nav aria-label="厂区导航">
-          <a href={root.id === 'xian' ? '?' : '?site=xian'}>{root.id === 'xian' ? '进入台湾门户' : '进入西安厂区'}</a>
-          {root.id !== 'xian' && <a href={rootLevel === 2 ? '?levels=7' : '?'}>{rootLevel === 2 ? '查看上级目录' : '进入美光后道门户'}</a>}
+          {root.id !== 'micron-hq' && <a href="?site=micron-hq">进入美光总部</a>}
+          {root.id !== 'xian' && <a href="?site=xian">进入西安厂区</a>}
+          {root.evidence && <a href="?">进入台湾门户</a>}
+          {!root.evidence && <a href={rootLevel === 2 ? '?levels=7' : '?'}>{rootLevel === 2 ? '查看上级目录' : '进入美光后道门户'}</a>}
         </nav>
       </footer>
     </div>

@@ -1,0 +1,9 @@
+/* Set --org-icon to url(...) on the element; the SVG supplies the silhouette. */
+.org-icon-mask {
+  display: inline-block;
+  width: var(--org-icon-size, 1.5em);
+  height: var(--org-icon-size, 1.5em);
+  background-color: var(--org-icon-color, var(--org-primary, var(--primary, currentColor)));
+  -webkit-mask: var(--org-icon) center / contain no-repeat;
+  mask: var(--org-icon) center / contain no-repeat;
+}

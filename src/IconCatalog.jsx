@@ -8,9 +8,9 @@ const xianIcons = new Set(Array.from(demoDepartments(undefined, 'xian').byId.val
 const groups = [...new Set(entries.map(([, icon]) => icon.group))]
 const allSections = groups.map(name => ({ name, icons: entries.filter(([, icon]) => icon.group === name).map(([id]) => id) }))
 
-export function IconCatalog({ returnUrl, theme, themeControl, xianSite, paletteStyle }) {
+export function IconCatalog({ returnUrl, theme, themeControl, defaultScope, paletteStyle }) {
   const urlScope = new URL(window.location.href).searchParams.get('collection')
-  const [scope, setScope] = useState(['all', 'xian'].includes(urlScope) || Object.hasOwn(productionCollections, urlScope) ? urlScope : xianSite ? 'xian' : 'all')
+  const [scope, setScope] = useState(['all', 'xian'].includes(urlScope) || Object.hasOwn(productionCollections, urlScope) ? urlScope : defaultScope)
   const [query, setQuery] = useState('')
   const term = query.trim().toLowerCase()
   const collection = productionCollections[scope]

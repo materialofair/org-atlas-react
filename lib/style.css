@@ -176,13 +176,6 @@
   box-shadow: none;
   transition: border-color .16s, box-shadow .16s;
 }
-.oe-card[data-tone="1"] { --oe-tone: light-dark(#956037, #e2b18c); }
-.oe-card[data-tone="2"] { --oe-tone: light-dark(#4b6591, #a8bde8); }
-.oe-card[data-tone="3"] { --oe-tone: light-dark(#785c90, #c8b0e2); }
-.oe-card[data-tone="4"] { --oe-tone: light-dark(#36757b, #96cbd2); }
-.oe-card[data-tone="5"] { --oe-tone: light-dark(#65703c, #bdcb8d); }
-.oe-card[data-tone="6"] { --oe-tone: light-dark(#995d59, #dca49f); }
-.oe-card[data-tone="7"] { --oe-tone: light-dark(#606f80, #b0c1d5); }
 .oe-card:hover, .oe-card:focus-within { border-color: color-mix(in srgb, var(--oe-primary) 62%, var(--oe-border)); }
 .oe-card-top { gap: 12px; }
 .oe-symbol { flex: none; width: 38px; height: 38px; color: var(--oe-tone); background: color-mix(in srgb, var(--oe-tone) 10%, var(--oe-card)); border-radius: calc(var(--oe-radius) * .85); }
