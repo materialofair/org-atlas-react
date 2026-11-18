@@ -170,8 +170,14 @@ npm run dev -- --port 5188
 - `npm run build` 生成组件库和生产版 Demo，分别位于 `dist/lib` 与 `dist/demo`。
 - `npm pack` 重新构建库并在当前目录生成可分发的 tgz。
 - `npm run test:browser` 验证七级下穿、返回、主题和移动布局。先启动 Demo，本机需要 Chrome 或通过 `npx playwright install chromium` 安装 Chromium。可用 `ORG_DEMO_URL` 指定测试地址。
-- `node tests/react-compat.mjs 18.0.0 ./org-atlas-react-1.15.3.tgz` 在临时宿主中安装指定 React 版本和组件包，完成生产构建并在浏览器中验证七级往返。已验证 18.0.0、18.2.0、18.3.1 和 19.3.1。
+- `node tests/react-compat.mjs 18.0.0 ./org-atlas-react-1.15.3.tgz` 在临时宿主中安装指定 React 版本和组件包，完成生产构建并在浏览器中验证七级往返。已验证 18.0.0、18.1.0、18.2.0、18.3.0、18.3.1 和 19.3.1。
 - `src/departments.js` 存放可替换的示例组织数据。
+
+## v1.15.3 开发依赖审计记录
+
+2026-11-19 核对锁文件时，`npm audit --include=dev` 的 4 条高危记录都来自同一条依赖链。Vite 8.3.8 直接使用 `picomatch@4.0.7`，也经由 `tinyglobby` 和 `fdir` 使用同一份安装。GitHub 于 2026-11-18（UTC）撤回了该公告，未列出修复版本。本次使用空缓存查询 npm 官方 registry，仍返回这 4 条记录。[GitHub 公告 GHSA-fc5q-39xc-vjpf](https://github.com/advisories/GHSA-fc5q-39xc-vjpf)
+
+`npm audit fix` 在现有版本约束下保留这 4 条记录。npm 建议的强制降级目标 Vite 6.2.7 在单独的审计中也被标为高危，因此保留 Vite 8 和原锁文件。项目的 `npm audit --omit=dev` 为 0 项。在空的 React 18.3.1 宿主中安装组件 TGZ 后，宿主依赖树中没有上述四个开发包，生产审计同样为 0 项。
 
 ## 许可证
 
