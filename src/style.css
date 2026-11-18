@@ -147,7 +147,14 @@
 .fab-editor-select { position: relative; min-width: 0; }
 .fab-editor-select > svg { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; }
 .fab-editor-preview { background: var(--oe-muted); border-radius: 10px; padding: 8px; }
-.fab-editor-preview > svg { display: block; width: min(100%, 280px); margin: auto; }
+.fab-placement-map { position: relative; width: min(100%, 440px); margin: auto; }
+.fab-placement-map > svg { display: block; width: 100%; }
+.fab-placement-slot { position: absolute; transform: translate(-50%, -50%); width: 30%; border: 1px solid transparent; background: transparent; border-radius: 10px; color: var(--oe-subtle); cursor: grab; touch-action: none; user-select: none; font: inherit; }
+.fab-placement-slot[data-empty] { width: 17%; border: 1px dashed var(--oe-border); font-size: 12px; cursor: pointer; }
+.fab-placement-slot:hover, .fab-placement-slot[aria-pressed="true"], .fab-placement-slot[data-target], .fab-placement-slot:focus-visible { outline: 2px solid var(--oe-primary); outline-offset: -1px; }
+.fab-placement-slot[data-target] { background: color-mix(in srgb, var(--oe-primary) 12%, transparent); }
+.fab-placement-ghost { position: absolute; z-index: 1; transform: translate(-50%, -115%); pointer-events: none; color: var(--oe-on-primary); background: var(--oe-primary); padding: 4px 10px; border-radius: 7px; font-size: 13px; white-space: nowrap; max-width: 80%; overflow: hidden; text-overflow: ellipsis; }
+.fab-placement-help { margin: 6px 0; color: var(--oe-subtle); font-size: 12px; }
 .fab-editor-center { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 12px; margin: 17px 0; }
 .fab-editor-heading, .fab-editor-footer { display: flex; align-items: center; gap: 8px; }
 .fab-editor-heading { justify-content: space-between; }

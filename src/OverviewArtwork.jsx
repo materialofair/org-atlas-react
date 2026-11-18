@@ -2,6 +2,9 @@ import React, { useLayoutEffect, useRef, useState } from 'react'
 import { ChevronDown, Pencil, Plus, X } from 'lucide-react'
 import { BackendIcon, BackendOverview, backendIcons, defaultOverviewItems } from 'org-atlas-react'
 
+import { placedItems, slotOrder } from '../lib/overview-layout.js'
+import { OverviewPlacement } from './OverviewPlacement'
+
 const defaults = { items: defaultOverviewItems, centerIcon: '' }
 const groups = new Map()
 for (const [key, icon] of Object.entries(backendIcons)) {
@@ -20,7 +23,7 @@ function readOverview(key) {
     if (Array.isArray(value?.items) && value.items.length >= 4 && value.items.length <= 7 &&
         (value.centerIcon === '' || Object.hasOwn(backendIcons, value.centerIcon)) &&
         value.items.every(item => typeof item?.label === 'string' && item.label.trim() && Object.hasOwn(backendIcons, item.icon))) {
-      return value
+      return { ...value, items: placedItems(value.items) }
     }
   } catch { /* Storage can be unavailable or contain a previous format. */ }
   return defaults
@@ -37,6 +40,24 @@ function OverviewEditor({ value, onSave, onClose }) {
   function changeItem(index, patch) {
     setDraft({ ...draft, items: draft.items.map((item, i) => i === index ? { ...item, ...patch } : item) })
   }
+  function moveItem(from, to) {
+    setDraft(current => {
+      const source = current.items.find(item => item.position === from)
+      const target = current.items.find(item => item.position === to)
+      const items = current.items.map(item => {
+        if (item === source) return target ? { ...target, position: from } : { ...source, position: to }
+        if (item === target) return { ...source, position: to }
+        return item
+      })
+      return { ...current, items }
+    })
+  }
+
+  function addItem() {
+    const position = slotOrder.find(slot => !draft.items.some(item => item.position === slot))
+    setDraft({ ...draft, items: [...draft.items, { icon: 'team', label: '新职能', position }] })
+  }
+
   function submit(event) {
     event.preventDefault()
     onSave({ ...draft, items: draft.items.map(item => ({ ...item, label: item.label.trim() })) })
@@ -47,7 +68,7 @@ function OverviewEditor({ value, onSave, onClose }) {
       <header className="fab-export-head"><h2>编辑总览</h2>
         <button className="fab-export-close" type="button" aria-label="关闭" onClick={onClose}><X size={18}/></button>
       </header>
-      <div className="fab-editor-preview"><BackendOverview {...draft} label="总览预览" /></div>
+      <OverviewPlacement draft={draft} onMove={moveItem}/>
       <label className="fab-editor-center">中央图标
         <IconSelect value={draft.centerIcon} onChange={e => setDraft({ ...draft, centerIcon: e.target.value })}>
           <option value="">封测芯片（立体）</option>
@@ -63,7 +84,7 @@ function OverviewEditor({ value, onSave, onClose }) {
           onClick={() => setDraft({ ...draft, items: draft.items.filter((_, n) => n !== i) })}><X size={16}/></button>
       </div>)}
       <button className="oe-button fab-editor-add" type="button" disabled={draft.items.length === 7}
-        onClick={() => setDraft({ ...draft, items: [...draft.items, { icon: 'team', label: '新职能' }] })}><Plus size={15}/>添加图标</button>
+        onClick={addItem}><Plus size={15}/>添加图标</button>
       <footer className="fab-editor-footer">
         <button type="button" className="oe-button" onClick={() => setDraft(defaults)}>恢复默认</button>
         <button type="button" className="oe-button" onClick={onClose}>取消</button>

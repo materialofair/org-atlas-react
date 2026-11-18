@@ -82,7 +82,10 @@ export interface OrgExplorerProps {
 
 export declare function OrgExplorer(props: OrgExplorerProps): ReactElement
 
+export type OverviewPosition = 'top' | 'upper-left' | 'middle-left' | 'lower-left' | 'upper-right' | 'middle-right' | 'lower-right'
+
 export interface OverviewItem {
+  readonly position?: OverviewPosition
   readonly label: string
   readonly icon: BackendIconName
 }

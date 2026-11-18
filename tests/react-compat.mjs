@@ -72,7 +72,8 @@ try {
   const secondArt = page.getByRole('img', { name: '独立配色' })
   assert.equal(await firstArt.evaluate(el => getComputedStyle(el).color), 'rgb(22, 78, 192)')
   assert.equal(await secondArt.locator('text').count(), 6)
-  assert.equal(await secondArt.locator('text').last().textContent(), '伙伴')
+  assert.equal(await secondArt.locator('[data-overview-position="middle-left"] title').textContent(), '伙伴')
+  assert.equal(await secondArt.locator('[data-overview-position="top"] title').textContent(), '人才')
   assert.equal(await secondArt.evaluate(el => getComputedStyle(el).color), 'rgb(170, 68, 119)')
   assert.notEqual(await firstArt.locator('linearGradient').first().getAttribute('id'),
     await secondArt.locator('linearGradient').first().getAttribute('id'))

@@ -1,4 +1,5 @@
 import React, { useId } from 'react'
+import { overviewLayout, placedItems, slotOrder } from './overview-layout.js'
 import { backendIcons } from './backend-icons.jsx'
 
 export const defaultOverviewItems = [
@@ -7,7 +8,7 @@ export const defaultOverviewItems = [
   { label: '人才', icon: 'team' },
   { label: '安全', icon: 'ehs' },
   { label: '产出', icon: 'units-per-hour' },
-]
+].map((item, index) => ({ ...item, position: slotOrder[index] }))
 
 function glyphWidth(char) {
   if (/[ilI1.,:;!|' ]/.test(char)) return .4
@@ -41,21 +42,9 @@ export function BackendOverview({ color, className, label, items = defaultOvervi
   if (!Array.isArray(items) || items.length < 4 || items.length > 7) {
     throw new RangeError('BackendOverview expects 4 to 7 items')
   }
-  const sideCount = Math.floor(items.length / 2)
-  const hasTop = items.length % 2 === 1
-  const height = sideCount === 3 ? 198 : 164
+  const nodes = placedItems(items)
+  const { height, cy, points } = overviewLayout(nodes)
   const cx = 190
-  const cy = height / 2 + (hasTop ? 10 : 0)
-  const nodes = items.map((item, index) => {
-    if (hasTop && index === sideCount) return { ...item, x: cx, y: 23, top: true }
-    const left = index < sideCount
-    const row = left ? index : index - sideCount - Number(hasTop)
-    const firstY = hasTop ? 54 : 32
-    const y = firstY + row * (height - 31 - firstY) / (sideCount - 1)
-    const inset = hasTop && row === sideCount - 1 ? 14 : 0
-    const x = left ? 68 + inset : 312 - inset
-    return { ...item, x, y, top: false }
-  })
   return <svg xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 380 ${height}`} fill="none"
     strokeLinecap="round" strokeLinejoin="round" className={className}
     style={{ color: color ?? 'var(--org-art-accent, var(--org-primary, var(--primary, #47846f)))' }}
@@ -70,19 +59,20 @@ export function BackendOverview({ color, className, label, items = defaultOvervi
       </linearGradient>
     </defs>
 
-    {nodes.map((node, index) => {
+    {nodes.map(node => {
+      const [x, y] = points[node.position]
       const lines = captionLines(node.label)
       const textUnits = Math.max(...lines.map(line => Array.from(line).reduce((sum, char) => sum + glyphWidth(char), 0)))
       const width = Math.max(78, 42 + Math.ceil(textUnits * 14))
       const halfHeight = lines.length === 1 ? 16 : 22
-      const direction = node.x < cx ? 1 : -1
-      const portX = node.x + direction * width / 2
-      const connector = node.top
-        ? `M${cx} ${node.y + halfHeight}V${cy}`
-        : `M${portX} ${node.y}h${direction * 12}L${cx} ${cy}`
-      return <g key={index}>
+      const direction = x < cx ? 1 : -1
+      const portX = x + direction * width / 2
+      const connector = node.position === 'top'
+        ? `M${cx} ${y + halfHeight}V${cy}`
+        : `M${portX} ${y}h${direction * 12}L${cx} ${cy}`
+      return <g key={node.position}>
         <path d={connector} stroke="currentColor" strokeOpacity=".32" strokeWidth="1.25"/>
-        <g transform={`translate(${node.x} ${node.y})`}>
+        <g data-overview-position={node.position} transform={`translate(${x} ${y})`}>
           <title>{node.label}</title>
           <rect x={-width / 2} y={-halfHeight} width={width} height={halfHeight * 2} rx="11"
             fill="currentColor" fillOpacity=".045" stroke="currentColor" strokeOpacity=".29"/>
