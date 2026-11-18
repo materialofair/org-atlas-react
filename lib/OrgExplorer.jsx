@@ -144,7 +144,7 @@ function Breadcrumbs({ root, path, navigation, itemLabel }) {
   )
 }
 
-export function OrgExplorer({ root, rootLevel = 1, title = "组织图谱", selectedId, onNavigate, getHref, theme = "system", className = "", toolbar, renderArtwork, itemLabel = "部门" }) {
+export function OrgExplorer({ root, rootLevel = 1, title = "组织图谱", selectedId, onNavigate, getHref, theme = "system", className = "", toolbar, renderArtwork, brandMark, itemLabel = "部门" }) {
   const index = useMemo(() => indexDepartments(root), [root])
   const entries = useMemo(() => Array.from(index.values()), [index])
   const [internalId, setInternalId] = useState(root.id)
@@ -201,7 +201,7 @@ export function OrgExplorer({ root, rootLevel = 1, title = "组织图谱", selec
     <section ref={container} aria-label={title} className={`org-explorer ${className}`.trim()} data-theme={theme}>
       <header className="oe-header"><div className="oe-wrap oe-bar">
         <DepartmentLink className="oe-brand" node={root} navigation={navigation}>
-          <span className="oe-brand-mark"><Network size={19} /></span>
+          <span className="oe-brand-mark">{brandMark ?? <Network size={19} />}</span>
           <span className="oe-brand-label" title={title}>{title}</span>
         </DepartmentLink>
         <div className="oe-toolbar">

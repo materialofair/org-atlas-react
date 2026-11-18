@@ -13,7 +13,7 @@ function entry(id, name, icon, description, evidence, children) {
   return { id, name, icon, description, evidence, children }
 }
 
-export const xian = entry('xian', '美光西安封装测试', 'package', '按西安厂区的公开业务、历史岗位和项目记录浏览。以下为资料分组，负责人和内部汇报线未披露。', site, [
+export const xian = entry('xian', '美光西安封装测试', 'backend-overview', '按西安厂区的公开业务、历史岗位和项目记录浏览。以下为资料分组，负责人和内部汇报线未披露。', site, [
   entry('xa-package', '器件封装与晶圆加工', 'package', '西安厂区承担 DRAM 器件封测，研磨环节另有本地项目公示。', expansion, [
     entry('xa-external', '外部封装工程', 'external-assembly', '西安岗位表列有外部封装工程师（MXA External Assembly）。', openings),
     entry('xa-die-recovery', '裸片回收', 'die-recovery', '旧版西安认证附件明确列有 Die Recovery。', activities),

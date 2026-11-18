@@ -5,6 +5,7 @@ import { BackendIcon, getDepartmentIcon, OrgExplorer } from 'org-atlas-react'
 import 'org-atlas-react/style.css'
 import { backend, demoDepartments, facilitySections, jobMap, siteArticle } from './departments'
 import { IconCatalog } from './IconCatalog'
+import overviewArt from '../lib/backend-overview.svg'
 import packageImage from './assets/wire-bond-package.webp'
 import './style.css'
 
@@ -17,6 +18,12 @@ function catalogLink(open) {
   return url.href
 }
 function departmentArt(node) {
+  if (node.icon === 'backend-overview') {
+    return <div className="fab-overview-art" aria-hidden="true">
+      <img src={overviewArt} alt="" />
+      <BackendIcon name="backend-overview" size={30} />
+    </div>
+  }
   return <div className="fab-art" aria-hidden="true">
     {node.icon === 'package'
       ? <img src={packageImage} alt="" />
@@ -115,6 +122,7 @@ function App() {
         getHref={departmentHref}
         theme={theme}
         renderArtwork={departmentArt}
+        brandMark={root.icon === 'backend-overview' ? <BackendIcon name="backend-overview" size={23} /> : undefined}
         itemLabel={root.id === 'xian' ? '条目' : '部门'}
         toolbar={<><a className="fab-link" href={catalogLink(true)} aria-label="后道团队图标库" title="后道团队图标库">
           <BookOpen size={16} /><span>图标库</span>

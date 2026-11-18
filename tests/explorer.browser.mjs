@@ -59,7 +59,7 @@ try {
   const catalog = await page.locator('.fab-icon-grid article').evaluateAll(cards =>
     cards.map(card => ({ key: card.querySelector('code').textContent, icon: card.querySelector('svg')?.dataset.backendIcon,
       described: !!card.querySelector('p').textContent.trim() })))
-  assert.equal(catalog.length, 84)
+  assert.equal(catalog.length, 85)
   assert.equal(new Set(catalog.map(item => item.key)).size, catalog.length)
   assert.ok(catalog.every(item => item.key === item.icon && item.described))
   assert.equal(catalog.filter(item => ['org-unit', 'team', 'project', 'support', 'coordination', 'workcell'].includes(item.key)).length, 6)
@@ -80,13 +80,15 @@ try {
   assert.equal(await page.locator('.fab-icon-grid article').count(), catalog.length)
   await page.getByRole('link', { name: '返回组织目录' }).click()
   await assertSelected(portalBranch[1])
-  console.log('PASS · 84 枚图标、职能搜索与说明、部门映射、图鉴返回当前部门')
+  console.log('PASS · 85 枚图标、职能搜索与说明、部门映射、图鉴返回当前部门')
   await page.goto(demoUrl)
   await assertSelected(portalBranch[0])
   await page.getByText('二级部门', { exact: true }).waitFor()
   assert.equal(await page.getByRole('link', { name: '返回上一级' }).count(), 0)
   assert.deepEqual(await page.locator('.oe-card h3').allTextContents(), portalBranch[0].children.map(n => n.name))
-  await page.locator('.fab-art img').evaluate(img => img.decode())
+  await page.locator('.fab-overview-art img').evaluate(img => img.decode())
+  assert.equal(await page.locator('.oe-brand-mark svg').getAttribute('data-backend-icon'), 'backend-overview')
+  assert.equal(await page.locator('.oe-card').filter({ has: page.getByRole('link', { name: '封装（Assembly）', exact: true }) }).locator('.oe-symbol svg').getAttribute('data-backend-icon'), 'package')
   assert.deepEqual(await page.locator('.oe-card .oe-symbol svg').evaluateAll(icons => icons.map(icon => icon.dataset.backendIcon)),
     portalBranch[0].children.map(node => node.icon))
   for (const [i, node] of portalBranch.slice(1).entries()) {
@@ -304,6 +306,7 @@ try {
   await page.getByRole('link', { name: '进入西安厂区' }).click()
   await page.getByRole('heading', { name: '美光西安封装测试', level: 1 }).waitFor()
   assert.equal(await page.locator('.oe-card h3').count(), 8)
+  await page.locator('.fab-overview-art svg[data-backend-icon="backend-overview"]').waitFor({ state: 'attached' })
   await page.getByRole('heading', { name: '工程与设备岗位' }).getByRole('link').click()
   await page.getByRole('heading', { name: '设备与自动化工程' }).getByRole('link').click()
   await page.getByRole('heading', { name: '停机数据分析' }).getByRole('link').click()

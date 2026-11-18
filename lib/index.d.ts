@@ -1,7 +1,7 @@
 import type { ReactElement, ReactNode } from 'react'
 
 export type BackendIconName =
-  | 'package' | 'wafer' | 'dicing' | 'bump' | 'attach'
+  | 'backend-overview' | 'package' | 'wafer' | 'dicing' | 'bump' | 'attach'
   | 'bond' | 'mold' | 'stack' | 'finish' | 'probe'
   | 'ate' | 'reliability' | 'analysis' | 'equipment' | 'planning'
   | 'materials' | 'grinding' | 'flip-chip' | 'rdl' | 'tsv'
@@ -47,6 +47,7 @@ export interface OrgExplorerProps {
   theme?: OrgTheme
   className?: string
   renderArtwork?: (department: Department) => ReactNode
+  brandMark?: ReactNode
   toolbar?: ReactNode
 }
 

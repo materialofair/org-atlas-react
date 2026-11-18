@@ -17,7 +17,7 @@ npm run dev -- --port 5188
 
 ## 在其他项目里使用
 
-从 GitHub Release 下载名为 `org-atlas-react-<版本>.tgz` 的组件包，例如将 v1.6.0 的包放在宿主项目根目录后执行 `npm install ./org-atlas-react-1.6.0.tgz`。Web 宿主使用版本匹配的 React 18+ 和 React DOM。CSS 已随包编译，导入一次即可。
+从 GitHub Release 下载名为 `org-atlas-react-<版本>.tgz` 的组件包，例如将 v1.7.0 的包放在宿主项目根目录后执行 `npm install ./org-atlas-react-1.7.0.tgz`。Web 宿主使用版本匹配的 React 18+ 和 React DOM。CSS 已随包编译，导入一次即可。
 
 ```tsx
 import { OrgExplorer, type Department } from 'org-atlas-react'
