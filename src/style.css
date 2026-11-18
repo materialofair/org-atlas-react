@@ -140,7 +140,7 @@
   .fab-overview-wide { max-width: 320px; }
 }
 
-.fab-overview-edit { display: flex; gap: 6px; align-items: center; margin: 2px 0 0 auto; padding: 5px 9px; color: var(--oe-subtle); font-size: 12px; border-radius: 6px; }
+.fab-overview-edit { appearance: none; border: 0; background: transparent; font-family: inherit; cursor: pointer; display: flex; gap: 6px; align-items: center; margin: 2px 0 0 auto; padding: 5px 9px; color: var(--oe-subtle); font-size: 12px; border-radius: 6px; }
 .fab-overview-edit:hover { background: var(--oe-muted); color: var(--oe-fg); }
 .fab-overview-editor select, .fab-overview-editor input { min-width: 0; width: 100%; min-height: 38px; padding: 6px 10px; color: var(--oe-fg); background: var(--oe-card); border: 1px solid var(--oe-border); border-radius: 7px; font: inherit; }
 .fab-overview-editor select { appearance: none; padding-right: 32px; }

@@ -163,6 +163,15 @@ try {
   await editOverview.waitFor()
   assert.equal(await wideArt.locator('text').count(), 7)
   assert.ok((await wideArt.locator('desc').textContent()).includes('全球客户交付与订单履约跟踪'))
+  const captionsFit = await wideArt.locator('text').evaluateAll(captions => captions.every(caption => {
+    const group = caption.parentElement
+    const icon = group.querySelector('svg').getBoundingClientRect()
+    const badge = group.querySelector('rect').getBoundingClientRect()
+    const text = caption.getBoundingClientRect()
+    return icon.right < text.left && text.right < badge.right &&
+      text.top >= badge.top && text.bottom <= badge.bottom && text.top < icon.bottom && text.bottom > icon.top
+  }))
+  assert.ok(captionsFit, 'Each caption stays beside its icon and within the badge, including wrapped labels')
   await editOverview.click()
   assert.equal(await editor.getByLabel('中央图标').inputValue(), 'wafer')
   assert.equal(await editor.getByLabel('第 7 项图标').inputValue(), 'on-time-delivery')
