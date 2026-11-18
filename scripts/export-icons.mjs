@@ -48,9 +48,10 @@ for (const [id, company] of Object.entries(productionCollections)) {
   await mkdir(dir, { recursive: true })
   await copyFile(maskStyles, new URL('icon-mask.css', dir))
   const sections = []
+  const sourceLabel = id === 'process' ? '工序来源' : '职能来源'
   for (const section of company.sourceSections ?? company.sections) {
     const files = section.icons.map(key => `[${backendIcons[key].name}](${key}.svg)`)
-    sections.push(`- ${section.name} · ${files.join('、')}。[职能来源](${section.source})`)
+    sections.push(`- ${section.name} · ${files.join('、')}。[${sourceLabel}](${section.source})`)
   }
   for (const section of company.sections) {
     for (const key of section.icons) await copyFile(new URL(key + '.svg', out), new URL(key + '.svg', dir))

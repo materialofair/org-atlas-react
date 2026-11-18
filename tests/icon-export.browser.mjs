@@ -11,6 +11,19 @@ const channel = process.env.PLAYWRIGHT_CHANNEL || (existsSync('/Applications/Goo
 const browser = await chromium.launch({ channel })
 try {
   const page = await browser.newPage({ colorScheme: 'light', permissions: ['clipboard-read', 'clipboard-write'] })
+  await page.goto(new URL('?view=icons&collection=process', base).href)
+  assert.equal(await page.getByRole('button', { name: /后道制造工序/, pressed: true }).count(), 1)
+  const stationIds = await page.locator('.fab-icon-grid code').allTextContents()
+  assert.equal(stationIds.length, 29)
+  assert.equal(new Set(stationIds).size, stationIds.length)
+  for (const key of ['dicing', 'package-singulation', 'lead-plating', 'ball-attach', 'dry-pack']) {
+    assert.ok(stationIds.includes(key), key)
+  }
+  await page.getByRole('searchbox').fill('C-SAM')
+  assert.deepEqual(await page.locator('.fab-icon-grid code').allTextContents(), ['acoustic-microscopy'])
+  await page.getByRole('button', { name: '扫描声学显微检测', exact: true }).click()
+  await page.getByRole('dialog', { name: '扫描声学显微检测' }).waitFor()
+  console.log('PASS · 工序专题直达、29 个唯一工位、C-SAM 检索与导出面板')
   await page.goto(new URL('?view=icons&collection=kyec', base).href)
   assert.equal(await page.locator('.fab-icon-grid article').count(), 21)
   const trigger = page.getByRole('button', { name: '影像传感器测试', exact: true })

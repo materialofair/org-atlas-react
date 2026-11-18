@@ -20,6 +20,7 @@ export function IconCatalog({ returnUrl, theme, themeControl, defaultScope, pale
   const [selected, setSelected] = useState(null)
   const results = useMemo(() => catalogResults(query), [query])
   const { sections, matches, total, name } = results[scope]
+  const sourceLabel = scope === 'process' ? '工序来源' : '职能来源'
   const searching = Boolean(query.trim())
   return <main className="org-explorer fab-catalog" data-theme={theme} style={paletteStyle}>
     <header className="oe-header"><div className="oe-wrap oe-bar">
@@ -44,7 +45,7 @@ export function IconCatalog({ returnUrl, theme, themeControl, defaultScope, pale
         ? (matches ? `${name} · 找到 ${matches} 枚，共 ${total} 枚` : `${name} · 没有匹配的图标（0 / ${total}）`)
         : `${name} · 显示 ${matches} 枚图标`}</p>
       {sections.map(({ name, source, icons }) => <section key={name}>
-        <div className="fab-group-heading"><h2>{name}</h2>{source && <a href={source} aria-label={name + '职能来源'}>职能来源 ↗</a>}</div>
+        <div className="fab-group-heading"><h2>{name}</h2>{source && <a href={source} aria-label={name + sourceLabel}>{sourceLabel} ↗</a>}</div>
         <div className="fab-icon-grid">{icons.map(id => {
           const icon = backendIcons[id]
           return <article key={id}>

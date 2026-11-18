@@ -40,6 +40,9 @@ export type BackendIconName =
   | 'test-load-split' | 'order-due-date' | 'vendor-onboarding' | 'vendor-scorecard'
   | 'contract-review' | 'invoice-match' | 'dc-parametric' | 'margin-window'
   | 'wafer-repair' | 'wafer-burn-in' | 'ball-attach' | 'dram-array-test'
+  | 'wafer-mount' | 'uv-tape-release' | 'die-pick' | 'epoxy-dispense' | 'die-attach-cure'
+  | 'plasma-clean' | 'post-mold-cure' | 'lead-plating' | 'trim-form' | 'solder-reflow'
+  | 'package-singulation' | 'laser-mark' | 'xray-inspection' | 'acoustic-microscopy' | 'dry-pack'
   | 'module-layout'
   | 'materials-roadmap' | 'temporary-bond-film' | 'carrier-substrate' | 'wafer-reconstitution'
   | 'die-shift' | 'wafer-warpage' | 'experiment-matrix' | 'test-architecture'
@@ -99,7 +102,7 @@ export interface BackendOverviewProps {
   label?: string
 }
 export declare function BackendOverview(props: BackendOverviewProps): ReactElement
-export type ProductionCollection = 'samsung' | 'hynix' | 'cxmt' | 'micron' | 'micron-hq' | 'kyec'
+export type ProductionCollection = 'process' | 'samsung' | 'hynix' | 'cxmt' | 'micron' | 'micron-hq' | 'kyec'
 interface IconSection {
   readonly name: string
   readonly source: string
