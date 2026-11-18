@@ -59,17 +59,29 @@ try {
   const catalog = await page.locator('.fab-icon-grid article').evaluateAll(cards =>
     cards.map(card => ({ key: card.querySelector('code').textContent, icon: card.querySelector('svg')?.dataset.backendIcon,
       described: !!card.querySelector('p').textContent.trim() })))
-  assert.equal(catalog.length, 16)
+  assert.equal(catalog.length, 48)
   assert.equal(new Set(catalog.map(item => item.key)).size, catalog.length)
   assert.ok(catalog.every(item => item.key === item.icon && item.described))
+  const usedIcons = new Set()
   function checkIcon(node) {
+    usedIcons.add(node.icon)
     assert.ok(catalog.some(item => item.key === node.icon), node.name)
     node.children?.forEach(checkIcon)
   }
   checkIcon(root)
+  assert.deepEqual(usedIcons, new Set(catalog.map(item => item.key)))
+  const iconSearch = page.getByRole('searchbox', { name: '搜索团队图标' })
+  for (const [query, key] of [['TSE', 'test-solutions'], ['底填', 'underfill'], ['FAC', 'facilities']]) {
+    await iconSearch.fill(query)
+    await page.locator('.fab-icon-grid article').filter({ has: page.getByText(key, { exact: true }) }).waitFor()
+  }
+  await iconSearch.fill('no-such-symbol')
+  await page.getByRole('status').waitFor()
+  await iconSearch.fill('')
+  assert.equal(await page.locator('.fab-icon-grid article').count(), catalog.length)
   await page.getByRole('link', { name: '返回组织目录' }).click()
   await assertSelected(portalBranch[1])
-  console.log('PASS · 16 枚图标与说明、部门映射、图鉴返回当前部门')
+  console.log('PASS · 48 枚图标、职能搜索与说明、部门映射、图鉴返回当前部门')
   await page.goto(demoUrl)
   await assertSelected(portalBranch[0])
   await page.getByText('二级部门', { exact: true }).waitFor()

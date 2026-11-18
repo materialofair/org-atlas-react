@@ -119,3 +119,5 @@
   .demo-page .oe-cards[data-view="grid"]:has(> :nth-child(6):last-child),
   .fab-icon-grid:has(> :nth-child(6):last-child) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
+
+.fab-icon-search { display: block; width: min(100%, 30rem); margin-top: 16px; padding: 9px 12px; border: 1px solid var(--oe-border); border-radius: 7px; background: var(--oe-card); color: var(--oe-fg); }

@@ -20,7 +20,7 @@ npm pack
 将生成的压缩包复制到宿主项目，在宿主项目目录执行：
 
 ```sh
-npm install ./org-atlas-react-1.3.0.tgz
+npm install ./org-atlas-react-1.4.0.tgz
 ```
 
 ```tsx
@@ -61,7 +61,7 @@ export function AssemblyPortal({ department }: { department: Department }) {
 
 首页是二级封装制造部门户，可进入引线键合、固晶贴装、塑封成型、切单成型、成品后处理和封装工艺整合六个团队。页尾的“查看事业群全貌”可切至八个二级部门。选取引线键合课 → 铜线生产组 → QFN 键合线 → 甲班键合班组 → 细线键合单元，可从三级走到七级。
 
-顶栏的“图标库”（`?view=icons`）按晶圆加工、封装与互连、测试与质量、生产支持展示 16 枚图标。每项列有图形含义、适用团队和英文标识。通过 `Department.icon` 指定标识；缺省时组件显示通用部门图标。也可在组件外使用：
+顶栏的“图标库”（`?view=icons`）收录 48 枚图标，覆盖晶圆加工、封装与互连、存储产品与先进封装、测试与质量、工程与产品导入、生产支持六类。可按中文职责、英文标识或缩写（例如 TSE、TSV、HBM）检索。每项列有图形含义、适用团队和英文标识。通过 `Department.icon` 指定标识；缺省时组件显示通用部门图标。也可在组件外使用：
 
 ```tsx
 import { BackendIcon, backendIcons } from 'org-atlas-react'
@@ -72,6 +72,8 @@ import { BackendIcon, backendIcons } from 'org-atlas-react'
 React 组件使用 `currentColor` 跟随主题；相邻已有文字时可省略 `label`。独立 SVG 图标包随 Release 提供，内含中文说明和 MIT 许可证。本地执行 `npm run export:icons` 可在 `dist/backend-icons/` 生成相同内容。
 
 ### 行业依据
+
+美光台湾岗位地图中的九类后道职能，以及 SK 海力士公开的 HBM PE 团队分工，已映射到本项目的图标键名。选图示例、公开出处与 Demo 路径见[存储器后道团队与图标选用](https://github.com/materialofair/org-atlas-react/blob/v1.4.0/docs/memory-backend.md)。
 
 | 公开业务与工艺 | 演示中的组织划分 |
 | --- | --- |
@@ -127,7 +129,7 @@ npm run dev -- --port 5188
 - `npm run build` 生成组件库和生产版 Demo，分别位于 `dist/lib` 与 `dist/demo`。
 - `npm pack` 重新构建库并在当前目录生成可分发的 tgz。
 - `npm run test:browser` 验证七级下穿、返回、主题和移动布局。先启动 Demo，本机需要 Chrome 或通过 `npx playwright install chromium` 安装 Chromium。可用 `ORG_DEMO_URL` 指定测试地址。
-- `node tests/react-compat.mjs 18.0.0 ./org-atlas-react-1.3.0.tgz` 在临时宿主中安装指定 React 版本和组件包，完成生产构建并在浏览器中验证七级往返。已验证 18.0.0、18.2.0、18.3.1 和 19.3.1。
+- `node tests/react-compat.mjs 18.0.0 ./org-atlas-react-1.4.0.tgz` 在临时宿主中安装指定 React 版本和组件包，完成生产构建并在浏览器中验证七级往返。已验证 18.0.0、18.2.0、18.3.1 和 19.3.1。
 - `src/departments.js` 存放可替换的示例组织数据。
 
 ## 许可证
