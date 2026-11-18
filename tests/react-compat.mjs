@@ -18,7 +18,7 @@ try {
   writeFileSync(join(root, 'main.jsx'), `
     import React from 'react'
     import { createRoot } from 'react-dom/client'
-    import { BackendIcon, BackendOverview, OrgExplorer, exportIcon, getIconSource } from 'org-atlas-react'
+    import { BackendIcon, BackendOverview, defaultOverviewItems, OrgExplorer, exportIcon, getIconSource } from 'org-atlas-react'
     import staticArt from 'org-atlas-react/backend-overview.svg'
     import 'org-atlas-react/style.css'
 
@@ -39,7 +39,7 @@ try {
     createRoot(document.querySelector('#root')).render(<>
       <div style={{ width: 80, '--primary': '#164ec0' }}>
         <BackendOverview label="宿主主色" />
-        <BackendOverview label="独立配色" color="#aa4477" />
+        <BackendOverview label="独立配色" color="#aa4477" centerIcon="wafer" items={[...defaultOverviewItems, { icon: 'buddy', label: '伙伴' }]} />
         <img src={staticArt} width="80" alt="静态总图" />
       </div>
       <BackendIcon name="test-socket" label="测试插座" strokeWidth={2} />
@@ -71,6 +71,8 @@ try {
   const firstArt = page.getByRole('img', { name: '宿主主色' })
   const secondArt = page.getByRole('img', { name: '独立配色' })
   assert.equal(await firstArt.evaluate(el => getComputedStyle(el).color), 'rgb(22, 78, 192)')
+  assert.equal(await secondArt.locator('text').count(), 6)
+  assert.equal(await secondArt.locator('text').last().textContent(), '伙伴')
   assert.equal(await secondArt.evaluate(el => getComputedStyle(el).color), 'rgb(170, 68, 119)')
   assert.notEqual(await firstArt.locator('linearGradient').first().getAttribute('id'),
     await secondArt.locator('linearGradient').first().getAttribute('id'))

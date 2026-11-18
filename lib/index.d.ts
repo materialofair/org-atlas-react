@@ -82,7 +82,20 @@ export interface OrgExplorerProps {
 
 export declare function OrgExplorer(props: OrgExplorerProps): ReactElement
 
-export declare function BackendOverview(props: { color?: string; className?: string; label?: string }): ReactElement
+export interface OverviewItem {
+  readonly label: string
+  readonly icon: BackendIconName
+}
+export declare const defaultOverviewItems: readonly OverviewItem[]
+export interface BackendOverviewProps {
+  /** Four to seven peripheral items. Defaults to five. */
+  items?: readonly OverviewItem[]
+  centerIcon?: BackendIconName
+  color?: string
+  className?: string
+  label?: string
+}
+export declare function BackendOverview(props: BackendOverviewProps): ReactElement
 export type ProductionCollection = 'samsung' | 'hynix' | 'cxmt' | 'micron' | 'micron-hq' | 'kyec'
 interface IconSection {
   readonly name: string

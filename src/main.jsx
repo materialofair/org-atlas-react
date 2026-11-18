@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useSyncExternalStore } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BookOpen, ChevronDown, Monitor, Moon, Sun } from 'lucide-react'
-import { BackendIcon, BackendOverview, getDepartmentIcon, OrgExplorer } from 'org-atlas-react'
+import { BackendIcon, getDepartmentIcon, OrgExplorer } from 'org-atlas-react'
 import 'org-atlas-react/style.css'
 import { backend, demoDepartments, facilitySections, jobMap, siteArticle } from './departments'
+import { OverviewArtwork } from './OverviewArtwork'
 import { IconCatalog } from './IconCatalog'
 import { accents } from './accents'
 import packageImage from './assets/wire-bond-package.webp'
@@ -22,9 +23,7 @@ function catalogLink(open) {
 }
 function departmentArt(node) {
   if (node.icon === 'backend-overview') {
-    return <div className="fab-overview-art">
-      <BackendOverview className="fab-overview-wide" color="var(--oe-primary)" label="封装测试，质量、成本、人才、安全、产出" />
-    </div>
+    return <OverviewArtwork key={node.id} departmentId={node.id} />
   }
   return <div className="fab-art" aria-hidden="true">
     {node.icon === 'package'

@@ -1,22 +1,58 @@
 import React, { useId } from 'react'
 import { backendIcons } from './backend-icons.jsx'
 
-const functions = [
-  { name: '质量', x: 46, y: 62, path: backendIcons['quality-engineering'].path },
-  { name: '成本', x: 80, y: 138, path: backendIcons['unit-cost'].path },
-  { name: '人才', x: 170, y: 21, path: backendIcons.team.path },
-  { name: '安全', x: 294, y: 62, path: 'M12 2.5 20 6v5.5c0 4.5-3.7 8-8 10-4.3-2-8-5.5-8-10V6z M12 7.5v7m-3.5-3.5h7' },
-  { name: '产出', x: 260, y: 138, path: 'M5 3.5h8v7H5z M5 14.5h14a3 3 0 0 1 0 6H5a3 3 0 0 1 0-6z M6 17.5h.2m11.6 0h.2 M16 7h6m-2.6-2.7L22 7l-2.6 2.7' },
+export const defaultOverviewItems = [
+  { label: '质量', icon: 'quality-engineering' },
+  { label: '成本', icon: 'unit-cost' },
+  { label: '人才', icon: 'team' },
+  { label: '安全', icon: 'ehs' },
+  { label: '产出', icon: 'units-per-hour' },
 ]
 
-export function BackendOverview({ color, className, label }) {
+function captionLines(label) {
+  const lines = ['']
+  let width = 0
+  for (const char of label) {
+    const advance = /[ -~]/.test(char) ? 0.6 : 1
+    if (width + advance > 7) {
+      if (lines.length === 2) {
+        lines[1] = Array.from(lines[1]).slice(0, -1).join('') + '…'
+        break
+      }
+      lines.push('')
+      width = 0
+    }
+    lines[lines.length - 1] += char
+    width += advance
+  }
+  return lines
+}
+
+export function BackendOverview({ color, className, label, items = defaultOverviewItems, centerIcon }) {
   const id = useId()
   const top = id + '-surface'
   const substrate = id + '-substrate'
-  return <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 164" fill="none"
+  if (!Array.isArray(items) || items.length < 4 || items.length > 7) {
+    throw new RangeError('BackendOverview expects 4 to 7 items')
+  }
+  const sideCount = Math.floor(items.length / 2)
+  const hasTop = items.length % 2 === 1
+  const height = sideCount === 3 ? 224 : 182
+  const cy = height / 2 + (hasTop ? 11 : -6)
+  const nodes = items.map((item, index) => {
+    if (hasTop && index === sideCount) return { ...item, x: 180, y: 18, top: true }
+    const left = index < sideCount
+    const row = left ? index : index - sideCount - Number(hasTop)
+    const inset = sideCount === 3 && row === 1 ? 0 : 14
+    const x = left ? 55 + inset : 305 - inset
+    const y = 30 + row * (height - 80) / (sideCount - 1)
+    return { ...item, x, y, top: false }
+  })
+  return <svg xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 360 ${height}`} fill="none"
     strokeLinecap="round" strokeLinejoin="round" className={className}
     style={{ color: color ?? 'var(--org-art-accent, var(--org-primary, var(--primary, #47846f)))' }}
     aria-hidden={label ? undefined : true} role={label ? 'img' : undefined} aria-label={label}>
+    {label && <desc>{items.map(item => item.label).join('、')}</desc>}
     <defs>
       <linearGradient id={top} x2="1" y2="1" gradientUnits="objectBoundingBox">
         <stop stopColor="color-mix(in srgb, currentColor 55%, white)"/><stop offset=".55" stopColor="color-mix(in srgb, currentColor 84%, white)"/><stop offset="1" stopColor="color-mix(in srgb, currentColor 88%, black)"/>
@@ -26,34 +62,48 @@ export function BackendOverview({ color, className, label }) {
       </linearGradient>
     </defs>
 
-    <g stroke="currentColor" strokeOpacity=".48" strokeWidth="1.25">
-      <path d="M84 62h18l31 19h15 M118 138h5l21-22 M170 37v27 M256 62h-18l-31 19h-15 M222 138h-5l-21-22"/>
-    </g>
-    {functions.map(({ name, x, y, path }) => (
-      <g key={name} transform={`translate(${x} ${y})`}>
-        <rect x="-38" y="-15" width="76" height="30" rx="12"
-          fill="currentColor" fillOpacity=".05" stroke="currentColor" strokeOpacity=".32"/>
-        <svg x="-29" y="-10" width="20" height="20" viewBox="0 0 24 24">
-          <path d={path} stroke="currentColor" strokeWidth="1.8"/>
-        </svg>
-        <text x="8" y="5" textAnchor="middle" fill="currentColor"
-          fontFamily="system-ui, sans-serif" fontSize="14" fontWeight="600">{name}</text>
+    {nodes.map((node, index) => {
+      const lines = captionLines(node.label)
+      const edge = node.x < 180 ? 18 : -18
+      const startY = node.y + 34 + (lines.length - 1) * 14
+      const connector = node.top
+        ? `M180 ${startY}V${cy}`
+        : `M${node.x + edge} ${node.y}h${edge}L180 ${cy}`
+      return <g key={index}>
+        <path d={connector} stroke="currentColor" strokeOpacity=".32" strokeWidth="1.25"/>
+        <g transform={`translate(${node.x} ${node.y})`}>
+          <title>{node.label}</title>
+          <rect x="-17" y="-17" width="34" height="34" rx="11" fill="currentColor"
+            fillOpacity=".06" stroke="currentColor" strokeOpacity=".28"/>
+          <svg x="-11" y="-11" width="22" height="22" viewBox="0 0 24 24">
+            <path d={backendIcons[node.icon]?.path ?? backendIcons.team.path} stroke="currentColor" strokeWidth="1.65"/>
+          </svg>
+          <text textAnchor="middle" fill="currentColor" fontFamily="system-ui, sans-serif" fontSize="13" fontWeight="600">
+            {lines.map((line, i) => <tspan key={i} x="0" y={32 + i * 14}>{line}</tspan>)}
+          </text>
+        </g>
       </g>
-    ))}
-
-    <path d="m110 101 60-29 60 29v6l-60 30-60-30z" fill="color-mix(in srgb, currentColor 43%, black)"/>
-    <path d="m110 101 60-30 60 30-60 30z" fill={`url(#${substrate})`} stroke="color-mix(in srgb, currentColor 93%, white)"/>
-    <g fill="color-mix(in srgb, currentColor 25%, white)">
-      <path d="m120 102 4-2 4 2-4 2zm9 4.5 4-2 4 2-4 2zm9 4.5 4-2 4 2-4 2zm9 4.5 4-2 4 2-4 2zm9 4.5 4-2 4 2-4 2z"/>
-      <path d="m184 120 4-2 4 2-4 2zm9-4.5 4-2 4 2-4 2zm9-4.5 4-2 4 2-4 2zm9-4.5 4-2 4 2-4 2z"/>
-    </g>
-    <path d="m121 87 49-24 49 24v7l-49 25-49-25z" fill="color-mix(in srgb, currentColor 75%, black)"/>
-    <path d="m121 87 49-24 49 24-49 25z" fill="color-mix(in srgb, currentColor 41%, white)" stroke="color-mix(in srgb, currentColor 72%, white)"/>
-    <path d="m128 69 42-21 42 21v10l-42 21-42-21z" fill="color-mix(in srgb, currentColor 71%, black)"/>
-    <path d="m170 90 42-21v10l-42 21z" fill="color-mix(in srgb, currentColor 55%, black)"/>
-    <path d="m128 69 42-21 42 21-42 21z" fill="color-mix(in srgb, currentColor 20%, white)" stroke="color-mix(in srgb, currentColor 53%, white)"/>
-    <path d="m134 66 36-18 36 18v4l-36 18-36-18z" fill="color-mix(in srgb, currentColor 88%, black)"/>
-    <path d="m134 66 36-18 36 18-36 18z" fill={`url(#${top})`} stroke="color-mix(in srgb, currentColor 34%, white)"/>
-    <path d="m149 67 8 4 4-2 1-8 4 13 5-10 4 2 12-6" stroke="color-mix(in srgb, currentColor 34%, black)" strokeWidth="2.4"/>
+    })}
+    {centerIcon && backendIcons[centerIcon]?.path ? (
+      <svg x="145" y={cy - 35} width="70" height="70" viewBox="0 0 24 24">
+        <rect width="24" height="24" rx="6" fill="var(--oe-card, Canvas)"/>
+        <path d={backendIcons[centerIcon].path} stroke="currentColor" strokeWidth="1.35"/>
+      </svg>
+    ) : <g transform={`translate(180 ${cy}) scale(.87) translate(-170 -92)`}>
+      <path d="m110 101 60-29 60 29v6l-60 30-60-30z" fill="color-mix(in srgb, currentColor 43%, black)"/>
+      <path d="m110 101 60-30 60 30-60 30z" fill={`url(#${substrate})`} stroke="color-mix(in srgb, currentColor 93%, white)"/>
+      <g fill="color-mix(in srgb, currentColor 25%, white)">
+        <path d="m120 102 4-2 4 2-4 2zm9 4.5 4-2 4 2-4 2zm9 4.5 4-2 4 2-4 2zm9 4.5 4-2 4 2-4 2zm9 4.5 4-2 4 2-4 2z"/>
+        <path d="m184 120 4-2 4 2-4 2zm9-4.5 4-2 4 2-4 2zm9-4.5 4-2 4 2-4 2zm9-4.5 4-2 4 2-4 2z"/>
+      </g>
+      <path d="m121 87 49-24 49 24v7l-49 25-49-25z" fill="color-mix(in srgb, currentColor 75%, black)"/>
+      <path d="m121 87 49-24 49 24-49 25z" fill="color-mix(in srgb, currentColor 41%, white)" stroke="color-mix(in srgb, currentColor 72%, white)"/>
+      <path d="m128 69 42-21 42 21v10l-42 21-42-21z" fill="color-mix(in srgb, currentColor 71%, black)"/>
+      <path d="m170 90 42-21v10l-42 21z" fill="color-mix(in srgb, currentColor 55%, black)"/>
+      <path d="m128 69 42-21 42 21-42 21z" fill="color-mix(in srgb, currentColor 20%, white)" stroke="color-mix(in srgb, currentColor 53%, white)"/>
+      <path d="m134 66 36-18 36 18v4l-36 18-36-18z" fill="color-mix(in srgb, currentColor 88%, black)"/>
+      <path d="m134 66 36-18 36 18-36 18z" fill={`url(#${top})`} stroke="color-mix(in srgb, currentColor 34%, white)"/>
+      <path d="m149 67 8 4 4-2 1-8 4 13 5-10 4 2 12-6" stroke="color-mix(in srgb, currentColor 34%, black)" strokeWidth="2.4"/>
+    </g>}
   </svg>
 }
